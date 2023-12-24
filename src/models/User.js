@@ -33,7 +33,7 @@ class User {
     this.verified = true,
     this.private = true,
     this.posts = 0,
-    this.followers = 1234,
+    this.followers = 10199,
     this.following = 567,
     this.link = "https://github.com/1-17",
     this.shop = true,
