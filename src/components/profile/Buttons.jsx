@@ -1,5 +1,4 @@
 import { BiUserPlus } from "react-icons/bi"
-import { HiOutlineShoppingBag } from "react-icons/hi"
 import { useUser } from "../../hooks"
 import Button from "../layout/Button"
 
@@ -8,14 +7,6 @@ const Buttons = () => {
 
   return (
     <div className="grid gap-2">
-      {user.shop && (
-        <Button>
-          <HiOutlineShoppingBag className="inline mr-1" />
-          <span className="align-middle">
-            See shop
-          </span>
-        </Button>
-      )}
       <div className="flex max-xs:flex-wrap gap-2">
         <Button main>
           Follow

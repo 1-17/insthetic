@@ -11,7 +11,6 @@ class User {
   followers
   following
   link
-  shop
   contact
   suggestions
   avatar
@@ -26,17 +25,16 @@ class User {
   constructor() {
     this.username = "117k",
     this.name = "117k",
-    this.pronouns = "he/him",
+    this.pronouns = ["he", "him"],
     this.threads = "117k",
     this.label = "Developer",
     this.bio = "love yourself so no one has to. also, @this_is_a_mention and #this_is_a_hashtag.",
     this.verified = true,
     this.private = true,
     this.posts = 0,
-    this.followers = 10199,
+    this.followers = 1234,
     this.following = 567,
     this.link = "https://github.com/1-17",
-    this.shop = true,
     this.contact = "Email",
     this.suggestions = true,
     this.avatar = null,

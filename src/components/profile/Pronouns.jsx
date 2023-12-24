@@ -6,7 +6,7 @@ const Pronouns = () => {
   return (
     user.pronouns && (
       <span className="text-medium ml-1">
-        {user.pronouns}
+        {user.pronouns.join("/")}
       </span>
     )
   )
