@@ -1,18 +1,18 @@
-import formatUserMetrics from "../../models/formatUserMetrics"
+import { formatUserMetrics } from "../../utils"
 
 const Metrics = () => {
-  const metrics = formatUserMetrics()
-
   return (
     <ul className="grow flex justify-evenly text-center gap-2">
-      {metrics.map(m =>
-        <li key={m.name}>
-          <span className="block text-lg sm:text-xl font-semibold">
-            {m.number}
-          </span>
-          {m.name}
-        </li>
-      )}
+      {
+        formatUserMetrics().map((metric, i) =>
+          <li key={i}>
+            <span className="block text-lg sm:text-xl font-semibold">
+              {metric.number}
+            </span>
+            {metric.name}
+          </li>
+        )
+      }
     </ul>
   )
 }

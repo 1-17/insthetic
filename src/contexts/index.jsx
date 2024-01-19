@@ -1,21 +1,25 @@
 import { createContext } from "react"
-import handleTheme from "../utils/handleTheme"
-import handleUser from "../utils/handleUser"
-import handleComponent from "../utils/handleComponent"
+import ThemeProvider from "./ThemeProvider"
+import FormProvider from "./FormProvider"
+import UserProvider from "./UserProvider"
+import ComponentProvider from "./ComponentProvider"
 
 export const ThemeContext = createContext()
+export const FormContext = createContext()
 export const UserContext = createContext()
 export const ComponentContext = createContext()
 
 const Contexts = ({ children }) => {
   return (
-    <ThemeContext.Provider value={handleTheme()}>
-      <UserContext.Provider value={handleUser()}>
-        <ComponentContext.Provider value={handleComponent()}>
-          {children}
-        </ComponentContext.Provider>
-      </UserContext.Provider>
-    </ThemeContext.Provider>
+    <ThemeProvider>
+      <FormProvider>
+        <UserProvider>
+          <ComponentProvider>
+            {children}
+          </ComponentProvider>
+        </UserProvider>
+      </FormProvider>
+    </ThemeProvider>
   )
 }
 

@@ -14,16 +14,20 @@ const Buttons = () => {
         <Button>
           Message
         </Button>
-        {user.contact && (
-          <Button>
-            {user.contact}
-          </Button>
-        )}
-        {user.suggestions && (
-          <Button aria-label="Suggestions" className="xs:w-max">
-            <BiUserPlus className="inline text-xl sm:text-2xl transform -scale-x-100" />
-          </Button>
-        )}
+        {
+          user.contact && (
+            <Button>
+              {user.contact}
+            </Button>
+          )
+        }
+        {
+          user.hasSuggestionsEnabled && (
+            <Button aria-label="Suggested accounts to follow" className="xs:w-max">
+              <BiUserPlus className="inline text-xl sm:text-2xl transform -scale-x-100" />
+            </Button>
+          )
+        }
       </div>
     </div>
   )

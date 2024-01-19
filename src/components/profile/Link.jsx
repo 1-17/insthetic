@@ -9,11 +9,11 @@ const Link = () => {
   return (
     user.link && (
       <span className={classNames(
-          {
-            "text-blue-900": lightMode,
-            "text-blue-100": !lightMode
-          }
-        )}>
+        {
+          "text-accent-dark": lightMode,
+          "text-accent-light": !lightMode
+        }
+      )}>
         <RiLink className="inline-block align-text-bottom text-lg mr-1" />
         {user.link}
       </span>

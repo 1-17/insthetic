@@ -5,16 +5,15 @@ class User {
   threads
   label
   bio
-  verified
-  private
+  isVerified
   posts
   followers
   following
   link
   contact
-  suggestions
+  hasSuggestionsEnabled
   avatar
-  stories
+  hasStories
   highlights = [
     {
       image: "",
@@ -29,40 +28,39 @@ class User {
     this.threads = "117k",
     this.label = "Developer",
     this.bio = "love yourself so no one has to. also, @this_is_a_mention and #this_is_a_hashtag.",
-    this.verified = true,
-    this.private = true,
+    this.isVerified = true,
     this.posts = 0,
     this.followers = 1234,
     this.following = 567,
     this.link = "https://github.com/1-17",
     this.contact = "Email",
-    this.suggestions = true,
+    this.hasSuggestionsEnabled = true,
     this.avatar = null,
-    this.stories = true,
+    this.hasStories = true,
     this.highlights = [
       {
         image: "",
-        description: "Highlight"
+        description: ""
       },
       {
         image: "",
-        description: "Highlight"
+        description: ""
       },
       {
         image: "",
-        description: "Highlight"
+        description: ""
       },
       {
         image: "",
-        description: "Highlight"
+        description: ""
       },
       {
         image: "",
-        description: "Highlight"
+        description: ""
       },
       {
         image: "",
-        description: "Highlight"
+        description: ""
       }
     ]
   }

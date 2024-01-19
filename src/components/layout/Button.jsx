@@ -7,9 +7,10 @@ const Button = ({ main, ...rest }) => {
 
   return (
     createElement(
-      rest.type ? "button" : "span",
+      (rest.onClick || rest.type) ? "button" : "span",
       {
         ...rest,
+        type: rest.type || "button",
         className: classNames(
           "rounded-md text-center w-full px-2 py-[0.3rem]",
           rest.className,

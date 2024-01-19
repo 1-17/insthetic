@@ -1,13 +1,14 @@
 import { useUser } from "../hooks"
+import { capitalizeString } from "."
 
-const formatUserMetrics = () => {
+const _formatUserMetrics = () => {
   const { user } = useUser()
   const metrics = ["posts", "followers", "following"]
 
   return (
     metrics.map(metricName => {
       let metricNumber = user[metricName]
-
+      
       switch (true) {
         case metricNumber > 999 && metricNumber <= 9999:
           metricNumber = (metricNumber / 1000)
@@ -46,11 +47,11 @@ const formatUserMetrics = () => {
       }
 
       return {
-        name: metricName.charAt(0).toUpperCase() + metricName.slice(1),
+        name: capitalizeString(metricName),
         number: metricNumber.toLocaleString()
       }
     })
   )
 }
 
-export default formatUserMetrics
+export default _formatUserMetrics

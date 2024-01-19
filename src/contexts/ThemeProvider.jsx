@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
+import { ThemeContext } from "."
 
-const handleTheme = () => {
+const ThemeProvider = ({ children }) => {
   const dbKey = "light_mode"
   const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
 
@@ -14,7 +15,11 @@ const handleTheme = () => {
 
   const changeTheme = () => setLightMode(prev => !prev)
 
-  return { lightMode, changeTheme }
+  return (
+    <ThemeContext.Provider value={{ lightMode, changeTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  )
 }
 
-export default handleTheme
+export default ThemeProvider

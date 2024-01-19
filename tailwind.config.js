@@ -1,8 +1,7 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
+    "./src/**/*.{js,jsx}"
   ],
   theme: {
     extend: {
@@ -10,7 +9,10 @@ export default {
         light: "rgb(255, 255, 255)",
         medium: "rgb(100 100 100)",
         dark: "rgb(0, 0, 0)",
-        accent: "theme(colors.sky.400)"
+        accent: "theme(colors.sky.400)",
+        "accent-dark": "theme(colors.blue.900)",
+        "accent-light": "theme(colors.blue.100)",
+        danger: "theme(colors.red.600)"
       },
       screens: {
         xs: "300px"

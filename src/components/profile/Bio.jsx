@@ -1,13 +1,12 @@
 import { useUser } from "../../hooks"
-import formatBioWithMentions from "../../models/formatBioWithMentions"
+import { formatBioWithMentions } from "../../utils"
 
 const Bio = () => {
   const { user } = useUser()
-  const bioWithMentions = formatBioWithMentions()
-
+  
   return (
     user.bio && (
-      <p dangerouslySetInnerHTML={{ __html: bioWithMentions }}></p>
+      <p dangerouslySetInnerHTML={{ __html: formatBioWithMentions() }} />
     )
   )
 }
