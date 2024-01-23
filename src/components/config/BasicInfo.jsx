@@ -17,7 +17,7 @@ const BasicInfo = () => {
             <input type="file" className="absolute left-0 w-full opacity-0" />
             Add photo
           </Button>
-          <Button>
+          <Button onClick={() => {}}>
             Remove photo
           </Button>
         </Stack>
@@ -37,15 +37,10 @@ const BasicInfo = () => {
           copy
         />
       </Stack>
-      {/* <Field element="select" name="pronouns">
-        {
-          ["he", "she", "they", "it"].map((pronoun, i) =>
-          <option key={i} value={pronoun}>
-          {pronoun}
-          </option>
-          )
-        }
-      </Field> */}
+      <Field
+        name="pronouns"
+        select={["he", "she", "they", "it"]}
+      />
       <Field
         name="threads"
         defaultValue={user.threads}

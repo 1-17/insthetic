@@ -1,8 +1,8 @@
 import { createContext } from "react"
-import ThemeProvider from "./ThemeProvider"
-import FormProvider from "./FormProvider"
-import ComponentProvider from "./ComponentProvider"
-import UserProvider from "./UserProvider"
+import ThemeProvider from "./_ThemeProvider"
+import FormProvider from "./_FormProvider"
+import ComponentProvider from "./_ComponentProvider"
+import UserProvider from "./_UserProvider"
 
 export const ThemeContext = createContext()
 export const FormContext = createContext()

@@ -4,7 +4,7 @@ const Form = ({ ...rest }) => {
   const { handleSubmit } = useForm()
 
   return (
-    <form {...rest} noValidate onSubmit={e => handleSubmit(e, rest.onSubmit)} className="grid gap-4" />
+    <form {...rest} noValidate onSubmit={e => handleSubmit(e, rest.onSubmit)} className="*:mt-4 first:*:mt-0" />
   )
 }
 

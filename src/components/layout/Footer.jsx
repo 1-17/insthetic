@@ -1,5 +1,6 @@
 import AppBar from "./AppBar"
-import FooterButtons from "../../models/FooterButtons"
+import { FooterButtons } from "../../models"
+import Button from "./Button"
 
 const Footer = () => {
   const buttons = new FooterButtons()
@@ -8,14 +9,15 @@ const Footer = () => {
     <AppBar element="footer">
       {
         buttons.map((button, i) =>
-          <button
+          <Button
             key={i}
             aria-label={button.label}
             onClick={button.click}
-            className="text-2xl sm:text-3xl px-6 py-3 hover:bg-medium hover:bg-opacity-10"
+            variant="icon"
+            className="text-2xl sm:text-3xl px-6 py-3"
           >
             <button.icon />
-          </button>
+          </Button>
         )
       }
     </AppBar>

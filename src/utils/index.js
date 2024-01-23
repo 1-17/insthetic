@@ -1,4 +1,4 @@
-export { default as capitalizeString } from "./capitalizeString"
-export { default as copyToClipboard } from "./copyToClipboard"
-export { default as formatBioWithMentions } from "./formatBioWithMentions"
-export { default as formatUserMetrics } from "./formatUserMetrics"
+export { default as capitalizeString } from "./_capitalizeString"
+export { default as copyToClipboard } from "./_copyToClipboard"
+export { default as formatBioWithMentions } from "./_formatBioWithMentions"
+export { default as formatUserMetrics } from "./_formatUserMetrics"

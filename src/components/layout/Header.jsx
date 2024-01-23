@@ -2,6 +2,7 @@ import { MdVerified } from "react-icons/md"
 import { PiArrowLeftBold } from "react-icons/pi"
 import { useComponent, useUser } from "../../hooks"
 import AppBar from "./AppBar"
+import Button from "./Button"
 
 const Header = () => {
   const { user } = useUser()
@@ -24,13 +25,14 @@ const Header = () => {
         )
         : (
           <>
-            <button
-              aria-label="Back to profile"
+            <Button
+              aria-label={config && "Back to profile"}
               onClick={changeComponent}
+              variant="icon"
               className="-ml-3 mr-3 p-3"
             >
               <PiArrowLeftBold className="inline align-sub" />
-            </button>
+            </Button>
             <h1 className="inline">
               {config && "Config"}
             </h1>

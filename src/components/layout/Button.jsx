@@ -7,9 +7,9 @@ const Button = ({ variant, ...rest }) => {
   const { formUpdated } = useForm()
 
   rest.type === "submit" && (
-    formUpdated === null && (rest.children = "Submit", variant = "gradient") ||
-    formUpdated === false && (rest.children = "Error", variant = "danger") ||
-    formUpdated === true && (rest.children = "Updated!", variant = "success")
+    formUpdated === null && (rest.children = "Save", variant = "gradient") ||
+    !formUpdated && (rest.children = "Error", variant = "danger") ||
+    formUpdated && (rest.children = "Updated!", variant = "success")
   )
 
   return (
@@ -19,16 +19,16 @@ const Button = ({ variant, ...rest }) => {
         ...rest,
         type: rest.type || "button",
         className: classNames(
-          "rounded-md text-center w-full px-2 py-[0.3rem]",
           rest.className,
           {
-            "bg-dark": lightMode && !variant,
-            "bg-light": !lightMode && !variant,
-            "bg-opacity-10": !variant,
+            "rounded-shape text-center w-full px-2 py-1": !variant || variant !== "icon",
+            "bg-medium-light": lightMode && !variant,
+            "bg-medium-dark": !lightMode && !variant,
             "bg-gradient-instagram text-light": variant === "gradient",
-            "bg-sky-600 text-light": variant === "primary",
-            "bg-green-500 text-dark": variant === "success",
+            "bg-accent text-light": variant === "primary",
+            "bg-success text-dark": variant === "success",
             "bg-danger text-light": variant === "danger",
+            "hover:bg-medium hover:bg-opacity-10 focus-visible:bg-medium focus-visible:bg-opacity-10": variant === "icon",
             "font-semibold max-w-[60%] mt-4": rest.type === "submit"
           }
         )

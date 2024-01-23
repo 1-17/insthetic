@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { UserContext } from "."
-import InitialUser from "../models/InitialUser"
+import { InitialUser } from "../models"
 
 const UserProvider = ({ children }) => {
   const dbKey = "user"

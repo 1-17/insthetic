@@ -3,7 +3,8 @@ import { ComponentContext } from "."
 import { useForm } from "../hooks"
 
 const ComponentProvider = ({ children }) => {
-  const { clearErrors } = useForm()
+  const { clearErrors, clearFormUpdated } = useForm()
+  
   const [profile, setProfile] = useState(true)
   const [config, setConfig] = useState(false)
 
@@ -11,6 +12,7 @@ const ComponentProvider = ({ children }) => {
     setProfile(prev => !prev)
     setConfig(prev => !prev)
     clearErrors()
+    clearFormUpdated()
   }
 
   return (

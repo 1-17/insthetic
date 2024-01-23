@@ -1,7 +1,7 @@
-import User from "./User"
-import regex from "./regex"
+import User from "./_User"
+import regex from "./_regex"
 
-class UserValidations extends User {
+class _Validations extends User {
   constructor() {
     super()
 
@@ -69,4 +69,4 @@ class UserValidations extends User {
   }
 }
 
-export default UserValidations
+export default _Validations

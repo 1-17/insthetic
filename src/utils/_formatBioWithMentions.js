@@ -5,8 +5,12 @@ const _formatBioWithMentions = () => {
   const { lightMode } = useTheme()
   const { user } = useUser()
 
+  const escapeInputHTML = document.createElement("div")
+  escapeInputHTML.innerText = user.bio
+  const sanitizedBio = escapeInputHTML.innerHTML
+
   return (
-    user.bio.replace(/(@\w+|#\w+)/g, (text, textPart) => {
+    sanitizedBio.replace(/(@\w+|#\w+)/g, (text, textPart) => {
       if (textPart.startsWith("@") || textPart.startsWith("#")) {
         return (`
           <span class="${classNames(

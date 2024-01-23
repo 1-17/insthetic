@@ -1,6 +1,6 @@
-import User from "./User"
+import User from "./_User"
 
-class InitialUser extends User {
+class _InitialUser extends User {
   constructor() {
     super()
     
@@ -48,4 +48,4 @@ class InitialUser extends User {
   }
 }
 
-export default InitialUser
+export default _InitialUser

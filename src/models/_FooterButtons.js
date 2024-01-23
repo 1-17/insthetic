@@ -5,7 +5,7 @@ import { BsGear } from "react-icons/bs"
 import { useComponent, useTheme } from "../hooks"
 import Avatar from "../components/profile/Avatar"
 
-class FooterButtons {
+class _FooterButtons {
   buttons = [
     {
       label: "",
@@ -40,4 +40,4 @@ class FooterButtons {
   }
 }
 
-export default FooterButtons
+export default _FooterButtons
