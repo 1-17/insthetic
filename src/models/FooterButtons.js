@@ -27,7 +27,7 @@ class FooterButtons {
       {
         label: "Add new media",
         icon: LuPlusSquare,
-        click: ""
+        click: () => console.log("clicked")
       },
       {
         label: (profile && "Go to config" || config && "Go to profile"),

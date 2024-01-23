@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react"
 import { UserContext } from "."
-import User from "../models/User"
+import { useForm } from "../hooks"
+import InitialUser from "../models/InitialUser"
 
 const UserProvider = ({ children }) => {
   const dbKey = "user"
-  const userData = new User()
-
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem(dbKey)) || userData)
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem(dbKey)) || new InitialUser())
+  const { handleSubmit } = useForm()
 
   useEffect(() => {
     localStorage.setItem(dbKey, JSON.stringify(user))
   }, [user])
 
-  const updateUser = e => {
-    e.preventDefault()
-    console.log("works")
-    // setUser(prev => ({ ...prev, [name]: value }))
-  }
+  const updateUser = e => handleSubmit(e, setUser)
 
   return (
     <UserContext.Provider value={{ user, updateUser }}>

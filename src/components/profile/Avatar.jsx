@@ -11,7 +11,7 @@ const Avatar = ({ profile, highlights }) => {
       <div className={classNames(
         "rounded-full min-w-max h-fit",
         {
-          "bg-[linear-gradient(45deg,#ffc000,#fa7e1e,#d62976,#d300c5)] p-1.5": profile && user.hasStories,
+          "bg-gradient-instagram p-1.5": profile && user.stories,
           "bg-medium bg-opacity-25 p-1": highlights
         }
       )}>
@@ -25,9 +25,9 @@ const Avatar = ({ profile, highlights }) => {
               "w-14 sm:w-16": highlights,
               "w-6 sm:w-7": !profile && !highlights,
               "bg-white": !highlights && !user.avatar,
-              "outline outline-3": (profile && user.hasStories) || highlights,
-              "outline-light": ((profile && user.hasStories) || highlights) && lightMode,
-              "outline-dark": ((profile && user.hasStories) || highlights) && !lightMode
+              "outline outline-3": (profile && user.stories) || highlights,
+              "outline-light": ((profile && user.stories) || highlights) && lightMode,
+              "outline-dark": ((profile && user.stories) || highlights) && !lightMode
             }
           )}
         />

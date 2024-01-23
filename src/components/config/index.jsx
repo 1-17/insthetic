@@ -5,13 +5,11 @@ import Button from "../layout/Button"
 
 const Config = () => {
   const { updateUser } = useUser()
-
+  
   return (
     <Form onSubmit={updateUser}>
       <BasicInfo />
-      <Button type="submit" main>
-        Submit
-      </Button>
+      <Button type="submit" />
     </Form>
   )
 }

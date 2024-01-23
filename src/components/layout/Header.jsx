@@ -12,11 +12,11 @@ const Header = () => {
       {
         profile ? (
           <>
-            <h1 {...user.isVerified && { className: "inline" }}>
+            <h1 {...user.verified && { className: "inline" }}>
               {user.username}
             </h1>
             {
-              user.isVerified && (
+              user.verified && (
                 <MdVerified className="inline align-baseline text-accent text-xs sm:text-sm ml-1" />
               )
             }

@@ -1,42 +1,53 @@
 import { useState } from "react"
 import { FormContext } from "."
-import Validations from "../models/Validations"
+import { capitalizeString } from "../utils"
+import UserValidations from "../models/UserValidations"
 
 const FormProvider = ({ children }) => {
-  const validations = new Validations()
-  const initialState = {}
+  const userValidations = new UserValidations()
+  const initialErrorsState = {}
 
-  for (let field in validations) {
-    initialState[field] = ""
+  for (let field in userValidations) {
+    initialErrorsState[field] = null
   }
   
-  const [errors, setErrors] = useState(initialState)
-
-  const handleValidations = e => {
+  const [errors, setErrors] = useState(initialErrorsState)
+  const [formUpdated, setFormUpdated] = useState(null)
+  
+  const handleUserValidations = e => {
     const { name, value } = e.target
     
-    if (validations[name]) {
-      setErrors(prev => ({
+    if (userValidations[name]) {
+      return setErrors(prev => ({
         ...prev,
-        [name]: validations[name](value)
+        [name]: userValidations[name](capitalizeString(name), value)
       }))
     }
-
-    throw new Error("Field name or field validation function does not exist on validations.")
   }
 
-  const handleIsValid = () => {
-    for (let field in errors) {
-      if (!errors[field]) {
-        return false
-      }
-    }
+  const clearErrors = () => setErrors(initialErrorsState)
+  
+  const handleSubmit = (e, newData) => {
+    e.preventDefault()
 
-    return true
+    const data = new FormData(e.target)
+
+    if (formUpdated === null) {
+      for (let field in errors) {
+        if (errors[field]) {
+          setFormUpdated(false)
+          return setTimeout(() => setFormUpdated(null), 1500)
+        }
+      }
+
+      data.forEach((value, field) => newData(prev => ({ ...prev, [field]: value })))
+      setFormUpdated(true)
+      setTimeout(() => setFormUpdated(null), 1500)
+    }
   }
 
   return (
-    <FormContext.Provider value={{ errors, handleValidations, handleIsValid }}>
+    <FormContext.Provider value={{ errors, handleUserValidations, clearErrors, handleSubmit, formUpdated }}>
       {children}
     </FormContext.Provider>
   )

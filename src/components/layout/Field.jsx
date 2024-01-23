@@ -1,37 +1,45 @@
-import { createElement } from "react"
+import { createElement, useState } from "react"
 import { LuCopy } from "react-icons/lu"
 import classNames from "classnames"
 import { useForm } from "../../hooks"
 import { capitalizeString, copyToClipboard } from "../../utils"
 
-const Field = ({ element, copy, ...rest }) => {
-  const { errors } = useForm()
+const Field = ({ textarea, copy, ...rest }) => {
+  const { errors, handleUserValidations, clearErrors } = useForm()
+  const [length, setLength] = useState("")
 
   return (
     <div className="w-full">
       <label htmlFor={rest.name} className="leading-loose">
         {capitalizeString(rest.name)}
       </label>
-      <div {...copy && { className: "flex" }}>
+      <div className="relative">
+        {
+          rest.name === "username" && (
+            <span className="absolute top-1 left-2 font-semibold">
+              @
+            </span>
+          )
+        }
         {
           createElement(
-            element || "input",
+            textarea ? "textarea" : "input",
             {
               ...rest,
-              ...element === "textarea" && {
-                cols: 10,
-                rows: 2
-              },
               id: rest.name,
-              "aria-required": rest.required,
-              "aria-invalid": errors[rest.name],
-              "aria-describedby": `${rest.name}-hint`,
+              ...textarea && { cols: 10, rows: 2 },
+              ...!textarea && { type: rest.type || "text" },
+              ...rest.required && { required: true, "aria-required": true },
+              ...errors[rest.name] && { invalid: "true", "aria-invalid": "true", "aria-describedby": `${rest.name}-hint` },
+              onBlur: e => (handleUserValidations(e), setLength(null)),
+              onChange: e => (clearErrors(), rest.maxLength && setLength(rest.maxLength - e.target.value.length)),
               className: classNames(
-                "bg-medium bg-opacity-25 border border-medium border-opacity-25 focus:border-current rounded-md w-full px-2 py-1 focus:outline-none",
+                "bg-medium bg-opacity-25 rounded-md w-full px-2 py-1",
                 {
-                  "resize-none": element === "textarea",
-                  "rounded-r-none": copy,
-                  "border-danger focus:border-danger": errors[rest.name]
+                  "resize-none": textarea,
+                  "pl-6": rest.name === "username",
+                  "pr-8": copy,
+                  "outline outline-danger": errors[rest.name]
                 }
               )
             }
@@ -43,16 +51,24 @@ const Field = ({ element, copy, ...rest }) => {
               type="button"
               aria-label={`Copy ${rest.name} to clipboard`}
               onClick={() => copyToClipboard(rest.name, document.getElementById(rest.name).value)}
-              className="bg-medium bg-opacity-25 border border-l-0 border-medium border-opacity-25 hover:border-l hover:border-current rounded-r-md px-2"
+              className="rounded-md absolute top-0 right-0 p-2"
             >
               <LuCopy />
             </button>
           )
         }
+        {
+          (length !== null) && (
+            <span className={classNames(
+              "text-xs sm:text-sm", { "text-warning": length <= 5 && length > 0, "text-danger": length === 0 })}>
+              {length}
+            </span>
+          )
+        }
       </div>
       {
         errors[rest.name] && (
-          <p id={`${rest.name}-hint`} role="alert" className="text-danger">
+          <p id={`${rest.name}-hint`} role="alert" className="text-danger font-semibold mt-1">
             {errors[rest.name]}
           </p>
         )

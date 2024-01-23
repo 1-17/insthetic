@@ -1,6 +1,6 @@
 const Form = ({ ...rest }) => {
   return (
-    <form {...rest} className="grid gap-4" />
+    <form {...rest} noValidate className="grid gap-4" />
   )
 }
 

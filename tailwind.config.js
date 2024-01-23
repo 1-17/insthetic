@@ -12,7 +12,11 @@ export default {
         accent: "theme(colors.sky.400)",
         "accent-dark": "theme(colors.blue.900)",
         "accent-light": "theme(colors.blue.100)",
-        danger: "theme(colors.red.600)"
+        warning: "theme(colors.orange.300)",
+        danger: "theme(colors.red.500)"
+      },
+      backgroundImage: {
+        "gradient-instagram": "linear-gradient(45deg, #ffc000, #fa7e1e, #d62976, #d300c5)"
       },
       screens: {
         xs: "300px"

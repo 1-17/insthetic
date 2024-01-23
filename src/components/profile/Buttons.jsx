@@ -1,5 +1,6 @@
 import { BiUserPlus } from "react-icons/bi"
 import { useUser } from "../../hooks"
+import Stack from "../layout/Stack"
 import Button from "../layout/Button"
 
 const Buttons = () => {
@@ -7,8 +8,8 @@ const Buttons = () => {
 
   return (
     <div className="grid gap-2">
-      <div className="flex max-xs:flex-wrap gap-2">
-        <Button main>
+      <Stack>
+        <Button variant="primary">
           Follow
         </Button>
         <Button>
@@ -22,13 +23,13 @@ const Buttons = () => {
           )
         }
         {
-          user.hasSuggestionsEnabled && (
+          user.suggestions && (
             <Button aria-label="Suggested accounts to follow" className="xs:w-max">
               <BiUserPlus className="inline text-xl sm:text-2xl transform -scale-x-100" />
             </Button>
           )
         }
-      </div>
+      </Stack>
     </div>
   )
 }
