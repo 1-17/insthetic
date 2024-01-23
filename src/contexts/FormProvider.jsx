@@ -17,15 +17,30 @@ const FormProvider = ({ children }) => {
   const handleUserValidations = e => {
     const { name, value } = e.target
     
-    if (userValidations[name]) {
-      return setErrors(prev => ({
+    if (e.type === "blur" && userValidations[name]) {
+      setErrors(prev => ({
         ...prev,
         [name]: userValidations[name](capitalizeString(name), value)
       }))
     }
+
+    if (e.type === "change") {
+      setErrors(prev => ({
+        ...prev,
+        [name]: null
+      }))
+    }
   }
 
-  const clearErrors = () => setErrors(initialErrorsState)
+  const hasErrors = () => {
+    for (let field in errors) {
+      if (errors[field]) {
+        return true
+      }
+    }
+
+    return false
+  }
   
   const handleSubmit = (e, newData) => {
     e.preventDefault()
@@ -33,11 +48,9 @@ const FormProvider = ({ children }) => {
     const data = new FormData(e.target)
 
     if (formUpdated === null) {
-      for (let field in errors) {
-        if (errors[field]) {
-          setFormUpdated(false)
-          return setTimeout(() => setFormUpdated(null), 1500)
-        }
+      if (hasErrors) {
+        setFormUpdated(false)
+        return setTimeout(() => setFormUpdated(null), 1500)
       }
 
       data.forEach((value, field) => newData(prev => ({ ...prev, [field]: value })))
@@ -45,6 +58,8 @@ const FormProvider = ({ children }) => {
       setTimeout(() => setFormUpdated(null), 1500)
     }
   }
+
+  const clearErrors = () => hasErrors && setErrors(initialErrorsState)
 
   return (
     <FormContext.Provider value={{ errors, handleUserValidations, clearErrors, handleSubmit, formUpdated }}>

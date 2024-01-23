@@ -5,7 +5,7 @@ import { useForm } from "../../hooks"
 import { capitalizeString, copyToClipboard } from "../../utils"
 
 const Field = ({ textarea, copy, ...rest }) => {
-  const { errors, handleUserValidations, clearErrors } = useForm()
+  const { errors, handleUserValidations } = useForm()
   const [length, setLength] = useState("")
 
   return (
@@ -32,7 +32,7 @@ const Field = ({ textarea, copy, ...rest }) => {
               ...rest.required && { required: true, "aria-required": true },
               ...errors[rest.name] && { invalid: "true", "aria-invalid": "true", "aria-describedby": `${rest.name}-hint` },
               onBlur: e => (handleUserValidations(e), setLength(null)),
-              onChange: e => (clearErrors(), rest.maxLength && setLength(rest.maxLength - e.target.value.length)),
+              onChange: e => (handleUserValidations(e), rest.maxLength && setLength(rest.maxLength - e.target.value.length)),
               className: classNames(
                 "bg-medium bg-opacity-25 rounded-md w-full px-2 py-1",
                 {

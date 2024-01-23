@@ -1,24 +1,24 @@
 import { createContext } from "react"
 import ThemeProvider from "./ThemeProvider"
-import ComponentProvider from "./ComponentProvider"
 import FormProvider from "./FormProvider"
+import ComponentProvider from "./ComponentProvider"
 import UserProvider from "./UserProvider"
 
 export const ThemeContext = createContext()
-export const ComponentContext = createContext()
 export const FormContext = createContext()
+export const ComponentContext = createContext()
 export const UserContext = createContext()
 
 const Contexts = ({ children }) => {
   return (
     <ThemeProvider>
-      <ComponentProvider>
-        <FormProvider>
+      <FormProvider>
+        <ComponentProvider>
           <UserProvider>
             {children}
           </UserProvider>
-        </FormProvider>
-      </ComponentProvider>
+        </ComponentProvider>
+      </FormProvider>
     </ThemeProvider>
   )
 }

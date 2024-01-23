@@ -4,10 +4,10 @@ import BasicInfo from "./BasicInfo"
 import Button from "../layout/Button"
 
 const Config = () => {
-  const { updateUser } = useUser()
+  const { setUser } = useUser()
   
   return (
-    <Form onSubmit={updateUser}>
+    <Form onSubmit={setUser}>
       <BasicInfo />
       <Button type="submit" />
     </Form>
