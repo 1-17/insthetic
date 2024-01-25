@@ -21,9 +21,18 @@ const Field = ({ textarea, select, copy, ...rest }) => {
     return []
   }
 
-  const [length, setLength] = useState(null)
+  const isTextField = field => field.hasAttribute("name") && (field.tagName === "INPUT" || field.tagName === "TEXTAREA")
+  const createIsEmptyObject = (prev, field) => ({ ...prev, [field.name]: !field.value })
+
+  const [isEmpty, setIsEmpty] = useState({})
+  const [length, setLength] = useState(-1)
   const [selectFieldOptions, setSelectedFieldOptions] = useState(initialSelectFieldOptions)
-  const [nameFieldIsEmpty, setNameFieldIsEmpty] = useState(null)
+
+  useEffect(() => {
+    setIsEmpty(Array.from(document.forms[0].elements).filter(isTextField).reduce(createIsEmptyObject, {}))
+  }, [])
+
+  const updateIsEmpty = e => setIsEmpty(prev => isTextField(e.target) && createIsEmptyObject(prev, e.target))
 
   const updateLength = e => rest.maxLength && setLength(rest.maxLength - e.target.value.length)
   const clearLength = () => setLength(null)
@@ -40,15 +49,6 @@ const Field = ({ textarea, select, copy, ...rest }) => {
       selectFieldOptions.filter(option => option !== optionToRemove)
     )
   }
-
-  useEffect(() => {
-    const nameField = document.querySelector("#name")
-    const setIsNameFieldEmpty = e => setNameFieldIsEmpty(!e.target.value)
-    
-    nameFieldIsEmpty === null && setNameFieldIsEmpty(!nameField.value)
-    nameField.addEventListener("input", setIsNameFieldEmpty)
-    return () => nameField.removeEventListener("input", setIsNameFieldEmpty)
-  }, [])
 
   const element = (textarea && "textarea") || (select && "select") || "input"
 
@@ -86,6 +86,7 @@ const Field = ({ textarea, select, copy, ...rest }) => {
               },
               onChange: e => {
                 (select && select.options) && updateSelectFieldOptions(e)
+                updateIsEmpty(e)
                 updateLength(e)
                 clearFieldError(e)
               },
@@ -129,7 +130,7 @@ const Field = ({ textarea, select, copy, ...rest }) => {
           ((select && select.options) && selectFieldOptions.length > 0) && (
             <>
               {
-                (rest.name === "pronouns" && nameFieldIsEmpty) && (
+                (rest.name === "pronouns" && isEmpty.name) && (
                   <span className="block text-warning font-semibold">
                     Name is empty, so the pronouns will not be shown on profile.
                   </span>
@@ -162,12 +163,12 @@ const Field = ({ textarea, select, copy, ...rest }) => {
           )
         }
         {
-          (copy && !errors[rest.name]) && (
+          (copy && !errors[rest.name] && !isEmpty[rest.name]) && (
             <Button copy={rest.name} />
           )
         }
         {
-          length !== null && (
+          length > -1 && (
             <span className={classNames(
               "text-xs sm:text-sm",
               {
