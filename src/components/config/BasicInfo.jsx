@@ -4,6 +4,7 @@ import Stack from "../layout/Stack"
 import Avatar from "../profile/Avatar"
 import Button from "../layout/Button"
 import Field from "../layout/Field"
+import { pronouns } from "../../models"
 
 const BasicInfo = () => {
   const { user } = useUser()
@@ -13,11 +14,11 @@ const BasicInfo = () => {
       <Stack className="my-4 first:*:max-xs:mx-auto">
         <Avatar profile />
         <Stack className="grow flex-col max-w-xs mx-auto">
-          <Button type="button" variant="gradient" className="relative">
+          <Button variant="gradient" className="relative">
             <input type="file" className="absolute left-0 w-full opacity-0" />
             Add photo
           </Button>
-          <Button onClick={() => {}}>
+          <Button>
             Remove photo
           </Button>
         </Stack>
@@ -39,7 +40,11 @@ const BasicInfo = () => {
       </Stack>
       <Field
         name="pronouns"
-        select={["he", "she", "they", "it"]}
+        select={{
+          defaultValue: user.pronouns,
+          options: pronouns,
+          maxOptions: 4
+        }}
       />
       <Field
         name="threads"

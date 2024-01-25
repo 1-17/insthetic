@@ -32,7 +32,7 @@ class _Validations extends User {
 
       return null
     }
-
+    
     this.threads = (field, threads) => {
       if (threads) {
         if (regex.numbersOnly.test(threads)) {

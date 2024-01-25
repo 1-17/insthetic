@@ -1,4 +1,4 @@
-import { useComponent, useTheme } from "../../hooks"
+import { useTheme, useComponent } from "../../hooks"
 import Header from "./Header"
 import Container from "./Container"
 import Profile from "../profile"

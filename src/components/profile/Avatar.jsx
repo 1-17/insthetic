@@ -3,8 +3,8 @@ import { useTheme, useUser } from "../../hooks"
 import DefaultAvatar from "../../assets/images/default-avatar.svg"
 
 const Avatar = ({ profile, highlights }) => {
-  const { user } = useUser()
   const { lightMode } = useTheme()
+  const { user } = useUser()
   
   return (
     <>

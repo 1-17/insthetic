@@ -8,8 +8,8 @@ const Container = ({ element, ...rest }) => {
       {
         ...rest,
         className: classNames(
-          "w-full max-w-screen-sm mx-auto px-3",
-          rest.className
+          rest.className,
+          "w-full max-w-screen-sm mx-auto px-3"
         )
       }
     )

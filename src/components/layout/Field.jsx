@@ -1,17 +1,56 @@
-import { createElement, useState } from "react"
-import { LuCopy } from "react-icons/lu"
+import { createElement, useEffect, useState } from "react"
+import { LuX } from "react-icons/lu"
 import classNames from "classnames"
-import { useForm, useTheme } from "../../hooks"
-import { capitalizeString, copyToClipboard } from "../../utils"
+import { useTheme, useForm } from "../../hooks"
+import { capitalizeString } from "../../utils"
 import Button from "./Button"
 
 const Field = ({ textarea, select, copy, ...rest }) => {
   const { lightMode } = useTheme()
-  const { errors, handleValidations } = useForm()
+  const { errors, validateField, clearFieldError } = useForm()
+
+  const initialSelectFieldOptions = () => {
+    if (select && select.defaultValue) {
+      if (typeof select.defaultValue === "string") {
+        return [select.defaultValue]
+      }
+
+      return select.defaultValue.flat()
+    }
+
+    return []
+  }
+
   const [length, setLength] = useState(null)
+  const [selectFieldOptions, setSelectedFieldOptions] = useState(initialSelectFieldOptions)
+  const [nameFieldIsEmpty, setNameFieldIsEmpty] = useState(null)
 
   const updateLength = e => rest.maxLength && setLength(rest.maxLength - e.target.value.length)
   const clearLength = () => setLength(null)
+
+  const updateSelectFieldOptions = e => {
+    setSelectedFieldOptions(prev =>[
+      ...prev,
+      ...Array.from(e.target.selectedOptions, option => option.value)
+    ])
+  }
+
+  const deleteSelectFieldOption = optionToRemove => {
+    setSelectedFieldOptions(
+      selectFieldOptions.filter(option => option !== optionToRemove)
+    )
+  }
+
+  useEffect(() => {
+    const nameField = document.querySelector("#name")
+    const setIsNameFieldEmpty = e => setNameFieldIsEmpty(!e.target.value)
+    
+    nameFieldIsEmpty === null && setNameFieldIsEmpty(!nameField.value)
+    nameField.addEventListener("input", setIsNameFieldEmpty)
+    return () => nameField.removeEventListener("input", setIsNameFieldEmpty)
+  }, [])
+
+  const element = (textarea && "textarea") || (select && "select") || "input"
 
   return (
     <div className="w-full">
@@ -28,18 +67,30 @@ const Field = ({ textarea, select, copy, ...rest }) => {
         }
         {
           createElement(
-            (textarea && "textarea") || (select && "select") || "input",
+            element,
             {
               ...rest,
               id: rest.name,
               ...textarea && { cols: 10, rows: 2 },
-              ...(!textarea && !select) && { type: rest.type || "text" },
+              ...element === "input" && { type: rest.type || "text" },
+              ...select && {
+                size: 3,
+                ...(select.defaultValue && typeof select.defaultValue === "object") && { multiple: true },
+                ...select.options && { value: selectFieldOptions }
+              },
               ...rest.required && { required: true, "aria-required": true },
               ...errors[rest.name] && { invalid: "true", "aria-invalid": "true", "aria-describedby": `${rest.name}-hint` },
-              onBlur: e => (handleValidations(e), clearLength()),
-              onChange: e => (handleValidations(e), updateLength(e)),
+              onBlur: e => {
+                validateField(e)
+                clearLength()
+              },
+              onChange: e => {
+                (select && select.options) && updateSelectFieldOptions(e)
+                updateLength(e)
+                clearFieldError(e)
+              },
               className: classNames(
-                "border-2 rounded-shape w-full px-2 py-1 focus-visible:outline-none focus-visible:border-current",
+                "border-2 focus-visible:border-current focus-visible:outline-none rounded-shape w-full",
                 {
                   "bg-light": lightMode,
                   "bg-dark": !lightMode,
@@ -47,14 +98,27 @@ const Field = ({ textarea, select, copy, ...rest }) => {
                   "border-medium-dark": !lightMode && !errors[rest.name],
                   "border-current": errors[rest.name],
                   "resize-none": textarea,
+                  "px-2 py-1": !select,
                   "pr-8": copy,
                   "pl-6": rest.name === "username",
+                  "hidden": select && (select.maxOptions === selectFieldOptions.length)
                 }
               )
             },
-            select && (
-              select.map((option, i) =>
-                <option key={i} value={option}>
+            (select && select.options) && (
+              select.options.map((option, i) =>
+                <option
+                  key={i}
+                  value={option}
+                  className={classNames(
+                    "cursor-pointer px-2 py-1",
+                    {
+                      "hover:bg-medium-light": lightMode,
+                      "hover:bg-medium-dark": !lightMode,
+                      "hidden": selectFieldOptions.includes(option)
+                    }
+                  )
+                }>
                   {option}
                 </option>
               )
@@ -62,15 +126,44 @@ const Field = ({ textarea, select, copy, ...rest }) => {
           )
         }
         {
+          ((select && select.options) && selectFieldOptions.length > 0) && (
+            <>
+              {
+                (rest.name === "pronouns" && nameFieldIsEmpty) && (
+                  <span className="block text-warning font-semibold">
+                    Name is empty, so the pronouns will not be shown on profile.
+                  </span>
+                )
+              }
+              {
+                (select.maxOptions && select.maxOptions === selectFieldOptions.length) && (
+                  <span className="text-warning font-semibold">
+                    Max options reached.
+                  </span>
+                )
+              }
+              <ul className="*:inline *:ml-2 first:*:ml-0 mt-2">
+                {
+                  selectFieldOptions.map((option, i) =>
+                    <li key={i}>
+                      <Button
+                        aria-label="Delete option"
+                        onClick={() => deleteSelectFieldOption(option)}
+                        className="relative pt-2 pl-3 pr-4"
+                      >
+                        <LuX className="absolute top-0.5 right-0.5 text-sm" />
+                        {option}
+                      </Button>
+                    </li>
+                  )
+                }
+              </ul>
+            </>
+          )
+        }
+        {
           (copy && !errors[rest.name]) && (
-            <Button
-              aria-label={`Copy ${rest.name} to clipboard`}
-              onClick={() => copyToClipboard(rest.name, document.getElementById(rest.name).value)}
-              variant="icon"
-              className="rounded-shape absolute top-0.5 right-0.5 p-2"
-            >
-              <LuCopy />
-            </Button>
+            <Button copy={rest.name} />
           )
         }
         {

@@ -1,6 +1,6 @@
 import { MdVerified } from "react-icons/md"
 import { PiArrowLeftBold } from "react-icons/pi"
-import { useComponent, useUser } from "../../hooks"
+import { useUser, useComponent } from "../../hooks"
 import AppBar from "./AppBar"
 import Button from "./Button"
 

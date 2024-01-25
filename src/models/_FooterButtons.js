@@ -2,7 +2,7 @@ import { TbMoon } from "react-icons/tb"
 import { MdOutlineLightMode } from "react-icons/md"
 import { LuPlusSquare } from "react-icons/lu"
 import { BsGear } from "react-icons/bs"
-import { useComponent, useTheme } from "../hooks"
+import { useTheme, useComponent } from "../hooks"
 import Avatar from "../components/profile/Avatar"
 
 class _FooterButtons {
