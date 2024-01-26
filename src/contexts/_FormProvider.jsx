@@ -61,6 +61,9 @@ const FormProvider = ({ children }) => {
         updateData(prev => ({
           ...prev,
           pronouns: formDataEntries.filter(entry => entry[0] === "pronouns").map(entry => entry[1]),
+          suggestions: formDataEntries.filter(entry => entry[0] === "suggestions").flat()[1] === "on" ? true : false,
+          stories: formDataEntries.filter(entry => entry[0] === "stories").flat()[1] === "on" ? true : false,
+          verified: formDataEntries.filter(entry => entry[0] === "verified").flat()[1] === "on" ? true : false,
           [field]: value
         }))
       })

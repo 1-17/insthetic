@@ -8,7 +8,7 @@ const Form = ({ ...rest }) => {
       {...rest}
       noValidate
       onSubmit={e => handleSubmit(e, rest.onSubmit)}
-      className="*:mt-4 first:*:mt-0"
+      className="*:mt-12 first:*:mt-0"
     />
   )
 }

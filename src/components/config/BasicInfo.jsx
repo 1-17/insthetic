@@ -23,6 +23,11 @@ const BasicInfo = () => {
           </Button>
         </Stack>
       </Stack>
+      <Field
+        name="stories"
+        type="checkbox"
+        checkbox={user.stories}
+      />
       <Stack>
         <Field
           name="username"
@@ -43,6 +48,7 @@ const BasicInfo = () => {
         select={{
           defaultValue: user.pronouns,
           options: pronouns,
+          multiple: true,
           maxOptions: 4
         }}
       />
@@ -64,6 +70,12 @@ const BasicInfo = () => {
         name="link"
         defaultValue={user.link}
         copy
+      />
+      <Field
+        label="Suggestions enabled"
+        name="suggestions"
+        type="checkbox"
+        checkbox={user.suggestions}
       />
     </Fieldset>
   )

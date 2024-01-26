@@ -66,6 +66,30 @@ class _Validations extends User {
 
       return null
     }
+
+    this.posts = (field, posts) => {
+      if (!regex.numbersOnly.test(posts)) {
+        return `${field} must have only numbers.`
+      }
+
+      return ""
+    }
+
+    this.followers = (field, followers) => {
+      if (!regex.numbersOnly.test(followers)) {
+        return `${field} must have only numbers.`
+      }
+
+      return ""
+    }
+
+    this.following = (field, following) => {
+      if (!regex.numbersOnly.test(following)) {
+        return `${field} must have only numbers.`
+      }
+
+      return ""
+    }
   }
 }
 
