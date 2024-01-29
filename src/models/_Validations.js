@@ -5,59 +5,49 @@ class _Validations extends User {
   constructor() {
     super()
 
-    this.username = (field, username) => {
-      if (!username) {
-        return `${field} is required.`
-      }
-
-      if (regex.numbersOnly.test(username)) {
-        return `${field} cannot have only numbers.`
-      }
-
-      if (username.startsWith(".")) {
-        return `${field} cannot start with a dot.`
-      }
-
-      if (username.endsWith(".")) {
-        return `${field} cannot end with a dot.`
-      }
-
-      if (regex.consecutiveDots.test(username)) {
-        return `${field} cannot have consecutive dots.`
-      }
-
-      if (!regex.username.test(username)) {
-        return `${field} can only contain letters with no accent, numbers, underscores and dots.`
-      }
-
-      return null
-    }
-    
-    this.threads = (field, threads) => {
-      if (threads) {
-        if (regex.numbersOnly.test(threads)) {
+    const usernameValidation = (field, username) => {
+      if (username) {
+        if (regex.numbersOnly.test(username)) {
           return `${field} cannot have only numbers.`
         }
-  
-        if (threads.startsWith(".")) {
+
+        if (username.startsWith(".")) {
           return `${field} cannot start with a dot.`
         }
-  
-        if (threads.endsWith(".")) {
+
+        if (username.endsWith(".")) {
           return `${field} cannot end with a dot.`
         }
-  
-        if (regex.consecutiveDots.test(threads)) {
+
+        if (regex.consecutiveDots.test(username)) {
           return `${field} cannot have consecutive dots.`
         }
-  
-        if (!regex.username.test(threads)) {
+
+        if (!regex.username.test(username)) {
           return `${field} can only contain letters with no accent, numbers, underscores and dots.`
         }
       }
 
       return null
     }
+
+    const metricsValidation = (field, metric) => {
+      if (!regex.numbersOnly.test(metric)) {
+        return `${field} must have only numbers.`
+      }
+
+      return null
+    }
+
+    this.username = (field, username) => {
+      if (!username) {
+        return `${field} is required.`
+      }
+
+      return usernameValidation(field, username)
+    }
+    
+    this.threads = usernameValidation
 
     this.link = (_field, link) => {
       if (link && !regex.link.test(link)) {
@@ -67,29 +57,9 @@ class _Validations extends User {
       return null
     }
 
-    this.posts = (field, posts) => {
-      if (!regex.numbersOnly.test(posts)) {
-        return `${field} must have only numbers.`
-      }
-
-      return ""
-    }
-
-    this.followers = (field, followers) => {
-      if (!regex.numbersOnly.test(followers)) {
-        return `${field} must have only numbers.`
-      }
-
-      return ""
-    }
-
-    this.following = (field, following) => {
-      if (!regex.numbersOnly.test(following)) {
-        return `${field} must have only numbers.`
-      }
-
-      return ""
-    }
+    this.posts = metricsValidation
+    this.followers = metricsValidation
+    this.following = metricsValidation
   }
 }
 

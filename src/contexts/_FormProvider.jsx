@@ -40,13 +40,15 @@ const FormProvider = ({ children }) => {
 
     return false
   }
-  
+
   const handleSubmit = (e, updateData) => {
     e.preventDefault()
 
-    const formData = new FormData(e.target)
-    const formDataEntries = [...formData.entries()]
-
+    const formData = [...new FormData(e.target).entries()].reduce((acc, [key, value]) => ({
+      ...acc,
+      [key]: acc.hasOwnProperty(key) ? [acc[key], value].flat() : value
+    }), {})
+    
     const isSubmitted = (boolean) => {
       setSubmitted(boolean)
       setTimeout(() => setSubmitted(null), 1500)
@@ -57,16 +59,11 @@ const FormProvider = ({ children }) => {
         return isSubmitted(false)
       }
 
-      formData.forEach((value, field) => {
-        updateData(prev => ({
-          ...prev,
-          pronouns: formDataEntries.filter(entry => entry[0] === "pronouns").map(entry => entry[1]),
-          suggestions: formDataEntries.filter(entry => entry[0] === "suggestions").flat()[1] === "on" ? true : false,
-          stories: formDataEntries.filter(entry => entry[0] === "stories").flat()[1] === "on" ? true : false,
-          verified: formDataEntries.filter(entry => entry[0] === "verified").flat()[1] === "on" ? true : false,
-          [field]: value
-        }))
-      })
+      updateData(prev => ({
+        ...prev,
+        ...Object.fromEntries(Object.entries(formData))
+      }))
+      
       isSubmitted(true)
     }
   }

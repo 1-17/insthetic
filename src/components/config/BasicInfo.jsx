@@ -7,7 +7,7 @@ import Field from "../layout/Field"
 import { pronouns } from "../../models"
 
 const BasicInfo = () => {
-  const { user } = useUser()
+  const { user, setUser } = useUser()
 
   return (
     <Fieldset legend="Basic info">
@@ -26,7 +26,10 @@ const BasicInfo = () => {
       <Field
         name="stories"
         type="checkbox"
-        checkbox={user.stories}
+        checkbox={{
+          defaultChecked: user.stories,
+          state: setUser
+        }}
       />
       <Stack>
         <Field
@@ -75,7 +78,10 @@ const BasicInfo = () => {
         label="Suggestions enabled"
         name="suggestions"
         type="checkbox"
-        checkbox={user.suggestions}
+        checkbox={{
+          defaultChecked: user.suggestions,
+          state: setUser
+        }}
       />
     </Fieldset>
   )

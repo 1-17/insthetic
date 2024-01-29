@@ -13,6 +13,10 @@ const Button = ({ variant, full, copy, ...rest }) => {
     submitted && (rest.children = "Updated!", variant = "success")
   }
 
+  if (rest.type === "reset") {
+    rest.children = "Discard changes"
+  }
+
   if (copy) {
     rest["aria-label"] = `Copy ${copy} to clipboard`
     rest.onClick = () => copyToClipboard(copy)
@@ -38,7 +42,8 @@ const Button = ({ variant, full, copy, ...rest }) => {
           "bg-danger text-light": variant === "danger",
           "hover:bg-medium hover:bg-opacity-10 focus-visible:bg-medium focus-visible:bg-opacity-10": variant === "icon",
           "rounded-shape absolute top-0.5 right-0.5 p-2": copy,
-          "font-semibold w-full max-w-[60%] mt-4": rest.type === "submit"
+          "font-semibold w-full max-w-[60%]": rest.type === "submit",
+          "bg-transparent font-semibold text-danger": rest.type === "reset",
         }
       )}
     />

@@ -28,7 +28,7 @@ const Field = ({ label, textarea, select, checkbox, copy, ...rest }) => {
   const [isEmpty, setIsEmpty] = useState({})
   const [length, setLength] = useState(-1)
   const [selectFieldOptions, setSelectedFieldOptions] = useState(initialSelectFieldOptions)
-  const [checkboxChecked, setCheckboxChecked] = useState(checkbox)
+  const [checkboxChecked, setCheckboxChecked] = useState(checkbox && checkbox.defaultChecked)
   const [nameIsEmpty, setNameIsEmpty] = useState(null)
   
   useEffect(() => {
@@ -44,6 +44,10 @@ const Field = ({ label, textarea, select, checkbox, copy, ...rest }) => {
     nameField.addEventListener("input", handleNameIsEmpty)
     return () => nameField.removeEventListener("input", handleNameIsEmpty)
   }, [isEmpty])
+
+  useEffect(() => {
+    (checkbox && checkbox.state) && checkbox.state(prev => ({ ...prev, [rest.name]: checkboxChecked }))
+  }, [checkboxChecked])
 
   const updateIsEmpty = e => setIsEmpty(prev => isTextField(e.target) && createIsEmptyObject(prev, e.target))
 

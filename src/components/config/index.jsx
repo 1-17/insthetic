@@ -4,6 +4,7 @@ import BasicInfo from "./BasicInfo"
 import Metrics from "./Metrics"
 import Business from "./Business"
 import Button from "../layout/Button"
+import Stack from "../layout/Stack"
 
 const Config = () => {
   const { setUser } = useUser()
@@ -13,7 +14,10 @@ const Config = () => {
       <BasicInfo />
       <Metrics />
       <Business />
-      <Button type="submit" />
+      <Stack>
+        <Button type="submit" />
+        <Button type="reset" className="ml-auto" onClick={() => setUser(prev => prev)} />
+      </Stack>
     </Form>
   )
 }

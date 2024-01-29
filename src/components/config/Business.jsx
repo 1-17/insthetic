@@ -4,7 +4,7 @@ import Field from "../layout/Field"
 import { businessLabels, contactOptions } from "../../models"
 
 const Business = () => {
-  const { user } = useUser()
+  const { user, setUser } = useUser()
 
   return (
     <Fieldset legend="Business">
@@ -26,7 +26,10 @@ const Business = () => {
       <Field
         name="verified"
         type="checkbox"
-        checkbox={user.verified}
+        checkbox={{
+          defaultChecked: user.verified,
+          state: setUser
+        }}
       />
     </Fieldset>
   )

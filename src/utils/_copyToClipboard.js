@@ -7,7 +7,7 @@ const _copyToClipboard = (elementId) => {
       .catch(() => alert(`Failed to copy ${elementId} to clipboard. Please, try again.`))
   }
   
-  throw new Error("Copy to clipboard: A label must be provided to identify the copied content.")
+  throw new Error("Copy to Clipboard: Missing element id argument.")
 }
 
 export default _copyToClipboard
