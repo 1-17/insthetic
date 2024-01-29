@@ -10,8 +10,12 @@ const UserProvider = ({ children }) => {
     localStorage.setItem(dbKey, JSON.stringify(user))
   }, [user])
 
+  const removeAvatar = () => setUser(prev => ({ ...prev, avatar: null }))
+
+  const discardChanges = () => setUser(prev => prev)
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, removeAvatar, discardChanges }}>
       {children}
     </UserContext.Provider>
   )

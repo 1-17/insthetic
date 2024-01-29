@@ -10,15 +10,10 @@ const Metrics = () => {
     <Fieldset legend="Metrics">
       <Stack>
         <Field
-          name="posts"
-          type="number"
-          defaultValue={user.posts}
-          />
-        <Field
           name="followers"
           type="number"
           defaultValue={user.followers}
-          />
+        />
         <Field
           name="following"
           type="number"

@@ -24,6 +24,7 @@ const Business = () => {
         }}
       />
       <Field
+        label="Verified badge"
         name="verified"
         type="checkbox"
         checkbox={{

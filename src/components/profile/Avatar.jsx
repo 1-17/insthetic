@@ -11,7 +11,8 @@ const Avatar = ({ profile, highlights }) => {
       <div className={classNames(
         "rounded-full min-w-max h-fit",
         {
-          "bg-gradient-instagram p-1.5": profile && user.stories,
+          "p-1.5": profile,
+          "bg-gradient-instagram": profile && user.stories,
           "bg-medium bg-opacity-25 p-1": highlights
         }
       )}>
@@ -19,9 +20,11 @@ const Avatar = ({ profile, highlights }) => {
           src={!highlights ? (user.avatar || DefaultAvatar) : highlights.image}
           alt={!highlights ? `Profile picture of ${user.name}` : highlights.description}
           className={classNames(
-            "aspect-square rounded-full",
+            "aspect-square rounded-full object-cover",
             {
               "w-16 sm:w-20": profile,
+              "bg-light": profile && lightMode,
+              "bg-dark": profile && !lightMode,
               "w-14 sm:w-16": highlights,
               "w-6 sm:w-7": !profile && !highlights,
               "bg-white": !highlights && !user.avatar,

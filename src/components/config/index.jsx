@@ -7,7 +7,7 @@ import Button from "../layout/Button"
 import Stack from "../layout/Stack"
 
 const Config = () => {
-  const { setUser } = useUser()
+  const { setUser, discardChanges } = useUser()
   
   return (
     <Form onSubmit={setUser}>
@@ -16,7 +16,7 @@ const Config = () => {
       <Business />
       <Stack>
         <Button type="submit" />
-        <Button type="reset" className="ml-auto" onClick={() => setUser(prev => prev)} />
+        <Button type="reset" onClick={discardChanges} className="ml-auto" />
       </Stack>
     </Form>
   )

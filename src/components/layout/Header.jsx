@@ -1,11 +1,11 @@
-import { MdVerified } from "react-icons/md"
 import { PiArrowLeftBold } from "react-icons/pi"
-import { useUser, useComponent } from "../../hooks"
+import { useComponent } from "../../hooks"
 import AppBar from "./AppBar"
 import Button from "./Button"
+import Username from "../profile/Username"
+import VerifiedBadge from "../profile/VerifiedBadge"
 
 const Header = () => {
-  const { user } = useUser()
   const { profile, config, changeComponent } = useComponent()
 
   return (
@@ -13,14 +13,8 @@ const Header = () => {
       {
         profile ? (
           <>
-            <h1 {...user.verified && { className: "inline" }}>
-              {user.username}
-            </h1>
-            {
-              user.verified && (
-                <MdVerified className="inline align-baseline text-accent text-xs sm:text-sm ml-1" />
-              )
-            }
+            <Username />
+            <VerifiedBadge />
           </>
         )
         : (

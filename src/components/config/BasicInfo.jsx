@@ -1,24 +1,29 @@
 import { useUser } from "../../hooks"
+import { pronouns } from "../../models"
 import Fieldset from "../layout/Fieldset"
 import Stack from "../layout/Stack"
 import Avatar from "../profile/Avatar"
 import Button from "../layout/Button"
 import Field from "../layout/Field"
-import { pronouns } from "../../models"
 
 const BasicInfo = () => {
-  const { user, setUser } = useUser()
+  const { user, setUser, removeAvatar } = useUser()
 
   return (
     <Fieldset legend="Basic info">
-      <Stack className="my-4 first:*:max-xs:mx-auto">
+      <Stack className="items-center my-4 first:*:max-xs:mx-auto">
         <Avatar profile />
         <Stack className="grow flex-col max-w-xs mx-auto">
-          <Button variant="gradient" className="relative">
-            <input type="file" className="absolute left-0 w-full opacity-0" />
-            Add photo
-          </Button>
-          <Button>
+          <Field
+            label="Add photo"
+            name="avatar"
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            file={{
+              state: setUser
+            }}
+          />
+          <Button onClick={removeAvatar}>
             Remove photo
           </Button>
         </Stack>

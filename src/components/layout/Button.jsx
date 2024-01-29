@@ -36,13 +36,13 @@ const Button = ({ variant, full, copy, ...rest }) => {
           "rounded-shape text-center px-2 py-1": !variant || variant !== "icon",
           "bg-medium-light": lightMode && !variant,
           "bg-medium-dark": !lightMode && !variant,
-          "bg-gradient-instagram text-light": variant === "gradient",
+          "bg-gradient-instagram text-light font-semibold": variant === "gradient",
           "bg-accent text-light": variant === "primary",
           "bg-success text-dark": variant === "success",
           "bg-danger text-light": variant === "danger",
           "hover:bg-medium hover:bg-opacity-10 focus-visible:bg-medium focus-visible:bg-opacity-10": variant === "icon",
           "rounded-shape absolute top-0.5 right-0.5 p-2": copy,
-          "font-semibold w-full max-w-[60%]": rest.type === "submit",
+          "w-full max-w-[50%]": rest.type === "submit",
           "bg-transparent font-semibold text-danger": rest.type === "reset",
         }
       )}

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { FormContext } from "."
 import { capitalizeString } from "../utils"
-import { Validations } from "../models"
+import { Validations, regex } from "../models"
 
 const FormProvider = ({ children }) => {
   const [errors, setErrors] = useState({})
@@ -44,10 +44,27 @@ const FormProvider = ({ children }) => {
   const handleSubmit = (e, updateData) => {
     e.preventDefault()
 
-    const formData = [...new FormData(e.target).entries()].reduce((acc, [key, value]) => ({
-      ...acc,
-      [key]: acc.hasOwnProperty(key) ? [acc[key], value].flat() : value
-    }), {})
+    const formData = [...e.target.elements].reduce((acc, element) => {
+      let value
+
+      if (regex.numbersOnly.test(element.value)) {
+        value = Number(element.value)
+      }
+
+      else if (element.tagName === "SELECT" && element.multiple) {
+        value = [...element.selectedOptions].map(element => element.value)
+      }
+
+      else {
+        value = element.value
+      }
+
+      if (element.name && !["checkbox", "file"].includes(element.type)) {
+        acc[element.name] = value
+      }
+    
+      return acc
+    }, {})
     
     const isSubmitted = (boolean) => {
       setSubmitted(boolean)

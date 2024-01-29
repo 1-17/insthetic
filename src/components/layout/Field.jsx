@@ -6,7 +6,7 @@ import { useTheme, useForm } from "../../hooks"
 import { capitalizeString } from "../../utils"
 import Button from "./Button"
 
-const Field = ({ label, textarea, select, checkbox, copy, ...rest }) => {
+const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
   const { lightMode } = useTheme()
   const { errors, validateField, clearFieldError } = useForm()
 
@@ -73,18 +73,35 @@ const Field = ({ label, textarea, select, checkbox, copy, ...rest }) => {
 
   const updateCheckbox = e => setCheckboxChecked(e.target.checked)
 
+  const updateFile = e => {
+    const currentFile = e.target.files[0]
+
+    if (currentFile) {
+      const reader = new FileReader()
+      
+      reader.onloadend = () => file.state(prev => ({ ...prev, [rest.name]: reader.result }))
+      reader.readAsDataURL(currentFile)
+    }
+  }
+
   const element = (textarea && "textarea") || (select && "select") || "input"
 
   return (
     <div className="w-full">
-      <label htmlFor={rest.name} className="leading-loose">
+      <label htmlFor={rest.name} className={classNames(
+        {
+          "leading-loose": rest.type !== "file",
+          "block bg-gradient-instagram rounded-shape cursor-pointer text-white text-center font-semibold px-2 py-1": rest.type === "file"
+        }
+      )}>
         {label || capitalizeString(rest.name)}
       </label>
       <div className={classNames(
         "relative",
         {
           "text-danger": errors[rest.name],
-          "inline ml-4": rest.type === "checkbox"
+          "inline ml-4": rest.type === "checkbox",
+          "hidden": rest.type === "file"
         }
       )}>
         {
@@ -104,7 +121,7 @@ const Field = ({ label, textarea, select, checkbox, copy, ...rest }) => {
               ...element === "input" && { type: rest.type || "text", ...rest.type === "number" && { min: 0 } },
               ...rest.required && { required: true, "aria-required": true },
               ...errors[rest.name] && { invalid: "true", "aria-invalid": "true", "aria-describedby": `${rest.name}-hint` },
-              ...!(select || checkbox)
+              ...!(select || checkbox || file)
                 ? {
                   onBlur: e => {
                     validateField(e)
@@ -122,6 +139,7 @@ const Field = ({ label, textarea, select, checkbox, copy, ...rest }) => {
                     ...select.options && { value: selectFieldOptions, onChange: updateSelectFieldOptions }
                   },
                   ...checkbox && { checked: checkboxChecked, onChange: updateCheckbox },
+                  ...(file && file.state) && { onChange: updateFile },
                 },
               ...(rest.type === "number" || select) && {
                 style: {
