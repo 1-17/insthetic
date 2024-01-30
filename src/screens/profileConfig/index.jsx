@@ -1,12 +1,12 @@
 import { useUser } from "../../hooks"
-import Form from "../layout/Form"
+import Form from "../../components/layout/Form"
 import BasicInfo from "./BasicInfo"
 import Metrics from "./Metrics"
 import Business from "./Business"
-import Button from "../layout/Button"
-import Stack from "../layout/Stack"
+import Stack from "../../components/layout/Stack"
+import Button from "../../components/layout/Button"
 
-const Config = () => {
+const ProfileConfig = () => {
   const { setUser, discardChanges } = useUser()
   
   return (
@@ -22,4 +22,4 @@ const Config = () => {
   )
 }
 
-export default Config
+export default ProfileConfig

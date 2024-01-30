@@ -10,7 +10,13 @@ const UserProvider = ({ children }) => {
     localStorage.setItem(dbKey, JSON.stringify(user))
   }, [user])
 
-  const removeAvatar = () => setUser(prev => ({ ...prev, avatar: null }))
+  const removeAvatar = () => {
+    if (user.avatar) {
+      return setUser(prev => ({ ...prev, avatar: null }))
+    }
+
+    alert("There's no photo to remove.")
+  }
 
   const discardChanges = () => setUser(prev => prev)
 

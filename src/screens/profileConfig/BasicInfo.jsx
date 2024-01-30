@@ -1,10 +1,10 @@
 import { useUser } from "../../hooks"
 import { pronouns } from "../../models"
-import Fieldset from "../layout/Fieldset"
-import Stack from "../layout/Stack"
+import Fieldset from "../../components/layout/Fieldset"
+import Stack from "../../components/layout/Stack"
 import Avatar from "../profile/Avatar"
-import Button from "../layout/Button"
-import Field from "../layout/Field"
+import Field from "../../components/layout/Field"
+import Button from "../../components/layout/Button"
 
 const BasicInfo = () => {
   const { user, setUser, removeAvatar } = useUser()

@@ -1,7 +1,7 @@
 import { useUser } from "../../hooks"
-import Fieldset from "../layout/Fieldset"
-import Field from "../layout/Field"
 import { businessLabels, contactOptions } from "../../models"
+import Fieldset from "../../components/layout/Fieldset"
+import Field from "../../components/layout/Field"
 
 const Business = () => {
   const { user, setUser } = useUser()

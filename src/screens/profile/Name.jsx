@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import { useUser } from "../../hooks"
 
 const Name = () => {
@@ -6,7 +5,7 @@ const Name = () => {
 
   return (
     user.name && (
-      <h2 className={classNames({ "inline": user.pronouns.length > 0 })}>
+      <h2 {...user.pronouns.length > 0 && { className: "inline" }}>
         {user.name}
       </h2>
     )

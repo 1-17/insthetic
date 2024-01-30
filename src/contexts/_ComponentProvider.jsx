@@ -5,17 +5,29 @@ import { useForm } from "../hooks"
 const ComponentProvider = ({ children }) => {
   const { clearFormStates } = useForm()
   
-  const [profile, setProfile] = useState(true)
-  const [config, setConfig] = useState(false)
+  const [component, setComponent] = useState({ profile: true, profileConfig: false, addMedia: false })
 
-  const changeComponent = () => {
-    setProfile(prev => !prev)
-    setConfig(prev => !prev)
-    clearFormStates()
+  const showComponent = key => {
+    if (!component[key]) {
+      setComponent(prev => ({
+        ...Object.fromEntries(Object.keys(prev).map(k => [k, k === key])),
+        [key]: true
+      }))
+      
+      clearFormStates()
+    }
   }
 
+  const showProfile = () => showComponent("profile")
+  const showProfileConfig = () => showComponent("profileConfig")
+  const showAddMedia = () => showComponent("addMedia")
+
   return (
-    <ComponentContext.Provider value={{ profile, config, changeComponent }}>
+    <ComponentContext.Provider value={{
+      profile: component.profile, showProfile,
+      profileConfig: component.profileConfig, showProfileConfig,
+      addMedia: component.addMedia, showAddMedia
+    }}>
       {children}
     </ComponentContext.Provider>
   ) 

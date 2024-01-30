@@ -1,6 +1,6 @@
 import { TbBrandThreads } from "react-icons/tb"
-import { useTheme, useUser } from "../../hooks"
 import classNames from "classnames"
+import { useTheme, useUser } from "../../hooks"
 
 const Threads = () => {
   const { lightMode } = useTheme()

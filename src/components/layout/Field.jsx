@@ -56,7 +56,7 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
 
   const updateSelectFieldOptions = e => {
     if (select.multiple) {
-      return setSelectedFieldOptions(prev =>[
+      return setSelectedFieldOptions(prev => [
         ...prev,
         ...Array.from(e.target.selectedOptions, option => option.value)
       ])

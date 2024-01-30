@@ -3,7 +3,7 @@ import { MdOutlineLightMode } from "react-icons/md"
 import { LuPlusSquare } from "react-icons/lu"
 import { BsGear } from "react-icons/bs"
 import { useTheme, useComponent } from "../hooks"
-import Avatar from "../components/profile/Avatar"
+import Avatar from "../screens/profile/Avatar"
 
 class _FooterButtons {
   buttons = [
@@ -16,7 +16,7 @@ class _FooterButtons {
 
   constructor() {
     const { lightMode, changeTheme } = useTheme()
-    const { profile, config, changeComponent } = useComponent()
+    const { profile, profileConfig, showProfileConfig, showProfile } = useComponent()
 
     this.buttons = [
       {
@@ -30,9 +30,9 @@ class _FooterButtons {
         click: () => console.log("clicked")
       },
       {
-        label: (profile && "Go to config" || config && "Go to profile"),
-        icon: (profile && BsGear || config && Avatar),
-        click: changeComponent
+        label: (profile && "Go to profile config" || profileConfig && "Go to profile"),
+        icon: (profile && BsGear || profileConfig && Avatar),
+        click: (profile && showProfileConfig || profileConfig && showProfile)
       }
     ]
 

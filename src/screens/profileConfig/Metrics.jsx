@@ -1,7 +1,7 @@
 import { useUser } from "../../hooks"
-import Fieldset from "../layout/Fieldset"
-import Stack from "../layout/Stack"
-import Field from "../layout/Field"
+import Fieldset from "../../components/layout/Fieldset"
+import Stack from "../../components/layout/Stack"
+import Field from "../../components/layout/Field"
 
 const Metrics = () => {
   const { user } = useUser()

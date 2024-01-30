@@ -2,7 +2,7 @@ import { formatUserMetrics } from "../../utils"
 
 const Metrics = () => {
   return (
-    <ul className="grow flex justify-evenly text-center gap-2">
+    <ul className="grow flex justify-evenly gap-2 text-center">
       {
         formatUserMetrics().map((metric, i) =>
           <li key={i}>
