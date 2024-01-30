@@ -6,7 +6,7 @@ const Name = () => {
 
   return (
     user.name && (
-      <h2 className={classNames({ "inline": user.pronouns })}>
+      <h2 className={classNames({ "inline": user.pronouns.length > 0 })}>
         {user.name}
       </h2>
     )

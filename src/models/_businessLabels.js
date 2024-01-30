@@ -1,4 +1,5 @@
 const _businessLabels = [
+  "",
   "Developer",
   "Hospital"
 ]

@@ -4,13 +4,9 @@ const Pronouns = () => {
   const { user } = useUser()
 
   return (
-    (user.name && user.pronouns) && (
+    (user.name && user.pronouns.length > 0) && (
       <span className="text-medium ml-1">
-        {
-          typeof user.pronouns === "string"
-            ? user.pronouns
-            : user.pronouns.join("/")
-        }
+        {user.pronouns.join("/")}
       </span>
     )
   )

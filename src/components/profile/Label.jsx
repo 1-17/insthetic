@@ -5,7 +5,7 @@ const Label = () => {
   
   return (
     user.label && (
-      <span className="text-medium">
+      <span className="block text-medium">
         {user.label}
       </span>
     )
