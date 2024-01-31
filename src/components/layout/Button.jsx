@@ -11,6 +11,7 @@ const Button = ({ variant, full, copy, ...rest }) => {
     submitted === null && (rest.children = "Save", variant = "gradient") ||
     !submitted && (rest.children = "Error", variant = "danger") ||
     submitted && (rest.children = "Updated!", variant = "success")
+    full = true
   }
 
   if (rest.type === "reset") {
@@ -26,7 +27,7 @@ const Button = ({ variant, full, copy, ...rest }) => {
 
   return (
     <button
-      { ...rest }
+      {...rest}
       type={rest.type || "button"}
       aria-disabled={rest.disabled}
       className={classNames(
@@ -42,7 +43,7 @@ const Button = ({ variant, full, copy, ...rest }) => {
           "bg-danger text-light": variant === "danger",
           "hover:bg-medium hover:bg-opacity-10 focus-visible:bg-medium focus-visible:bg-opacity-10": variant === "icon",
           "rounded-shape absolute top-0.5 right-0.5 p-2": copy,
-          "w-full max-w-[50%]": rest.type === "submit",
+          "max-w-[50%]": rest.type === "submit",
           "bg-transparent font-semibold text-danger": rest.type === "reset",
         }
       )}

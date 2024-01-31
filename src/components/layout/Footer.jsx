@@ -1,5 +1,5 @@
-import AppBar from "./AppBar"
 import { FooterButtons } from "../../models"
+import AppBar from "./AppBar"
 import Button from "./Button"
 
 const Footer = () => {

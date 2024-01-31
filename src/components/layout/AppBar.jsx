@@ -1,4 +1,4 @@
-import { createElement, useState } from "react"
+import { createElement, useEffect, useState } from "react"
 import classNames from "classnames"
 import { useComponent } from "../../hooks"
 import Container from "./Container"
@@ -7,7 +7,13 @@ const AppBar = ({ element, children }) => {
   const { profile } = useComponent()
 
   const [border, setBorder] = useState()
-  window.addEventListener("scroll", () => setBorder(window.scrollY > 0))
+
+  useEffect(() => {
+    const handleBorder = () => setBorder(window.scrollY > 0)
+
+    window.addEventListener("scroll", handleBorder)
+    return () => window.removeEventListener("scroll", handleBorder)
+  }, [])
 
   return (
     createElement(
@@ -22,7 +28,7 @@ const AppBar = ({ element, children }) => {
           }
         )
       },
-      <Container element={element === "footer" && "nav"} className={classNames(
+      <Container {...element === "footer" && { element: "nav" }} className={classNames(
         {
           "p-3": element === "header" && profile,
           "flex justify-between items-center": element === "footer"
