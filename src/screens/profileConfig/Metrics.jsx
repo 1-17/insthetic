@@ -13,11 +13,13 @@ const Metrics = () => {
           name="followers"
           type="number"
           defaultValue={user.followers}
+          required
         />
         <Field
           name="following"
           type="number"
           defaultValue={user.following}
+          required
         />
       </Stack>
     </Fieldset>

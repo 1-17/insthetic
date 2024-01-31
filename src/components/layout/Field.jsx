@@ -1,4 +1,4 @@
-import { createElement, useEffect, useState } from "react"
+import { createElement, useEffect, useRef, useState } from "react"
 import { LuX } from "react-icons/lu"
 import { FaChevronDown } from "react-icons/fa6"
 import classNames from "classnames"
@@ -10,36 +10,28 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
   const { lightMode } = useTheme()
   const { errors, validateField, clearFieldError } = useForm()
 
-  const initialSelectFieldOptions = () => {
-    if (select && select.defaultValue) {
-      if (typeof select.defaultValue === "string") {
-        return [select.defaultValue]
-      }
-
-      return select.defaultValue.flat()
-    }
-
-    return []
-  }
-
-  const isTextField = field => {
-    if (field.hasAttribute("name") && (field.tagName === "INPUT" || field.tagName === "TEXTAREA")) {
-      return true
-    }
-
-    return false
-  }
-  
-  const createIsEmptyObject = (prev, field) => ({ ...prev, [field.name]: !field.value })
-
+  /**
+   * STATES
+   */
   const [isEmpty, setIsEmpty] = useState({})
   const [length, setLength] = useState(-1)
-  const [selectFieldOptions, setSelectedFieldOptions] = useState(initialSelectFieldOptions)
+  const [selectFieldOption, setSelectFieldOption] = useState((select && !select.multiple) && select.defaultValue || "")
+  const [selectFieldOptions, setSelectFieldOptions] = useState((select && select.multiple) && select.defaultValue || [])
   const [checkboxChecked, setCheckboxChecked] = useState(checkbox && checkbox.defaultChecked)
   const [nameIsEmpty, setNameIsEmpty] = useState(null)
+
+  /**
+   * EFFECTS
+   */
+  const isTextField = field => field.hasAttribute("name") && (field.tagName === "INPUT" || field.tagName === "TEXTAREA")
+  const createIsEmptyObject = (prev, field) => ({ ...prev, [field.name]: !field.value })
   
   useEffect(() => {
-    setIsEmpty(Array.from(document.forms[0].elements).filter(isTextField).reduce(createIsEmptyObject, {}))
+    setIsEmpty(
+      Array.from(document.forms[0].elements)
+        .filter(isTextField)
+        .reduce(createIsEmptyObject, {})
+    )
   }, [])
 
   useEffect(() => {
@@ -50,32 +42,37 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
     
     if (nameField) {
       nameField.addEventListener("input", handleNameIsEmpty)
-      return () => nameField && nameField.removeEventListener("input", handleNameIsEmpty)
+      return () => nameField.removeEventListener("input", handleNameIsEmpty)
     }
   }, [isEmpty])
 
   useEffect(() => {
-    (checkbox && checkbox.state) && checkbox.state(prev => ({ ...prev, [rest.name]: checkboxChecked }))
+    if (checkbox && checkbox.state) {
+      checkbox.state(prev => ({ ...prev, [rest.name]: checkboxChecked }))
+    }
   }, [checkboxChecked])
 
+  /**
+   * STATES UPDATES
+   */
   const updateIsEmpty = e => setIsEmpty(prev => isTextField(e.target) && createIsEmptyObject(prev, e.target))
 
   const updateLength = e => rest.maxLength && setLength(rest.maxLength - e.target.value.length)
-  const clearLength = () => setLength(null)
+  const clearLength = () => setLength(-1)
 
   const updateSelectFieldOptions = e => {
     if (select.multiple) {
-      return setSelectedFieldOptions(prev => [
+      return setSelectFieldOptions(prev => [
         ...prev,
         ...Array.from(e.target.selectedOptions, option => option.value)
       ])
     }
 
-    setSelectedFieldOptions(e.target.value)
+    setSelectFieldOption(e.target.value)
   }
 
   const deleteSelectFieldOption = optionToRemove => {
-    setSelectedFieldOptions(
+    setSelectFieldOptions(
       selectFieldOptions.filter(option => option !== optionToRemove)
     )
   }
@@ -98,14 +95,33 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
     }
   }
 
+  /**
+   * COMPONENT PROPS & COMPONENT
+   */
   const element = (textarea && "textarea") || (select && "select") || "input"
+
+  const fileButton = useRef(null)
+  const enableFileButtonClick = e => {
+    if (e.code === "Space" || e.key === "Enter") {
+      e.preventDefault()
+      fileButton.current.click()
+    }
+  }
 
   return (
     <div className="w-full">
-      <label htmlFor={rest.name} className={classNames(
+      <label
+        htmlFor={rest.name}
+        {...file && {
+          tabIndex: 0,
+          role: "button",
+          "aria-haspopup": "dialog",
+          onKeyDown: enableFileButtonClick
+        }}
+        className={classNames(
         {
-          "leading-loose": rest.type !== "file",
-          "block bg-accent rounded-shape cursor-pointer text-light text-center px-2 py-1": rest.type === "file"
+          "leading-loose": !file,
+          "block bg-accent rounded-shape cursor-pointer text-light text-center px-2 py-1": file
         }
       )}>
         {label || capitalizeString(rest.name)}
@@ -114,8 +130,8 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
         "relative",
         {
           "text-danger": errors[rest.name],
-          "inline ml-4": rest.type === "checkbox",
-          "hidden": rest.type === "file"
+          "inline ml-4": checkbox,
+          "hidden": file
         }
       )}>
         {
@@ -131,37 +147,55 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
             {
               ...rest,
               id: rest.name,
-              ...textarea && { cols: 10, rows: 2 },
-              ...element === "input" && { type: rest.type || "text", ...rest.type === "number" && { min: 0 } },
+              ...textarea && {
+                cols: 10,
+                rows: 2
+              },
+              ...element === "input" && {
+                type: checkbox && "checkbox" || file && "file" || rest.type || "text",
+                ...rest.type === "number" && {
+                  min: 0
+                },
+                ...checkbox && {
+                  checked: checkboxChecked,
+                  onChange: updateCheckbox
+                },
+                ...file && {
+                  accept: file.accept,
+                  ref: fileButton,
+                  ...file.state && { onChange: updateFile }
+                }
+              },
+              ...(select && select.options) && {
+                ...select.multiple ? {
+                  value: selectFieldOptions,
+                  multiple: true,
+                  size: 3
+                } : {
+                  value: selectFieldOption
+                },
+                onChange: updateSelectFieldOptions
+              },
               ...rest.required && { required: true, "aria-required": true },
               ...errors[rest.name] && { invalid: "true", "aria-invalid": "true", "aria-describedby": `${rest.name}-hint` },
-              ...!(select || checkbox || file)
-                ? {
-                  onBlur: e => {
-                    validateField(e)
-                    clearLength()
-                  },
-                  onChange: e => {
-                    updateIsEmpty(e)
-                    updateLength(e)
-                    clearFieldError(e)
-                  }
-                }
-                : {
-                  ...select && {
-                    ...select.multiple && { multiple: true, size: 3 },
-                    ...select.options && { value: selectFieldOptions, onChange: updateSelectFieldOptions }
-                  },
-                  ...checkbox && { checked: checkboxChecked, onChange: updateCheckbox },
-                  ...(file && file.state) && { onChange: updateFile },
+              ...!(select || checkbox || file) && {
+                onBlur: e => {
+                  validateField(e)
+                  clearLength()
                 },
+                onChange: e => {
+                  updateIsEmpty(e)
+                  updateLength(e)
+                  clearFieldError(e)
+                }
+              },
               ...(rest.type === "number" || select) && {
                 style: {
                   WebkitAppearance: "none",
                   MozAppearance: select ? "none" : "textfield"
                 }
               },
-              ...rest.type !== "checkbox" && {
+              ...!checkbox && {
                 className: classNames(
                   "border-2 focus-visible:border-current focus-visible:outline-none rounded-shape w-full",
                   {
@@ -220,7 +254,7 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
                     }
                     {
                       (select.maxOptions && select.maxOptions === selectFieldOptions.length) && (
-                        <span className="text-warning font-semibold">
+                        <span className="block text-warning font-semibold">
                           Max options reached.
                         </span>
                       )

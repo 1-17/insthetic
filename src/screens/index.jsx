@@ -8,9 +8,11 @@ const Screens = () => {
 
   return (
     <>
-      {profile && <Profile />}
-      {profileConfig && <ProfileConfig />}
-      {addMedia && <AddMedia />}
+      {
+        profile && <Profile /> ||
+        profileConfig && <ProfileConfig /> ||
+        addMedia && <AddMedia />
+      }
     </>
   )
 }

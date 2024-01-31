@@ -1,16 +1,16 @@
 import { useUser } from "../../hooks"
 import Form from "../../components/layout/Form"
+import Stack from "../../components/layout/Stack"
+import Button from "../../components/layout/Button"
 import BasicInfo from "./BasicInfo"
 import Metrics from "./Metrics"
 import Business from "./Business"
-import Stack from "../../components/layout/Stack"
-import Button from "../../components/layout/Button"
 
 const ProfileConfig = () => {
-  const { setUser, discardChanges } = useUser()
+  const { updateUser, discardChanges } = useUser()
   
   return (
-    <Form onSubmit={/*{ state: setUser }*/setUser}>
+    <Form onSubmit={updateUser}>
       <BasicInfo />
       <Metrics />
       <Business />

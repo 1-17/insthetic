@@ -2,9 +2,9 @@ import { useUser } from "../../hooks"
 import { pronouns } from "../../models"
 import Fieldset from "../../components/layout/Fieldset"
 import Stack from "../../components/layout/Stack"
-import Avatar from "../profile/Avatar"
 import Field from "../../components/layout/Field"
 import Button from "../../components/layout/Button"
+import Avatar from "../profile/Avatar"
 
 const BasicInfo = () => {
   const { user, setUser, removeAvatar } = useUser()
@@ -17,9 +17,8 @@ const BasicInfo = () => {
           <Field
             label="Add photo"
             name="avatar"
-            type="file"
-            accept=".jpg, .jpeg, .png"
             file={{
+              accept: ".jpg, .jpeg, .png",
               state: setUser
             }}
           />
@@ -30,7 +29,6 @@ const BasicInfo = () => {
       </Stack>
       <Field
         name="stories"
-        type="checkbox"
         checkbox={{
           defaultChecked: user.stories,
           state: setUser
@@ -82,7 +80,6 @@ const BasicInfo = () => {
       <Field
         label="Suggestions enabled"
         name="suggestions"
-        type="checkbox"
         checkbox={{
           defaultChecked: user.suggestions,
           state: setUser

@@ -33,7 +33,7 @@ class _Validations extends User {
 
     const metricsValidation = (field, metric) => {
       if (!regex.numbersOnly.test(metric)) {
-        return `${field} must have only numbers.`
+        return `${field} must have numbers.`
       }
 
       return null
@@ -41,7 +41,7 @@ class _Validations extends User {
 
     this.username = (field, username) => {
       if (!username) {
-        return `${field} is required.`
+        return `${field} cannot be empty.`
       }
 
       return usernameValidation(field, username)

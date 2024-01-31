@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-/*import { useUser } from "../../hooks"*/
+import { useEffect } from "react"
+import { useUser } from "../../hooks"
 import Form from "../../components/layout/Form"
 import Fieldset from "../../components/layout/Fieldset"
 import Stack from "../../components/layout/Stack"
@@ -8,26 +8,25 @@ import Button from "../../components/layout/Button"
 import Avatar from "../profile/Avatar"
 
 const AddMedia = () => {
-  /*const { setUser } = useUser()*/
-  const [highlight, setHighlight] = useState({ image: "", description: "Highlights" })
+  const { newHighlight, setNewHighlight, addHighlight } = useUser()
 
   useEffect(() => {
-    const description = document.getElementById("description")
-    const updateDescription = e => setHighlight(prev => ({ ...prev, description: e.target.value || "Highlights" }))
+    const highlightDescription = document.getElementById("description")
+    const updateHighlightDescription = e => setNewHighlight(prev => ({ ...prev, description: e.target.value || "Highlights" }))
 
-    if (description) {
-      description.addEventListener("input", updateDescription)
-      return () => description.removeEventListener("input", updateDescription)
+    if (highlightDescription) {
+      highlightDescription.addEventListener("input", updateHighlightDescription)
+      return () => highlightDescription.removeEventListener("input", updateHighlightDescription)
     }
   }, [])
 
   return (
-    <Form /*onSubmit={{ state: setUser, key: "highlights" }}*/>
+    <Form onSubmit={addHighlight}>
       <Fieldset legend="New highlight">
         <Stack className="items-center my-4 first:*:max-xs:mx-auto">
           <Avatar highlights={{
-            image: highlight.image,
-            description: highlight.description
+            image: newHighlight.image,
+            description: newHighlight.description
           }} />
           <Stack className="grow flex-col max-w-xs mx-auto">
             <Field
@@ -36,13 +35,13 @@ const AddMedia = () => {
               type="file"
               accept=".jpg, .jpeg, .png"
               file={{
-                state: setHighlight
+                state: setNewHighlight
               }}
             />
             <Field
               label="Description"
               name="description"
-              placeholder={highlight.description}
+              placeholder={newHighlight.description}
               maxLength={16}
             />
           </Stack>

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { FormContext } from "."
 import { capitalizeString } from "../utils"
-import { Validations, regex } from "../models"
+import { Validations } from "../models"
 
 const FormProvider = ({ children }) => {
   const initialState = { errors: {}, submitted: null }
@@ -41,30 +41,8 @@ const FormProvider = ({ children }) => {
     return false
   }
 
-  const handleSubmit = (e, /*form*/updateData) => {
+  const handleSubmit = (e, updateData) => {
     e.preventDefault()
-
-    const formData = [...e.target.elements].reduce((acc, element) => {
-      let value
-
-      if (regex.numbersOnly.test(element.value)) {
-        value = Number(element.value)
-      }
-
-      else if (element.tagName === "SELECT" && element.multiple) {
-        value = [...element.selectedOptions].map(element => element.value)
-      }
-
-      else {
-        value = element.value
-      }
-
-      if (element.name && !["checkbox", "file"].includes(element.type)) {
-        acc[element.name] = value
-      }
-    
-      return acc
-    }, {})
     
     const isSubmitted = (boolean) => {
       setSubmitted(boolean)
@@ -76,28 +54,7 @@ const FormProvider = ({ children }) => {
         return isSubmitted(false)
       }
 
-      // form.state(prev => {
-      //   if (form.key) {
-      //     return {
-      //       ...prev,
-      //       [form.key]: [
-      //         ...prev[form.key],
-      //         Object.fromEntries(Object.entries(formData))
-      //       ]
-      //     }
-      //   }
-
-      //   return {
-      //     ...prev,
-      //     ...Object.fromEntries(Object.entries(formData))
-      //   }
-      // })
-
-      updateData(prev => ({
-        ...prev,
-        ...Object.fromEntries(Object.entries(formData))
-      }))
-      
+      updateData(e)
       isSubmitted(true)
     }
   }
