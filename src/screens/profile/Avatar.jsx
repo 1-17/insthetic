@@ -7,9 +7,9 @@ const Avatar = ({ profile, highlights }) => {
   const { user } = useUser()
   
   return (
-    <>
+    <div className="w-fit">
       <div className={classNames(
-        "rounded-full min-w-max h-fit",
+        "rounded-full w-fit min-w-max h-fit",
         {
           "bg-gradient-instagram": profile && user.stories,
           "bg-medium-light": lightMode && highlights,
@@ -44,7 +44,7 @@ const Avatar = ({ profile, highlights }) => {
           </span>
         )
       }
-    </>
+    </div>
   )
 }
 

@@ -23,26 +23,6 @@ class _InitialUser extends User {
       {
         image: "",
         description: ""
-      },
-      {
-        image: "",
-        description: ""
-      },
-      {
-        image: "",
-        description: ""
-      },
-      {
-        image: "",
-        description: ""
-      },
-      {
-        image: "",
-        description: ""
-      },
-      {
-        image: "",
-        description: ""
       }
     ]
   }

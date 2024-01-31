@@ -2,7 +2,7 @@ import classNames from "classnames"
 import { useComponent } from "../../hooks"
 
 const Stack = ({ ...rest }) => {
-  const { profile, profileConfig } = useComponent()
+  const { profile } = useComponent()
 
   return (
     <div
@@ -12,7 +12,7 @@ const Stack = ({ ...rest }) => {
         "flex",
         {
           "max-xs:flex-wrap gap-2": profile,
-          "max-[400px]:flex-wrap gap-4": profileConfig
+          "max-[400px]:flex-wrap gap-4": !profile
         },
       )}
     />

@@ -4,8 +4,9 @@ import { capitalizeString } from "../utils"
 import { Validations, regex } from "../models"
 
 const FormProvider = ({ children }) => {
-  const [errors, setErrors] = useState({})
-  const [submitted, setSubmitted] = useState(null)
+  const initialState = { errors: {}, submitted: null }
+  const [errors, setErrors] = useState(initialState.errors)
+  const [submitted, setSubmitted] = useState(initialState.submitted)
   
   const validations = new Validations()
 
@@ -25,8 +26,7 @@ const FormProvider = ({ children }) => {
     
     if (errors[name]) {
       setErrors(prev => ({
-        ...prev,
-        [name]: null
+        ...prev !== prev[name] && prev
       }))
     }
   }
@@ -41,7 +41,7 @@ const FormProvider = ({ children }) => {
     return false
   }
 
-  const handleSubmit = (e, updateData) => {
+  const handleSubmit = (e, /*form*/updateData) => {
     e.preventDefault()
 
     const formData = [...e.target.elements].reduce((acc, element) => {
@@ -68,13 +68,30 @@ const FormProvider = ({ children }) => {
     
     const isSubmitted = (boolean) => {
       setSubmitted(boolean)
-      setTimeout(() => setSubmitted(null), 1500)
+      setTimeout(() => setSubmitted(initialState.submitted), 1500)
     }
 
-    if (submitted === null) {
+    if (submitted === initialState.submitted) {
       if (hasErrors()) {
         return isSubmitted(false)
       }
+
+      // form.state(prev => {
+      //   if (form.key) {
+      //     return {
+      //       ...prev,
+      //       [form.key]: [
+      //         ...prev[form.key],
+      //         Object.fromEntries(Object.entries(formData))
+      //       ]
+      //     }
+      //   }
+
+      //   return {
+      //     ...prev,
+      //     ...Object.fromEntries(Object.entries(formData))
+      //   }
+      // })
 
       updateData(prev => ({
         ...prev,
@@ -86,8 +103,13 @@ const FormProvider = ({ children }) => {
   }
 
   const clearFormStates = () => {
-    hasErrors() && setErrors({})
-    submitted !== null && setSubmitted(null)
+    if (hasErrors()) {
+      setErrors(initialState.errors)
+    }
+    
+    if (submitted !== initialState.submitted) {
+      setSubmitted(initialState.submitted)
+    }
   }
 
   return (

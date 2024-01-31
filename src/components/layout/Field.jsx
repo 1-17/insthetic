@@ -22,7 +22,14 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
     return []
   }
 
-  const isTextField = field => field.hasAttribute("name") && (field.tagName === "INPUT" || field.tagName === "TEXTAREA")
+  const isTextField = field => {
+    if (field.hasAttribute("name") && (field.tagName === "INPUT" || field.tagName === "TEXTAREA")) {
+      return true
+    }
+
+    return false
+  }
+  
   const createIsEmptyObject = (prev, field) => ({ ...prev, [field.name]: !field.value })
 
   const [isEmpty, setIsEmpty] = useState({})
@@ -41,8 +48,10 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
     const nameField = document.getElementById("name")
     const handleNameIsEmpty = e => setNameIsEmpty(!e.target.value)
     
-    nameField.addEventListener("input", handleNameIsEmpty)
-    return () => nameField.removeEventListener("input", handleNameIsEmpty)
+    if (nameField) {
+      nameField.addEventListener("input", handleNameIsEmpty)
+      return () => nameField && nameField.removeEventListener("input", handleNameIsEmpty)
+    }
   }, [isEmpty])
 
   useEffect(() => {
@@ -79,7 +88,12 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
     if (currentFile) {
       const reader = new FileReader()
       
-      reader.onloadend = () => file.state(prev => ({ ...prev, [rest.name]: reader.result }))
+      reader.onloadend = () => {
+        if (file && file.state) {
+          file.state(prev => ({ ...prev, [rest.name]: reader.result }))
+        }
+      }
+      
       reader.readAsDataURL(currentFile)
     }
   }
@@ -91,7 +105,7 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
       <label htmlFor={rest.name} className={classNames(
         {
           "leading-loose": rest.type !== "file",
-          "block bg-gradient-instagram rounded-shape cursor-pointer text-white text-center font-semibold px-2 py-1": rest.type === "file"
+          "block bg-accent rounded-shape cursor-pointer text-light text-center px-2 py-1": rest.type === "file"
         }
       )}>
         {label || capitalizeString(rest.name)}
@@ -239,7 +253,7 @@ const Field = ({ label, textarea, select, checkbox, file, copy, ...rest }) => {
           )
         }
         {
-          (length && length > -1) && (
+          length > -1 && (
             <span className={classNames(
               "text-xs sm:text-sm",
               {

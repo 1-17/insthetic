@@ -12,7 +12,7 @@ const Highlights = () => {
             <li key={i} className="p-2">
               <Avatar highlights={{
                 image: highlight.image,
-                description: highlight.description || "Highlight"
+                description: highlight.description
               }} />
             </li>
           )

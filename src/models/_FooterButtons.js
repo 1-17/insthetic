@@ -16,7 +16,7 @@ class _FooterButtons {
 
   constructor() {
     const { lightMode, changeTheme } = useTheme()
-    const { profile, profileConfig, showProfileConfig, showProfile } = useComponent()
+    const { profileConfig, addMedia, showProfile, showProfileConfig, showAddMedia } = useComponent()
 
     this.buttons = [
       {
@@ -25,14 +25,14 @@ class _FooterButtons {
         click: changeTheme
       },
       {
-        label: "Add new media",
-        icon: LuPlusSquare,
-        click: () => console.log("clicked")
+        label: !addMedia ? "Go to add new media" : "Go to profile",
+        icon: !addMedia ? LuPlusSquare : Avatar,
+        click: !addMedia ? showAddMedia : showProfile
       },
       {
-        label: (profile && "Go to profile config" || profileConfig && "Go to profile"),
-        icon: (profile && BsGear || profileConfig && Avatar),
-        click: (profile && showProfileConfig || profileConfig && showProfile)
+        label: !profileConfig ? "Go to profile config" : "Go to profile",
+        icon: !profileConfig ? BsGear : Avatar,
+        click: !profileConfig ? showProfileConfig : showProfile
       }
     ]
 

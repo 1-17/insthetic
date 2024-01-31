@@ -10,7 +10,7 @@ const ProfileConfig = () => {
   const { setUser, discardChanges } = useUser()
   
   return (
-    <Form onSubmit={setUser}>
+    <Form onSubmit={/*{ state: setUser }*/setUser}>
       <BasicInfo />
       <Metrics />
       <Business />
