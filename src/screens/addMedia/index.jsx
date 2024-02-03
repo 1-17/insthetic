@@ -1,5 +1,6 @@
-import { useEffect } from "react"
+import { useFormContext } from "react-hook-form"
 import { useUser } from "../../hooks"
+import { readFile } from "../../utils"
 import Form from "../../components/layout/Form"
 import Fieldset from "../../components/layout/Fieldset"
 import Stack from "../../components/layout/Stack"
@@ -8,17 +9,8 @@ import Button from "../../components/layout/Button"
 import Avatar from "../profile/Avatar"
 
 const AddMedia = () => {
+  const { register } = useFormContext()
   const { newHighlight, setNewHighlight, addHighlight } = useUser()
-
-  useEffect(() => {
-    const highlightDescription = document.getElementById("description")
-    const updateHighlightDescription = e => setNewHighlight(prev => ({ ...prev, description: e.target.value || "Highlights" }))
-
-    if (highlightDescription) {
-      highlightDescription.addEventListener("input", updateHighlightDescription)
-      return () => highlightDescription.removeEventListener("input", updateHighlightDescription)
-    }
-  }, [])
 
   return (
     <Form onSubmit={addHighlight}>
@@ -30,19 +22,19 @@ const AddMedia = () => {
           }} />
           <Stack className="grow flex-col max-w-xs mx-auto">
             <Field
+              {...register("image", {
+                onChange: e => readFile(e).then(file => setNewHighlight(prev => ({ ...prev, image: file })))
+              })}
               label="Add cover photo"
-              name="image"
               type="file"
               accept=".jpg, .jpeg, .png"
-              file={{
-                state: setNewHighlight
-              }}
             />
             <Field
-              label="Description"
-              name="description"
-              placeholder={newHighlight.description}
+              {...register("description", {
+                onChange: e => setNewHighlight(prev => ({ ...prev, description: e.target.value || "Highlights" }))
+              })}
               maxLength={16}
+              placeholder="Highlights"
             />
           </Stack>
         </Stack>

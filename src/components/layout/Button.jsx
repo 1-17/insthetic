@@ -1,21 +1,42 @@
+import { useEffect } from "react"
+import { useFormContext } from "react-hook-form"
 import { LuCopy } from "react-icons/lu"
 import classNames from "classnames"
-import { useTheme, useForm } from "../../hooks"
+import { useTheme } from "../../hooks"
 import { copyToClipboard } from "../../utils"
 
 const Button = ({ variant, full, copy, ...rest }) => {
   const { lightMode } = useTheme()
-  const { submitted } = useForm()
+  const { reset, formState: { isSubmitted, isSubmitSuccessful } } = useFormContext()
+
+  useEffect(() => {
+    const clearSubmitButtonState = setTimeout(() =>
+      reset(undefined, { keepValues: true, keepErrors: true }
+    ), 1500)
+
+    return () => clearTimeout(clearSubmitButtonState)
+  }, [isSubmitted])
 
   if (rest.type === "submit") {
-    submitted === null && (rest.children = "Save", variant = "gradient") ||
-    !submitted && (rest.children = "Error", variant = "danger") ||
-    submitted && (rest.children = "Updated!", variant = "success")
+    rest.children = "Save"
+    variant = "gradient"
     full = true
+
+    if (isSubmitted) {
+      rest.disabled = true
+      
+      isSubmitSuccessful
+        ? (rest.children = "Updated!", variant = "success")
+        : (rest.children = "Error", variant = "danger")
+    }
   }
 
   if (rest.type === "reset") {
     rest.children = "Discard changes"
+    rest.onClick = e => {
+      e.preventDefault()
+      reset()
+    }
   }
 
   if (copy) {

@@ -1,11 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useFormContext } from "react-hook-form"
 import { ComponentContext } from "."
-import { useForm } from "../hooks"
 
 const ComponentProvider = ({ children }) => {
-  const { clearFormStates } = useForm()
-  
+  const { reset } = useFormContext()
+
   const [component, setComponent] = useState({ profile: true, profileConfig: false, addMedia: false })
+
+  useEffect(() => {
+    reset()
+  }, [component])
 
   const showComponent = key => {
     if (!component[key]) {
@@ -13,8 +17,6 @@ const ComponentProvider = ({ children }) => {
         ...Object.fromEntries(Object.keys(prev).map(k => [k, k === key])),
         [key]: true
       }))
-      
-      clearFormStates()
     }
   }
 

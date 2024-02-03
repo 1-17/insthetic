@@ -1,13 +1,12 @@
-import { useForm } from "../../hooks"
+import { useFormContext } from "react-hook-form"
 
 const Form = ({ ...rest }) => {
-  const { handleSubmit } = useForm()
+  const { handleSubmit } = useFormContext()
 
   return (
     <form
       {...rest}
-      noValidate
-      onSubmit={e => handleSubmit(e, rest.onSubmit)}
+      onSubmit={handleSubmit(rest.onSubmit)}
       className="*:mt-12 first:*:mt-0"
     />
   )

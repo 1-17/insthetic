@@ -1,35 +1,46 @@
+import { Controller, useFormContext } from "react-hook-form"
 import { useUser } from "../../hooks"
 import { businessLabels, contactOptions } from "../../models"
 import Fieldset from "../../components/layout/Fieldset"
 import Field from "../../components/layout/Field"
 
 const Business = () => {
+  const { register } = useFormContext()
   const { user, setUser } = useUser()
 
   return (
     <Fieldset legend="Business">
-      <Field
+      <Controller
         name="label"
-        select={{
-          defaultValue: user.label,
-          options: businessLabels
-        }}
+        defaultValue={user.label}
+        render={({ field }) => (
+          <Field
+            {...field}
+            select={{
+              options: businessLabels
+            }}
+          />
+        )}
       />
-      <Field
-        label="Contact option"
+      <Controller
         name="contact"
-        select={{
-          defaultValue: user.contact,
-          options: contactOptions
-        }}
+        defaultValue={user.contact}
+        render={({ field }) => (
+          <Field
+            {...field}
+            select={{
+              options: contactOptions
+            }}
+          />
+        )}
       />
       <Field
+        {...register("verified", {
+          onChange: e => setUser(prev => ({ ...prev, verified: e.target.checked }))
+        })}
         label="Verified badge"
-        name="verified"
-        checkbox={{
-          defaultChecked: user.verified,
-          state: setUser
-        }}
+        type="checkbox"
+        defaultChecked={user.verified}
       />
     </Fieldset>
   )

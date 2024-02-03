@@ -1,6 +1,6 @@
 export { default as FooterButtons } from "./_FooterButtons"
 export { default as InitialUser } from "./_InitialUser"
-export { default as Validations } from "./_Validations"
+export { default as FormattedUserMetrics } from "./_FormattedUserMetrics"
 export { default as regex } from "./_regex"
 export { default as pronouns } from "./_pronouns"
 export { default as businessLabels } from "./_businessLabels"

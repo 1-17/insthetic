@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react"
+import { useFormContext } from "react-hook-form"
 import { UserContext } from "."
-import { InitialUser, regex } from "../models"
+import { useComponent } from "../hooks"
+import { InitialUser } from "../models"
 import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
+  const { setError, clearErrors } = useFormContext()
+  const { addMedia } = useComponent()
+
   const dbKey = "user"
 
   const initialState = {
@@ -18,6 +23,18 @@ const UserProvider = ({ children }) => {
     localStorage.setItem(dbKey, JSON.stringify(user))
   }, [user])
 
+  useEffect(() => {
+    if (!addMedia) {
+      setNewHighlight(initialState.newHighlight)
+    }
+  }, [addMedia])
+
+  useEffect(() => {
+    if (newHighlight.image !== initialState.newHighlight.image) {
+      clearErrors("image")
+    }
+  }, [newHighlight])
+
   const removeAvatar = () => {
     if (user.avatar) {
       return setUser(prev => ({ ...prev, avatar: null }))
@@ -26,38 +43,17 @@ const UserProvider = ({ children }) => {
     alert("There's no photo to remove.")
   }
 
-  const updateUser = e => {
-    const formData = [...e.target.elements].reduce((acc, element) => {
-      let value
-
-      if (regex.numbersOnly.test(element.value)) {
-        value = Number(element.value)
-      }
-
-      else if (element.tagName === "SELECT" && element.multiple) {
-        value = [...element.selectedOptions].map(element => element.value)
-      }
-
-      else {
-        value = element.value
-      }
-
-      if (element.name && !["checkbox", "file"].includes(element.type)) {
-        acc[element.name] = value
-      }
+  const updateUser = data => {
+    const formData = Object.fromEntries(Object.entries(data).filter(([key, value]) => value !== undefined && [key, value]))
     
-      return acc
-    }, {})
-
-    setUser(prev => ({
-      ...prev,
-      ...Object.fromEntries(Object.entries(formData))
-    }))
+    setUser(prev => ({ ...prev, ...formData }))
   }
 
-  const discardChanges = () => setUser(prev => prev)
-
   const addHighlight = () => {
+    if (newHighlight.image === initialState.newHighlight.image) {
+      return setError("image", { type: "required", message: "Highlight cover is required." })
+    }
+
     setUser(prev => ({
       ...prev,
       highlights: [
@@ -66,7 +62,9 @@ const UserProvider = ({ children }) => {
       ]
     }))
 
-    setNewHighlight(initialState.newHighlight)
+    setTimeout(() => {
+      setNewHighlight(initialState.newHighlight)
+    }, 1500)
   }
 
   return (
@@ -77,8 +75,7 @@ const UserProvider = ({ children }) => {
       setNewHighlight,
       addHighlight,
       updateUser,
-      removeAvatar,
-      discardChanges
+      removeAvatar
     }}>
       {children}
     </UserContext.Provider>

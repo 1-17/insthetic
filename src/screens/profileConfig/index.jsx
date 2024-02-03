@@ -7,7 +7,7 @@ import Metrics from "./Metrics"
 import Business from "./Business"
 
 const ProfileConfig = () => {
-  const { updateUser, discardChanges } = useUser()
+  const { updateUser } = useUser()
   
   return (
     <Form onSubmit={updateUser}>
@@ -16,7 +16,7 @@ const ProfileConfig = () => {
       <Business />
       <Stack>
         <Button type="submit" />
-        <Button type="reset" onClick={discardChanges} className="ml-auto" />
+        <Button type="reset" className="ml-auto" />
       </Stack>
     </Form>
   )

@@ -1,5 +1,7 @@
+import { Controller, useFormContext } from "react-hook-form"
 import { useUser } from "../../hooks"
-import { pronouns } from "../../models"
+import { readFile } from "../../utils"
+import { pronouns, regex } from "../../models"
 import Fieldset from "../../components/layout/Fieldset"
 import Stack from "../../components/layout/Stack"
 import Field from "../../components/layout/Field"
@@ -7,6 +9,7 @@ import Button from "../../components/layout/Button"
 import Avatar from "../profile/Avatar"
 
 const BasicInfo = () => {
+  const { register, trigger, clearErrors } = useFormContext()
   const { user, setUser, removeAvatar } = useUser()
 
   return (
@@ -15,12 +18,12 @@ const BasicInfo = () => {
         <Avatar profile />
         <Stack className="grow flex-col max-w-xs mx-auto">
           <Field
+            {...register("avatar", {
+              onChange: e => readFile(e).then(file => setUser(prev => ({ ...prev, avatar: file })))
+            })}
             label="Add photo"
-            name="avatar"
-            file={{
-              accept: ".jpg, .jpeg, .png",
-              state: setUser
-            }}
+            type="file"
+            accept=".jpg, .jpeg, .png"
           />
           <Button onClick={removeAvatar}>
             Remove photo
@@ -28,62 +31,128 @@ const BasicInfo = () => {
         </Stack>
       </Stack>
       <Field
-        name="stories"
-        checkbox={{
-          defaultChecked: user.stories,
-          state: setUser
-        }}
+        {...register("stories", {
+          onChange: e => setUser(prev => ({ ...prev, stories: e.target.checked }))
+        })}
+        type="checkbox"
+        defaultChecked={user.stories}
       />
       <Stack>
-        <Field
+        <Controller
           name="username"
+          rules={{
+            required: "Username cannot be empty.",
+            pattern: {
+              value: regex.username,
+              message: "Username can only contain letters with no accent, numbers, underscores and dots."
+            },
+            validate: {
+              numbersOnly: value => !regex.numbersOnly.test(value) || "Username cannot have only numbers",
+              consecutiveDots: value => !regex.consecutiveDots.test(value) || "Username cannot have consecutive dots.",
+              startsWithDot: value => !value.startsWith(".") || "Username cannot start with a dot.",
+              endsWithDot: value => !value.endsWith(".") || "Username cannot end with a dot."
+            }
+          }}
           defaultValue={user.username}
-          required
-          maxLength={30}
-          copy
+          render={({ field }) => (
+            <Field
+              {...field}
+              maxLength={30}
+              onBlur={() => trigger("username")}
+              onFocus={() => clearErrors("username")}
+              copy
+            />
+          )}
         />
-        <Field
+        <Controller
           name="name"
           defaultValue={user.name}
-          maxLength={150}
-          copy
+          render={({ field }) => (
+            <Field
+              {...field}
+              maxLength={150}
+              copy
+            />
+          )}
         />
       </Stack>
-      <Field
+      <Controller
         name="pronouns"
-        select={{
-          defaultValue: user.pronouns,
-          options: pronouns,
-          multiple: true,
-          maxOptions: 4
-        }}
+        defaultValue={user.pronouns}
+        render={({ field }) => (
+          <Field
+            {...field}
+            multiple
+            select={{
+              options: pronouns,
+              maxOptions: 4
+            }}
+          />
+        )}
       />
-      <Field
+      <Controller
         name="threads"
+        rules={{
+          pattern: {
+            value: regex.username,
+            message: "Threads can only contain letters with no accent, numbers, underscores and dots."
+          },
+          validate: {
+            numbersOnly: value => !regex.numbersOnly.test(value) || "Threads cannot have only numbers",
+            consecutiveDots: value => !regex.consecutiveDots.test(value) || "Threads cannot have consecutive dots.",
+            startsWithDot: value => !value.startsWith(".") || "Threads cannot start with a dot.",
+            endsWithDot: value => !value.endsWith(".") || "Threads cannot end with a dot."
+          }
+        }}
         defaultValue={user.threads}
-        maxLength={30}
-        copy
+        render={({ field }) => (
+          <Field
+            {...field}
+            maxLength={30}
+            onBlur={() => trigger("threads")}
+            onFocus={() => clearErrors("threads")}
+            copy
+          />
+        )}
       />
-      <Field
+      <Controller
         name="bio"
         defaultValue={user.bio}
-        maxLength={150}
-        textarea
-        copy
+        render={({ field }) => (
+          <Field
+            {...field}
+            maxLength={150}
+            textarea
+            copy
+          />
+        )}
       />
-      <Field
-        type="url"
+      <Controller
         name="link"
+        rules={{
+          pattern: {
+            value: regex.link,
+            message: "Insert a valid URL."
+          }
+        }}
         defaultValue={user.link}
-        copy
+        render={({ field }) => (
+          <Field
+            {...field}
+            type="url"
+            onBlur={() => trigger("link")}
+            onFocus={() => clearErrors("link")}
+            copy
+          />
+        )}
       />
       <Field
+        {...register("suggestions", {
+          onChange: e => setUser(prev => ({ ...prev, suggestions: e.target.checked }))
+        })}
         label="Suggestions enabled"
-        name="suggestions"
-        checkbox={{
-          defaultChecked: user.suggestions,
-          state: setUser
-        }}
+        type="checkbox"
+        defaultChecked={user.suggestions}
       />
     </Fieldset>
   )
