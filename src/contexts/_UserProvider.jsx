@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react"
-import { useFormContext } from "react-hook-form"
 import { UserContext } from "."
 import { useComponent } from "../hooks"
 import { InitialUser } from "../models"
 import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
-  const { setError, clearErrors } = useFormContext()
   const { addMedia } = useComponent()
 
   const dbKey = "user"
 
   const initialState = {
     user: JSON.parse(localStorage.getItem(dbKey)) || new InitialUser(),
-    newHighlight: { image: DefaultImage, description: "Highlights" }
+    newHighlight: { cover: DefaultImage, description: "Highlights" }
   }
   
   const [user, setUser] = useState(initialState.user)
@@ -28,12 +26,6 @@ const UserProvider = ({ children }) => {
       setNewHighlight(initialState.newHighlight)
     }
   }, [addMedia])
-
-  useEffect(() => {
-    if (newHighlight.image !== initialState.newHighlight.image) {
-      clearErrors("image")
-    }
-  }, [newHighlight])
 
   const removeAvatar = () => {
     if (user.avatar) {
@@ -50,10 +42,6 @@ const UserProvider = ({ children }) => {
   }
 
   const addHighlight = () => {
-    if (newHighlight.image === initialState.newHighlight.image) {
-      return setError("image", { type: "required", message: "Highlight cover is required." })
-    }
-
     setUser(prev => ({
       ...prev,
       highlights: [

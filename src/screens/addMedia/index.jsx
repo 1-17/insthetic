@@ -9,7 +9,7 @@ import Button from "../../components/layout/Button"
 import Avatar from "../profile/Avatar"
 
 const AddMedia = () => {
-  const { register } = useFormContext()
+  const { register, setValue, clearErrors } = useFormContext()
   const { newHighlight, setNewHighlight, addHighlight } = useUser()
 
   return (
@@ -17,13 +17,20 @@ const AddMedia = () => {
       <Fieldset legend="New highlight">
         <Stack className="items-center my-4 first:*:max-xs:mx-auto">
           <Avatar highlights={{
-            image: newHighlight.image,
+            cover: newHighlight.cover,
             description: newHighlight.description
           }} />
           <Stack className="grow flex-col max-w-xs mx-auto">
             <Field
-              {...register("image", {
-                onChange: e => readFile(e).then(file => setNewHighlight(prev => ({ ...prev, image: file })))
+              {...register("cover", {
+                required: "Highlight cover is required.",
+                onChange: e => {
+                  readFile(e).then(file => {
+                    setNewHighlight(prev => ({ ...prev, cover: file }))
+                    clearErrors("cover")
+                    setValue("cover", file)
+                  })
+                }
               })}
               label="Add cover photo"
               type="file"
@@ -31,7 +38,10 @@ const AddMedia = () => {
             />
             <Field
               {...register("description", {
-                onChange: e => setNewHighlight(prev => ({ ...prev, description: e.target.value || "Highlights" }))
+                onChange: e => setNewHighlight(prev => ({
+                  ...prev,
+                  description: e.target.value.trim() !== "" ? e.target.value : "Highlights"
+                }))
               })}
               maxLength={16}
               placeholder="Highlights"

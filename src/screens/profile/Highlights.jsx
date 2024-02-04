@@ -11,7 +11,7 @@ const Highlights = () => {
           user.highlights.map((highlight, i) => 
             <li key={i} className="p-2">
               <Avatar highlights={{
-                image: highlight.image,
+                cover: highlight.cover,
                 description: highlight.description
               }} />
             </li>

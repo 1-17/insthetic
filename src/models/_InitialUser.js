@@ -21,8 +21,8 @@ class _InitialUser extends User {
     this.stories = true,
     this.highlights = [
       {
-        image: "",
-        description: ""
+        cover: "src/assets/images/default-image.svg",
+        description: "Highlights"
       }
     ]
   }
