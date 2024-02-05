@@ -15,12 +15,12 @@ const AddMedia = () => {
   return (
     <Form onSubmit={addHighlight}>
       <Fieldset legend="New highlight">
-        <Stack className="items-center my-4 first:*:max-xs:mx-auto">
+        <Stack fields className="items-center">
           <Avatar highlights={{
             cover: newHighlight.cover,
             description: newHighlight.description
           }} />
-          <Stack className="grow flex-col max-w-xs mx-auto">
+          <Stack className="grow flex-col gap-2 max-w-xs mx-auto">
             <Field
               {...register("cover", {
                 required: "Highlight cover is required.",

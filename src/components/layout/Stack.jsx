@@ -1,9 +1,6 @@
 import classNames from "classnames"
-import { useComponent } from "../../hooks"
 
-const Stack = ({ ...rest }) => {
-  const { profile } = useComponent()
-
+const Stack = ({ fields, submit, ...rest }) => {
   return (
     <div
       {...rest}
@@ -11,9 +8,9 @@ const Stack = ({ ...rest }) => {
         rest.className,
         "flex",
         {
-          "max-xs:flex-wrap gap-2": profile,
-          "max-[400px]:flex-wrap gap-4": !profile
-        },
+          "gap-4": fields,
+          "max-xs:flex-wrap xs:justify-between max-xs:gap-2": submit
+        }
       )}
     />
   )

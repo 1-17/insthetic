@@ -14,9 +14,9 @@ const BasicInfo = () => {
 
   return (
     <Fieldset legend="Basic info">
-      <Stack className="items-center my-4 first:*:max-xs:mx-auto">
+      <Stack fields className="items-center">
         <Avatar profile />
-        <Stack className="grow flex-col max-w-xs mx-auto">
+        <Stack className="grow flex-col gap-2 max-w-xs mx-auto">
           <Field
             {...register("avatar", {
               onChange: e => readFile(e).then(file => setUser(prev => ({ ...prev, avatar: file })))
@@ -37,7 +37,7 @@ const BasicInfo = () => {
         type="checkbox"
         defaultChecked={user.stories}
       />
-      <Stack>
+      <Stack fields className="max-[500px]:flex-col">
         <Controller
           name="username"
           rules={{

@@ -8,7 +8,7 @@ const Metrics = () => {
       {
         metrics.map((metric, i) =>
           <li key={i}>
-            <span className="block text-lg sm:text-xl font-semibold">
+            <span className="block text-lg sm:text-xl leading-none font-semibold">
               {metric.number}
             </span>
             {metric.name}

@@ -103,7 +103,7 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
             {
               ...rest,
               id: rest.name,
-              ...element === "textarea" && { cols: 10, rows: 2 },
+              ...element === "textarea" && { cols: 10, rows: 3 },
               ...element === "input" && {
                 type: rest.type || "text",
                 ...rest.type === "file" && { ref: fileButton }

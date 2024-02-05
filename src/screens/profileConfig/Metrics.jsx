@@ -11,7 +11,7 @@ const Metrics = () => {
 
   return (
     <Fieldset legend="Metrics">
-      <Stack>
+      <Stack fields>
         <Controller
           name="followers"
           rules={{
@@ -19,6 +19,10 @@ const Metrics = () => {
             min: {
               value: 0,
               message: "Followers cannot have negative numbers."
+            },
+            max: {
+              value: 999999999,
+              message: "Followers number cannot be over 999999999."
             },
             pattern: {
               value: regex.numbersOnly,
@@ -29,7 +33,7 @@ const Metrics = () => {
           render={({ field }) => (
             <Field
               {...field}
-              onChange={e => field.onChange(Number(e.target.value))}
+              onChange={e => field.onChange(e.target.value)}
               onBlur={() => trigger("followers")}
               onFocus={() => clearErrors("followers")}
             />
@@ -56,7 +60,7 @@ const Metrics = () => {
           render={({ field }) => (
             <Field
               {...field}
-              onChange={e => field.onChange(Number(e.target.value))}
+              onChange={e => field.onChange(e.target.value)}
               onBlur={() => trigger("following")}
               onFocus={() => clearErrors("following")}
             />

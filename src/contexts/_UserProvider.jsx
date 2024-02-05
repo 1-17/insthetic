@@ -36,7 +36,16 @@ const UserProvider = ({ children }) => {
   }
 
   const updateUser = data => {
-    const formData = Object.fromEntries(Object.entries(data).filter(([key, value]) => value !== undefined && [key, value]))
+    const formData = Object.fromEntries(Object.entries(data)
+      .filter(([key, value]) => value !== undefined && [key, value])
+      .map(([key, value]) => {
+        if (["followers", "following"].includes(key)) {
+          return [key, Number(value)]
+        }
+        
+        return [key, value]
+      })
+    )
     
     setUser(prev => ({ ...prev, ...formData }))
   }

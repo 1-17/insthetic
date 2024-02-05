@@ -6,10 +6,10 @@ const Highlights = () => {
 
   return (
     user.highlights && (
-      <ul className="flex gap-3 sm:gap-6 overflow-x-auto">
+      <ul className="*:inline-block whitespace-nowrap overflow-x-auto">
         {
           user.highlights.map((highlight, i) => 
-            <li key={i} className="p-2">
+            <li key={i}>
               <Avatar highlights={{
                 cover: highlight.cover,
                 description: highlight.description

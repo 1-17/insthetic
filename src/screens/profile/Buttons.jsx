@@ -7,7 +7,7 @@ const Buttons = () => {
   const { user } = useUser()
 
   return (
-    <Stack>
+    <Stack className="max-xs:flex-wrap gap-2">
       <Button variant="primary" disabled full>
         Follow
       </Button>

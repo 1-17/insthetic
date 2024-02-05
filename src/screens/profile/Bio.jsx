@@ -6,7 +6,10 @@ const Bio = () => {
   
   return (
     user.bio && (
-      <p dangerouslySetInnerHTML={{ __html: formatBioWithMentions() }} />
+      <p
+        dangerouslySetInnerHTML={{ __html: formatBioWithMentions() }}
+        className="leading-tight break-words"
+      />
     )
   )
 }

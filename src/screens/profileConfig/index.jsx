@@ -14,9 +14,9 @@ const ProfileConfig = () => {
       <BasicInfo />
       <Metrics />
       <Business />
-      <Stack>
+      <Stack submit>
         <Button type="submit" />
-        <Button type="reset" className="ml-auto" />
+        <Button type="reset" />
       </Stack>
     </Form>
   )
