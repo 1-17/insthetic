@@ -1,1 +1,1 @@
-Techs: JavaScript, React, Vite, ESLint, TailwindCSS, Autoprefixer, PostCSS, Classnames, React Icons
+Techs: JavaScript, React, Vite, ESLint, TailwindCSS, Autoprefixer, PostCSS, Classnames, React Hook Form, React Icons
