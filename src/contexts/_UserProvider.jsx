@@ -18,7 +18,13 @@ const UserProvider = ({ children }) => {
   const [newHighlight, setNewHighlight] = useState(initialState.newHighlight)
 
   useEffect(() => {
-    localStorage.setItem(dbKey, JSON.stringify(user))
+    try {
+      localStorage.setItem(dbKey, JSON.stringify(user))
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "QuotaExceededError") {
+        alert("Browser storage is full. Please, clear it and try again.")
+      }
+    }
   }, [user])
 
   useEffect(() => {

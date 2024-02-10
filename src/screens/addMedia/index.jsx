@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form"
 import { useUser } from "../../hooks"
-import { readFile } from "../../utils"
+import { readImage } from "../../utils"
 import Form from "../../components/layout/Form"
 import Fieldset from "../../components/layout/Fieldset"
 import Stack from "../../components/layout/Stack"
@@ -25,7 +25,7 @@ const AddMedia = () => {
               {...register("cover", {
                 required: "Highlight cover is required.",
                 onChange: e => {
-                  readFile(e).then(file => {
+                  readImage(e.target.files[0]).then(file => {
                     setNewHighlight(prev => ({ ...prev, cover: file }))
                     clearErrors("cover")
                     setValue("cover", file)
