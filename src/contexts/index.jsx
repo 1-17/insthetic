@@ -1,11 +1,11 @@
 import { createContext } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import ThemeProvider from "./_ThemeProvider"
-import ComponentProvider from "./_ComponentProvider"
+import ScreenProvider from "./_ScreenProvider"
 import UserProvider from "./_UserProvider"
 
 export const ThemeContext = createContext()
-export const ComponentContext = createContext()
+export const ScreenContext = createContext()
 export const UserContext = createContext()
 
 const Contexts = ({ children }) => {
@@ -14,11 +14,11 @@ const Contexts = ({ children }) => {
   return (
     <ThemeProvider>
       <FormProvider {...formMethods}>
-        <ComponentProvider>
+        <ScreenProvider>
           <UserProvider>
             {children}
           </UserProvider>
-        </ComponentProvider>
+        </ScreenProvider>
       </FormProvider>
     </ThemeProvider>
   )

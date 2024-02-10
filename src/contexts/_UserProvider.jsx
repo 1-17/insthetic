@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { UserContext } from "."
-import { useComponent } from "../hooks"
+import { useScreen } from "../hooks"
 import { InitialUser } from "../models"
 import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
-  const { addMedia } = useComponent()
+  const { addMedia } = useScreen()
 
   const dbKey = "user"
 

@@ -2,7 +2,7 @@ import { TbMoon } from "react-icons/tb"
 import { MdOutlineLightMode } from "react-icons/md"
 import { LuPlusSquare } from "react-icons/lu"
 import { BsGear } from "react-icons/bs"
-import { useTheme, useComponent } from "../hooks"
+import { useTheme, useScreen } from "../hooks"
 import Avatar from "../screens/profile/Avatar"
 
 class _FooterButtons {
@@ -16,7 +16,7 @@ class _FooterButtons {
 
   constructor() {
     const { lightMode, changeTheme } = useTheme()
-    const { profileConfig, addMedia, showProfile, showProfileConfig, showAddMedia } = useComponent()
+    const { profileConfig, addMedia, showProfile, showProfileConfig, showAddMedia } = useScreen()
 
     this.buttons = [
       {

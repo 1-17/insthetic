@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { ThemeContext, ComponentContext, UserContext } from "../contexts"
+import { ThemeContext, ScreenContext, UserContext } from "../contexts"
 
 export const useTheme = () => useContext(ThemeContext)
-export const useComponent = () => useContext(ComponentContext)
+export const useScreen = () => useContext(ScreenContext)
 export const useUser = () => useContext(UserContext)

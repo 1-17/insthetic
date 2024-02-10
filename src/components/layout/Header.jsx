@@ -1,12 +1,12 @@
 import { PiArrowLeftBold } from "react-icons/pi"
-import { useComponent } from "../../hooks"
+import { useScreen } from "../../hooks"
 import AppBar from "./AppBar"
 import Username from "../../screens/profile/Username"
 import VerifiedBadge from "../../screens/profile/VerifiedBadge"
 import Button from "./Button"
 
 const Header = () => {
-  const { profile, profileConfig, addMedia, showProfile } = useComponent()
+  const { profile, profileConfig, addMedia, showProfile } = useScreen()
 
   return (
     <AppBar element="header">

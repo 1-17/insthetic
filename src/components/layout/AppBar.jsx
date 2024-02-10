@@ -1,10 +1,10 @@
 import { createElement, useEffect, useState } from "react"
 import classNames from "classnames"
-import { useComponent } from "../../hooks"
+import { useScreen } from "../../hooks"
 import Container from "./Container"
 
 const AppBar = ({ element, children }) => {
-  const { profile } = useComponent()
+  const { profile } = useScreen()
 
   const [border, setBorder] = useState()
 
