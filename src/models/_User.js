@@ -16,6 +16,7 @@ class User {
   stories
   highlights = [
     {
+      id: 0,
       cover: "",
       description: ""
     }

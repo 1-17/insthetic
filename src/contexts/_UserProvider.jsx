@@ -16,7 +16,7 @@ const UserProvider = ({ children }) => {
   
   const [user, setUser] = useState(initialState.user)
   const [newHighlight, setNewHighlight] = useState(initialState.newHighlight)
-
+  
   useEffect(() => {
     try {
       localStorage.setItem(dbKey, JSON.stringify(user))
@@ -61,7 +61,10 @@ const UserProvider = ({ children }) => {
       ...prev,
       highlights: [
         ...prev.highlights,
-        newHighlight
+        {
+          id: !user.highlights.length ? 1 : Math.max(...user.highlights.map(highlight => highlight.id)) + 1,
+          ...newHighlight
+        }
       ]
     }))
 
