@@ -2,16 +2,18 @@ import { useScreen } from "../hooks"
 import Profile from "./profile"
 import ProfileConfig from "./profileConfig"
 import AddMedia from "./addMedia"
+import Highlight from "./highlight"
 
 const Screens = () => {
-  const { profile, profileConfig, addMedia } = useScreen()
+  const { profile, profileConfig, addMedia, highlight } = useScreen()
 
   return (
     <>
       {
         profile && <Profile /> ||
         profileConfig && <ProfileConfig /> ||
-        addMedia && <AddMedia />
+        addMedia && <AddMedia /> ||
+        highlight && <Highlight />
       }
     </>
   )

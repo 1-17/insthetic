@@ -1,8 +1,10 @@
-import { useUser } from "../../hooks"
+import { useScreen, useUser } from "../../hooks"
+import Button from "../../components/layout/Button"
 import Avatar from "./Avatar"
 
 const Highlights = () => {
-  const { user } = useUser()
+  const { showHighlight } = useScreen()
+  const { user, setCurrentHighlight } = useUser()
 
   return (
     user.highlights && (
@@ -10,10 +12,15 @@ const Highlights = () => {
         {
           user.highlights.map((highlight, i) => 
             <li key={i}>
-              <Avatar highlights={{
-                cover: highlight.cover,
-                description: highlight.description
-              }} />
+              <Button variant="icon" onClick={() => {
+                showHighlight()
+                setCurrentHighlight(highlight)
+              }}>
+                <Avatar highlights={{
+                  cover: highlight.cover,
+                  description: highlight.description
+                }} />
+              </Button>
             </li>
           )
         }

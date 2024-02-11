@@ -5,17 +5,19 @@ import { InitialUser } from "../models"
 import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
-  const { addMedia } = useScreen()
+  const { addMedia, highlight, showProfile } = useScreen()
 
   const dbKey = "user"
 
   const initialState = {
     user: JSON.parse(localStorage.getItem(dbKey)) || new InitialUser(),
-    newHighlight: { cover: DefaultImage, description: "Highlights" }
+    newHighlight: { cover: DefaultImage, description: "Highlights" },
+    currentHighlight: null
   }
   
   const [user, setUser] = useState(initialState.user)
   const [newHighlight, setNewHighlight] = useState(initialState.newHighlight)
+  const [currentHighlight, setCurrentHighlight] = useState(initialState.currentHighlight)
   
   useEffect(() => {
     try {
@@ -28,10 +30,9 @@ const UserProvider = ({ children }) => {
   }, [user])
 
   useEffect(() => {
-    if (!addMedia) {
-      setNewHighlight(initialState.newHighlight)
-    }
-  }, [addMedia])
+    !addMedia && setNewHighlight(initialState.newHighlight)
+    !highlight && setCurrentHighlight(initialState.currentHighlight)
+  }, [addMedia, highlight])
 
   const removeAvatar = () => {
     if (user.avatar) {
@@ -73,14 +74,42 @@ const UserProvider = ({ children }) => {
     }, 1500)
   }
 
+  const editHighlight = () => {
+    setUser(prev => ({
+      ...prev,
+      highlights: prev.highlights.map(highlight => highlight.id === currentHighlight.id ? currentHighlight : highlight)
+    }))
+
+    setTimeout(() => {
+      setCurrentHighlight(initialState.currentHighlight)
+      showProfile()
+    }, 1500)
+  }
+
+  const deleteHighlight = () => {
+    if (confirm("Are you sure you want to remove this highlight? This action cannot be undone.")) {
+      setUser(prev => ({
+        ...prev,
+        highlights: prev.highlights.filter(highlight => highlight.id !== currentHighlight.id)
+      }))
+    }
+
+    setCurrentHighlight(initialState.currentHighlight)
+    showProfile()
+  }
+
   return (
     <UserContext.Provider value={{
       user,
       setUser,
+      updateUser,
       newHighlight,
       setNewHighlight,
       addHighlight,
-      updateUser,
+      currentHighlight,
+      setCurrentHighlight,
+      editHighlight,
+      deleteHighlight,
       removeAvatar
     }}>
       {children}

@@ -5,7 +5,14 @@ import { ScreenContext } from "."
 const ScreenProvider = ({ children }) => {
   const { reset } = useFormContext()
 
-  const [screen, setScreen] = useState({ profile: true, profileConfig: false, addMedia: false })
+  const initialState = {
+    profile: true,
+    profileConfig: false,
+    addMedia: false,
+    highlight: false
+  }
+
+  const [screen, setScreen] = useState(initialState)
 
   useEffect(() => {
     reset()
@@ -23,12 +30,14 @@ const ScreenProvider = ({ children }) => {
   const showProfile = () => showScreen("profile")
   const showProfileConfig = () => showScreen("profileConfig")
   const showAddMedia = () => showScreen("addMedia")
+  const showHighlight = () => showScreen("highlight")
 
   return (
     <ScreenContext.Provider value={{
       profile: screen.profile, showProfile,
       profileConfig: screen.profileConfig, showProfileConfig,
-      addMedia: screen.addMedia, showAddMedia
+      addMedia: screen.addMedia, showAddMedia,
+      highlight: screen.highlight, showHighlight
     }}>
       {children}
     </ScreenContext.Provider>
