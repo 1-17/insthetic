@@ -11,7 +11,12 @@ class _InitialUser extends User {
     this.label = "Developer",
     this.bio = "love yourself so no one has to. also, @this_is_a_mention and #this_is_a_hashtag.",
     this.verified = true,
-    this.posts = [],
+    this.posts = [
+      {
+        id: 1,
+        image: "src/assets/images/default-image.svg"
+      }
+    ],
     this.followers = 1234,
     this.following = 567,
     this.link = "https://github.com/1-17",

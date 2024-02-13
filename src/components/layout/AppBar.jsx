@@ -20,7 +20,7 @@ const AppBar = ({ element, children }) => {
       element,
       {
         className: classNames(
-          "bg-inherit border-medium border-opacity-25 sticky z-10",
+          "bg-inherit border-medium border-opacity-25 sticky z-50",
           {
             "top-0 text-xl sm:text-2xl font-semibold": element === "header",
             "border-b": element === "header" && border,

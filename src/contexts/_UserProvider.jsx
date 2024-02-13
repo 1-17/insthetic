@@ -12,12 +12,15 @@ const UserProvider = ({ children }) => {
   const initialState = {
     user: JSON.parse(localStorage.getItem(dbKey)) || new InitialUser(),
     newHighlight: { cover: DefaultImage, description: "Highlights" },
-    currentHighlight: null
+    newPost: { image: DefaultImage },
+    currentMedia: null
   }
   
   const [user, setUser] = useState(initialState.user)
   const [newHighlight, setNewHighlight] = useState(initialState.newHighlight)
-  const [currentHighlight, setCurrentHighlight] = useState(initialState.currentHighlight)
+  const [currentHighlight, setCurrentHighlight] = useState(initialState.currentMedia)
+  const [newPost, setNewPost] = useState(initialState.newPost)
+  const [currentPost, setCurrentPost] = useState(initialState.currentMedia)
   
   useEffect(() => {
     try {
@@ -30,9 +33,20 @@ const UserProvider = ({ children }) => {
   }, [user])
 
   useEffect(() => {
-    !addMedia && setNewHighlight(initialState.newHighlight)
-    !highlight && setCurrentHighlight(initialState.currentHighlight)
+    !addMedia && setNewHighlight(initialState.newHighlight), setNewPost(initialState.newPost)
+    !highlight && setCurrentHighlight(initialState.currentMedia)
   }, [addMedia, highlight])
+
+  useEffect(() => {
+    const clearCurrentPost = e => {
+      if (!e.target.parentElement.attributes.name || e.target.parentElement.attributes.name.value !== "post") {
+        setCurrentPost(null)
+      }
+    }
+
+    window.addEventListener("click", clearCurrentPost)
+    return () => window.removeEventListener("click", clearCurrentPost)
+  }, [])
 
   const removeAvatar = () => {
     if (user.avatar) {
@@ -81,7 +95,7 @@ const UserProvider = ({ children }) => {
     }))
 
     setTimeout(() => {
-      setCurrentHighlight(initialState.currentHighlight)
+      setCurrentHighlight(initialState.currentMedia)
       showProfile()
     }, 1500)
   }
@@ -94,8 +108,34 @@ const UserProvider = ({ children }) => {
       }))
     }
 
-    setCurrentHighlight(initialState.currentHighlight)
+    setCurrentHighlight(initialState.currentMedia)
     showProfile()
+  }
+
+  const addPost = () => {
+    setUser(prev => ({
+      ...prev,
+      posts: [
+        ...prev.posts,
+        {
+          id: !user.posts.length ? 1 : Math.max(...user.posts.map(post => post.id)) + 1,
+          ...newPost
+        }
+      ]
+    }))
+
+    setTimeout(() => {
+      setNewPost(initialState.newPost)
+    }, 1500)
+  }
+
+  const deletePost = () => {
+    if (confirm("Are you sure you want to remove this post? This action cannot be undone.")) {
+      setUser(prev => ({
+        ...prev,
+        posts: prev.posts.filter(post => post.id !== currentPost.id)
+      }))
+    }
   }
 
   return (
@@ -110,6 +150,12 @@ const UserProvider = ({ children }) => {
       setCurrentHighlight,
       editHighlight,
       deleteHighlight,
+      newPost,
+      setNewPost,
+      addPost,
+      deletePost,
+      currentPost,
+      setCurrentPost,
       removeAvatar
     }}>
       {children}

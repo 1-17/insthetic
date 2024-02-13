@@ -3,18 +3,13 @@ import { MdOutlineLightMode } from "react-icons/md"
 import { LuPlusSquare } from "react-icons/lu"
 import { BsGear } from "react-icons/bs"
 import { useTheme, useScreen } from "../hooks"
+import Buttons from "./_Buttons"
 import Avatar from "../screens/profile/Avatar"
 
-class _FooterButtons {
-  buttons = [
-    {
-      label: "",
-      icon: "",
-      click: ""
-    }
-  ]
-
+class _FooterButtons extends Buttons {
   constructor() {
+    super()
+
     const { lightMode, changeTheme } = useTheme()
     const { profileConfig, addMedia, highlight, showProfile, showProfileConfig, showAddMedia } = useScreen()
 

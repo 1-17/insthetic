@@ -1,8 +1,12 @@
-import AddHighlight from "./AddHighlight"
+import NewHighlight from "./NewHighlight"
+import NewPost from "./NewPost"
 
 const AddMedia = () => {
   return (
-    <AddHighlight />
+    <div className="*:mt-20 first:*:mt-0">
+      <NewPost />
+      <NewHighlight />
+    </div>
   )
 }
 

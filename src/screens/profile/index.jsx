@@ -8,6 +8,7 @@ import Bio from "./Bio"
 import Link from "./Link"
 import Buttons from "./Buttons"
 import Highlights from "./Highlights"
+import Posts from "./Posts"
 
 const Profile = () => {
   return (
@@ -28,6 +29,7 @@ const Profile = () => {
         <Buttons />
         <Highlights />
       </section>
+      <Posts />
     </>
   )
 }

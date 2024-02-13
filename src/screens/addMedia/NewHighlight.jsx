@@ -7,7 +7,8 @@ import Stack from "../../components/layout/Stack"
 import Field from "../../components/layout/Field"
 import Button from "../../components/layout/Button"
 import Avatar from "../profile/Avatar"
-const AddHighlight = () => {
+
+const NewHighlight = () => {
   const { register, setValue, clearErrors } = useFormContext()
   const { newHighlight, setNewHighlight, addHighlight } = useUser()
 
@@ -53,4 +54,4 @@ const AddHighlight = () => {
   )
 }
 
-export default AddHighlight
+export default NewHighlight

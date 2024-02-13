@@ -62,7 +62,7 @@ const Button = ({ variant, full, copy, ...rest }) => {
           "bg-accent text-light": variant === "primary",
           "bg-success text-dark": variant === "success",
           "bg-danger text-light": variant === "danger",
-          "hover:bg-medium hover:bg-opacity-10 focus-visible:bg-medium focus-visible:bg-opacity-10": variant === "icon",
+          "hover:bg-medium hover:bg-opacity-10 focus-visible:bg-medium focus-visible:bg-opacity-10": variant === "icon" && !rest.disabled,
           "rounded-shape absolute top-0.5 right-0.5 p-2": copy,
           "xs:max-w-[50%]": rest.type === "submit",
           "bg-transparent font-semibold text-danger": rest.type === "reset",

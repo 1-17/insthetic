@@ -6,7 +6,12 @@ class User {
   label
   bio
   verified
-  posts
+  posts = [
+    {
+      id: 0,
+      image: ""
+    }
+  ]
   followers
   following
   link
