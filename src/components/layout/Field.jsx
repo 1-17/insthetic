@@ -3,12 +3,10 @@ import { useFormContext } from "react-hook-form"
 import { LuX } from "react-icons/lu"
 import { FaChevronDown } from "react-icons/fa6"
 import classNames from "classnames"
-import { useTheme } from "../../hooks"
 import { capitalizeString } from "../../utils"
 import Button from "./Button"
 
 const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
-  const { lightMode } = useTheme()
   const { watch, getValues, setValue, formState: { errors } } = useFormContext()
 
   const element = (textarea && "textarea") || (select && "select") || "input"
@@ -25,16 +23,16 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
 
       const updateFieldLength = e => setFieldLength(rest.maxLength - e.target.value.length)
       const clearFieldLength = () => setFieldLength(-1)
+      const handleFieldEvent = action => {
+        const eventListener = field[`${action}EventListener`].bind(field)
 
-      field.addEventListener("focus", updateFieldLength)
-      field.addEventListener("input", updateFieldLength)
-      field.addEventListener("blur", clearFieldLength)
-
-      return () => {
-        field.removeEventListener("focus", updateFieldLength)
-        field.removeEventListener("input", updateFieldLength)
-        field.removeEventListener("blur", clearFieldLength)
+        eventListener("focus", updateFieldLength)
+        eventListener("input", updateFieldLength)
+        eventListener("blur", clearFieldLength)
       }
+
+      handleFieldEvent("add")
+      return () => handleFieldEvent("remove")
     }
   }, [])
 
@@ -129,13 +127,8 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
               ...errors[rest.name] && { invalid: "true", "aria-invalid": "true", "aria-describedby": `${rest.name}-hint` },
               ...!["checkbox", "file"].includes(rest.type) && {
                 className: classNames(
-                  "border-2 focus-visible:border-current focus-visible:outline-none rounded-shape w-full",
+                  "bg-light dark:bg-dark border-2 border-medium-light dark:border-medium-dark aria-[invalid]:border-current focus-visible:border-current focus-visible:outline-none rounded-shape w-full",
                   {
-                    "bg-light": lightMode,
-                    "bg-dark": !lightMode,
-                    "border-medium-light": lightMode && !errors[rest.name],
-                    "border-medium-dark": !lightMode && !errors[rest.name],
-                    "border-current": errors[rest.name],
                     "resize-none": element === "textarea",
                     "appearance-none": element === "select",
                     "px-2 py-1": !(element === "select" && rest.multiple),
@@ -154,10 +147,8 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
                   key={i}
                   value={option}
                   className={classNames(
-                    "cursor-pointer px-2 py-1",
+                    "cursor-pointer px-2 py-1 hover:bg-medium-light dark:hover:bg-medium-dark",
                     {
-                      "hover:bg-medium-light": lightMode,
-                      "hover:bg-medium-dark": !lightMode,
                       "hidden": (multipleSelectValues && multipleSelectValues.includes(option))
                       // "hidden": (select.multiple && selectFieldOptions.includes(option))
                     }

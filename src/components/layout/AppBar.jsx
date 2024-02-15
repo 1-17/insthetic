@@ -28,12 +28,10 @@ const AppBar = ({ element, children }) => {
           }
         )
       },
-      <Container {...element === "footer" && { element: "nav" }} className={classNames(
-        {
-          "p-3": element === "header" && profile,
-          "flex justify-between items-center": element === "footer"
-        }
-      )}>
+      <Container
+        {...(element === "header" && profile) && { className: "py-3" }}
+        {...element === "footer" && { element: "nav" }}
+      >
         {children}
       </Container>
     )

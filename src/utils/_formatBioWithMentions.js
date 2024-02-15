@@ -1,8 +1,6 @@
-import classNames from "classnames"
-import { useTheme, useUser } from "../hooks"
+import { useUser } from "../hooks"
 
 const _formatBioWithMentions = () => {
-  const { lightMode } = useTheme()
   const { user } = useUser()
 
   const escapeInputHTML = document.createElement("div")
@@ -12,14 +10,7 @@ const _formatBioWithMentions = () => {
   return (
     sanitizedBio.replace(/(@\w+|#\w+)/g, (text, textPart) => {
       if (textPart.startsWith("@") || textPart.startsWith("#")) {
-        return (`
-          <span class="${classNames(
-            {
-              "text-accent-dark": lightMode,
-              "text-accent-light": !lightMode
-            }
-          )}">${text}</span>`
-        )
+        return (`<span class="text-accent-dark dark:text-accent-light">${text}</span>`)
       }
 
       return text

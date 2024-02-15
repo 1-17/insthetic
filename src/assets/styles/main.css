@@ -10,14 +10,14 @@
   @apply outline outline-2 outline-current
 }
 
-.light {
-  @apply bg-light text-dark
+body {
+  @apply bg-light text-dark max-sm:text-sm transition-colors
 }
 
-.dark {
+body.dark {
   @apply bg-dark text-light
 }
 
 #root {
-  @apply bg-inherit flex flex-col max-sm:text-sm min-h-screen transition-colors
+  @apply bg-inherit flex flex-col min-h-screen
 }

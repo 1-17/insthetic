@@ -1,19 +1,12 @@
 import { RiLink } from "react-icons/ri"
-import classNames from "classnames"
-import { useTheme, useUser } from "../../hooks"
+import { useUser } from "../../hooks"
 
 const Link = () => {
-  const { lightMode } = useTheme()
   const { user } = useUser()
 
   return (
     user.link && (
-      <span className={classNames(
-        {
-          "text-accent-dark": lightMode,
-          "text-accent-light": !lightMode
-        }
-      )}>
+      <span className="text-accent-dark dark:text-accent-light">
         <RiLink className="inline-block align-text-bottom text-lg mr-1" />
         {user.link}
       </span>

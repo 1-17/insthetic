@@ -18,7 +18,7 @@ const Posts = () => {
                 disabled
                 variant="icon"
                 full
-                className="text-2xl sm:text-3xl p-2"
+                className="text-2xl sm:text-3xl h-12"
                 >
                 <IoMdGrid className="mx-auto" />
               </Button>

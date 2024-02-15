@@ -7,19 +7,22 @@ const Footer = () => {
   
   return (
     <AppBar element="footer">
-      {
-        buttons.map((button, i) =>
-          <Button
-            key={i}
-            aria-label={button.label}
-            onClick={button.click}
-            variant="icon"
-            className="text-2xl sm:text-3xl px-6 py-3"
-          >
-            <button.icon />
-          </Button>
-        )
-      }
+      <ul className="flex justify-between items-center">
+        {
+          buttons.map((button, i) =>
+            <li key={i}>
+              <Button
+                aria-label={button.label}
+                onClick={button.click}
+                variant="icon"
+                className="text-2xl sm:text-3xl w-20 h-14 *:max-w-fit *:mx-auto"
+              >
+                <button.icon />
+              </Button>
+            </li>
+          )
+        }
+      </ul>
     </AppBar>
   )
 }
