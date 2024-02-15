@@ -9,3 +9,15 @@
 :focus-visible {
   @apply outline outline-2 outline-current
 }
+
+.light {
+  @apply bg-light text-dark
+}
+
+.dark {
+  @apply bg-dark text-light
+}
+
+#root {
+  @apply bg-inherit flex flex-col max-sm:text-sm min-h-screen transition-colors
+}

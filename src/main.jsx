@@ -4,11 +4,7 @@ import Contexts from "./contexts"
 import App from "./components/layout/App"
 import "./assets/styles/main.css"
 
-const root = document.getElementById("root")
-
-root.setAttribute("class", "bg-inherit flex flex-col max-sm:text-sm min-h-screen transition-colors")
-
-ReactDOM.createRoot(root).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Contexts>
       <App />
