@@ -14,10 +14,6 @@ const App = () => {
       "bg-dark text-light": !lightMode
     }
   ))
-
-  document.getElementById("root").setAttribute("class", classNames(
-    "bg-inherit flex flex-col max-sm:text-sm min-h-screen transition-colors",
-  ))
   
   return (
     <>
