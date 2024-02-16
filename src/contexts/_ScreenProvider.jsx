@@ -1,15 +1,29 @@
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { ScreenContext } from "."
+import { capitalizeString } from "../utils"
+import { Profile, ProfileConfig, AddMedia, Highlight } from "../screens"
 
 const ScreenProvider = ({ children }) => {
   const { reset } = useFormContext()
 
   const initialState = {
-    profile: true,
-    profileConfig: false,
-    addMedia: false,
-    highlight: false
+    profile: {
+      visible: true,
+      component: Profile
+    },
+    profileConfig: {
+      visible: false,
+      component: ProfileConfig
+    },
+    addMedia: {
+      visible: false,
+      component: AddMedia
+    },
+    highlight: {
+      visible: false,
+      component: Highlight
+    }
   }
 
   const [screen, setScreen] = useState(initialState)
@@ -18,30 +32,32 @@ const ScreenProvider = ({ children }) => {
     reset()
   }, [screen])
 
-  const showScreen = key => {
-    if (!screen[key]) {
-      setScreen(prev => ({
-        ...Object.fromEntries(Object.keys(prev).map(k => [k, k === key])),
-        [key]: true
-      }))
+  const showScreen = screenName => {
+    const updatedScreen = {}
+
+    for (const key in screen) {
+      updatedScreen[key] = {
+        ...screen[key],
+        visible: key === screenName
+      }
     }
+
+    setScreen(updatedScreen)
   }
 
-  const showProfile = () => showScreen("profile")
-  const showProfileConfig = () => showScreen("profileConfig")
-  const showAddMedia = () => showScreen("addMedia")
-  const showHighlight = () => showScreen("highlight")
+  const keysAndMethods = Object.keys(screen).reduce((acc, key) => {
+    acc[key] = screen[key].visible
+    acc[`show${capitalizeString(key)}`] = () => showScreen(key)
+    return acc
+  }, {})
+
+  const ScreenComponent = Object.values(screen).find(screen => screen.visible).component
 
   return (
-    <ScreenContext.Provider value={{
-      profile: screen.profile, showProfile,
-      profileConfig: screen.profileConfig, showProfileConfig,
-      addMedia: screen.addMedia, showAddMedia,
-      highlight: screen.highlight, showHighlight
-    }}>
+    <ScreenContext.Provider value={{ ...keysAndMethods, ScreenComponent }}>
       {children}
     </ScreenContext.Provider>
-  ) 
+  )
 }
 
 export default ScreenProvider

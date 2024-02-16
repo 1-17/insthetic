@@ -1,22 +1,15 @@
 import { useScreen } from "../hooks"
-import Profile from "./profile"
-import ProfileConfig from "./profileConfig"
-import AddMedia from "./addMedia"
-import Highlight from "./highlight"
 
 const Screens = () => {
-  const { profile, profileConfig, addMedia, highlight } = useScreen()
+  const { ScreenComponent } = useScreen()
 
   return (
-    <>
-      {
-        profile && <Profile /> ||
-        profileConfig && <ProfileConfig /> ||
-        addMedia && <AddMedia /> ||
-        highlight && <Highlight />
-      }
-    </>
+    <ScreenComponent />
   )
 }
 
 export default Screens
+export { default as Profile } from "./profile"
+export { default as ProfileConfig } from "./profileConfig"
+export { default as AddMedia } from "./addMedia"
+export { default as Highlight } from "./highlight"

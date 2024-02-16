@@ -8,7 +8,7 @@ import Field from "../../components/layout/Field"
 import Button from "../../components/layout/Button"
 import Avatar from "../profile/Avatar"
 
-const Highlight = () => {
+const _Highlight = () => {
   const { register } = useFormContext()
   const { currentHighlight, setCurrentHighlight, editHighlight, deleteHighlight } = useUser()
 
@@ -65,4 +65,4 @@ const Highlight = () => {
   )
 }
 
-export default Highlight
+export default _Highlight

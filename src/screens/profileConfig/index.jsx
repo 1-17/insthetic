@@ -6,7 +6,7 @@ import BasicInfo from "./BasicInfo"
 import Metrics from "./Metrics"
 import Business from "./Business"
 
-const ProfileConfig = () => {
+const _ProfileConfig = () => {
   const { updateUser } = useUser()
   
   return (
@@ -22,4 +22,4 @@ const ProfileConfig = () => {
   )
 }
 
-export default ProfileConfig
+export default _ProfileConfig

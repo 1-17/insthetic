@@ -1,7 +1,7 @@
 import NewHighlight from "./NewHighlight"
 import NewPost from "./NewPost"
 
-const AddMedia = () => {
+const _AddMedia = () => {
   return (
     <div className="*:mt-20 first:*:mt-0">
       <NewPost />
@@ -10,4 +10,4 @@ const AddMedia = () => {
   )
 }
 
-export default AddMedia
+export default _AddMedia

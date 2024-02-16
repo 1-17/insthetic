@@ -10,7 +10,7 @@ import Buttons from "./Buttons"
 import Highlights from "./Highlights"
 import Posts from "./Posts"
 
-const Profile = () => {
+const _Profile = () => {
   return (
     <>
       <section className="flex justify-between items-center gap-2">
@@ -34,4 +34,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default _Profile
