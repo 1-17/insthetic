@@ -1,9 +1,8 @@
-import { useScreen, useUser } from "../../hooks"
+import { useUser } from "../../hooks"
 import Button from "../../components/layout/Button"
 import Avatar from "./Avatar"
 
 const Highlights = () => {
-  const { showHighlight } = useScreen()
   const { user, setCurrentHighlight } = useUser()
 
   return (
@@ -12,10 +11,7 @@ const Highlights = () => {
         {
           user.highlights.map((highlight, i) => 
             <li key={i}>
-              <Button variant="icon" onClick={() => {
-                showHighlight()
-                setCurrentHighlight(highlight)
-              }}>
+              <Button variant="icon" onClick={() => setCurrentHighlight(highlight)}>
                 <Avatar highlights={{
                   cover: highlight.cover,
                   description: highlight.description

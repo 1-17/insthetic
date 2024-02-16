@@ -5,7 +5,7 @@ import { InitialUser } from "../models"
 import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
-  const { addMedia, highlight, showProfile } = useScreen()
+  const { addMedia, highlight, showProfile, showHighlight } = useScreen()
 
   const dbKey = "user"
 
@@ -31,6 +31,10 @@ const UserProvider = ({ children }) => {
       }
     }
   }, [user])
+
+  useEffect(() => {
+    currentHighlight !== initialState.currentMedia && showHighlight()
+  }, [currentHighlight])
 
   useEffect(() => {
     !addMedia && setNewHighlight(initialState.newHighlight), setNewPost(initialState.newPost)
