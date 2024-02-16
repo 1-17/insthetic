@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { ScreenContext } from "."
-import { capitalizeString } from "../utils"
+import { capitalizeString, splitCamelCaseString } from "../utils"
 import { Profile, ProfileConfig, AddMedia, Highlight } from "../screens"
 
 const ScreenProvider = ({ children }) => {
@@ -53,8 +53,12 @@ const ScreenProvider = ({ children }) => {
 
   const ScreenComponent = Object.values(screen).find(screen => screen.visible).component
 
+  const screenTitle = splitCamelCaseString(
+    Object.entries(screen).find(([_key, value]) => value.visible)[0]
+  )
+
   return (
-    <ScreenContext.Provider value={{ ...keysAndMethods, ScreenComponent }}>
+    <ScreenContext.Provider value={{ ...keysAndMethods, ScreenComponent, screenTitle }}>
       {children}
     </ScreenContext.Provider>
   )

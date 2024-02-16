@@ -6,7 +6,7 @@ import VerifiedBadge from "../../screens/profile/VerifiedBadge"
 import Button from "./Button"
 
 const Header = () => {
-  const { profile, profileConfig, addMedia, highlight, showProfile } = useScreen()
+  const { profile, showProfile, screenTitle } = useScreen()
 
   return (
     <AppBar element="header">
@@ -28,9 +28,7 @@ const Header = () => {
               <PiArrowLeftBold className="inline align-sub" />
             </Button>
             <h1 className="inline">
-              {profileConfig && "Profile config"}
-              {addMedia && "Add media"}
-              {highlight && "Highlight"}
+              {screenTitle}
             </h1>
           </>
         )
