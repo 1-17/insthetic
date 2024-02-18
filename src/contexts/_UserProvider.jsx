@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { UserContext } from "."
 import { useScreen } from "../hooks"
 import { InitialUser } from "../models"
@@ -7,10 +7,12 @@ import DefaultImage from "../assets/images/default-image.svg"
 const UserProvider = ({ children }) => {
   const { addMedia, highlight, showProfile, showHighlight } = useScreen()
 
+  const initialUser = new InitialUser()
   const dbKey = "user"
+  const postsRef = useRef([])
 
   const initialState = {
-    user: JSON.parse(localStorage.getItem(dbKey)) || new InitialUser(),
+    user: JSON.parse(localStorage.getItem(dbKey)) || initialUser,
     newHighlight: { cover: DefaultImage, description: "Highlights" },
     newPost: { image: DefaultImage },
     currentMedia: null
@@ -20,8 +22,8 @@ const UserProvider = ({ children }) => {
   const [newHighlight, setNewHighlight] = useState(initialState.newHighlight)
   const [currentHighlight, setCurrentHighlight] = useState(initialState.currentMedia)
   const [newPost, setNewPost] = useState(initialState.newPost)
-  const [currentPost, setCurrentPost] = useState(initialState.currentMedia)
-  
+  const [selectedPostId, setSelectedPostId] = useState(initialState.currentMedia)
+
   useEffect(() => {
     try {
       localStorage.setItem(dbKey, JSON.stringify(user))
@@ -43,9 +45,8 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const clearCurrentPost = e => {
-      if (!e.target.parentElement.attributes.name || e.target.parentElement.attributes.name.value !== "post") {
-        setCurrentPost(null)
-      }
+      const notPostElement = !postsRef.current.some(ref => ref && ref.contains(e.target))
+      notPostElement && setSelectedPostId(initialState.currentMedia)
     }
 
     window.addEventListener("click", clearCurrentPost)
@@ -54,7 +55,7 @@ const UserProvider = ({ children }) => {
 
   const removeAvatar = () => {
     if (user.avatar) {
-      return setUser(prev => ({ ...prev, avatar: null }))
+      return setUser(prev => ({ ...prev, avatar: initialUser.avatar }))
     }
 
     alert("There's no photo to remove.")
@@ -120,11 +121,11 @@ const UserProvider = ({ children }) => {
     setUser(prev => ({
       ...prev,
       posts: [
-        ...prev.posts,
         {
           id: !user.posts.length ? 1 : Math.max(...user.posts.map(post => post.id)) + 1,
           ...newPost
-        }
+        },
+        ...prev.posts
       ]
     }))
 
@@ -133,11 +134,17 @@ const UserProvider = ({ children }) => {
     }, 1500)
   }
 
+  const handleSelectedPostId = e => {
+    const postId = Number(e.currentTarget.id)
+    
+    setSelectedPostId(selectedPostId !== postId ? postId : initialState.currentMedia)
+  }
+
   const deletePost = () => {
     if (confirm("Are you sure you want to remove this post? This action cannot be undone.")) {
       setUser(prev => ({
         ...prev,
-        posts: prev.posts.filter(post => post.id !== currentPost.id)
+        posts: prev.posts.filter(post => post.id !== selectedPostId)
       }))
     }
   }
@@ -154,12 +161,13 @@ const UserProvider = ({ children }) => {
       setCurrentHighlight,
       editHighlight,
       deleteHighlight,
+      postsRef,
       newPost,
       setNewPost,
       addPost,
+      selectedPostId,
+      handleSelectedPostId,
       deletePost,
-      currentPost,
-      setCurrentPost,
       removeAvatar
     }}>
       {children}

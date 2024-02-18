@@ -2,41 +2,42 @@ import { IoMdGrid } from "react-icons/io"
 import { LuTrash } from "react-icons/lu"
 import classNames from "classnames"
 import { useUser } from "../../hooks"
-import Button from "../../components/layout/Button"
+import { dragAndDrop } from "../../utils"
 
 const Posts = () => {
-  const { user, currentPost, setCurrentPost, deletePost } = useUser()
+  const { user, setUser, postsRef, selectedPostId, handleSelectedPostId, deletePost } = useUser()
 
   return (
     user.posts.length > 0 && (
       <section>
+        <span className="border-b border-medium border-opacity-25 block text-2xl sm:text-3xl py-2">
+          <IoMdGrid aria-label="Posts" className="mx-auto" />
+        </span>
         <nav>
-          <ul className="border-b border-medium border-opacity-25 mb-1">
-            <li className="border-b border-current">
-              <Button
-                aria-label="Posts"
-                disabled
-                variant="icon"
-                full
-                className="text-2xl sm:text-3xl h-12"
-                >
-                <IoMdGrid className="mx-auto" />
-              </Button>
-            </li>
-          </ul>
-        </nav>
-        <nav>
-          <ul className="grid grid-cols-3 gap-1">
+          <ul className="grid grid-cols-3 gap-1 mt-1">
             {
               user.posts.map(post =>
                 <li
                   key={post.id}
-                  name="post"
-                  onClick={() => setCurrentPost(post) || currentPost === post && setCurrentPost(null)}
-                  className="relative *:transition-all"
-                  >
+                  id={post.id}
+                  ref={ref => postsRef.current[post.id] = ref}
                   {
-                    currentPost && (post.id === currentPost.id) && (
+                    ...dragAndDrop({
+                      items: user.posts,
+                      itemId: post.id,
+                      update: posts => setUser(prev => ({ ...prev, posts: posts }))
+                    })
+                  }
+                  onClick={handleSelectedPostId}
+                  className={classNames(
+                    "cursor-pointer",
+                    {
+                      "relative": selectedPostId === post.id
+                    }
+                  )}
+                >
+                  {
+                    (selectedPostId === post.id) && (
                       <div className="bg-medium bg-opacity-25 absolute top-0 left-0 grid place-items-center w-full h-full z-10">
                         <button
                           aria-label="Delete post"
@@ -51,12 +52,7 @@ const Posts = () => {
                   <img
                     src={post.image}
                     alt="Post"
-                    className={classNames(
-                      "aspect-square object-cover w-full",
-                      {
-                        "saturate-0": currentPost && (post.id === currentPost.id)
-                      }
-                    )}
+                    className="aspect-square object-cover w-full"
                   />
                 </li>
               )
