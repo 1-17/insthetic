@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { UserContext } from "."
-import { useScreen } from "../hooks"
+import { usePopup, useScreen } from "../hooks"
 import { InitialUser } from "../models"
 import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
+  const { openBasicPopup } = usePopup()
   const { addMedia, highlight, showProfile, showHighlight } = useScreen()
 
   const initialUser = new InitialUser()
@@ -29,7 +30,10 @@ const UserProvider = ({ children }) => {
       localStorage.setItem(dbKey, JSON.stringify(user))
     } catch (err) {
       if (err instanceof DOMException && err.name === "QuotaExceededError") {
-        alert("Browser storage is full. Please, clear it and try again.")
+        openBasicPopup({
+          title: "Error",
+          description: "App storage is full. Please, delete some highlights or posts and try again."
+        })
       }
     }
   }, [user])
@@ -55,10 +59,24 @@ const UserProvider = ({ children }) => {
 
   const removeAvatar = () => {
     if (user.avatar) {
-      return setUser(prev => ({ ...prev, avatar: initialUser.avatar }))
+      return openBasicPopup({
+        title: "Avatar",
+        description: "Are you sure you want to remove the current avatar photo? This action cannot be undone.",
+        ok: () => {
+          setUser(prev => ({ ...prev, avatar: initialUser.avatar }))
+
+          openBasicPopup({
+            title: "Success",
+            description: "Avatar removed."
+          })
+        }
+      })
     }
 
-    alert("There's no photo to remove.")
+    openBasicPopup({
+      title: "Warning",
+      description: "There is no photo to remove."
+    })
   }
 
   const updateUser = data => {
@@ -80,11 +98,11 @@ const UserProvider = ({ children }) => {
     setUser(prev => ({
       ...prev,
       highlights: [
-        ...prev.highlights,
         {
           id: !user.highlights.length ? 1 : Math.max(...user.highlights.map(highlight => highlight.id)) + 1,
           ...newHighlight
-        }
+        },
+        ...prev.highlights
       ]
     }))
 
@@ -106,15 +124,24 @@ const UserProvider = ({ children }) => {
   }
 
   const deleteHighlight = () => {
-    if (confirm("Are you sure you want to remove this highlight? This action cannot be undone.")) {
-      setUser(prev => ({
-        ...prev,
-        highlights: prev.highlights.filter(highlight => highlight.id !== currentHighlight.id)
-      }))
-    }
+    openBasicPopup({
+      title: "Delete highlight",
+      description: "Are you sure you want to remove this highlight? This action cannot be undone.",
+      ok: () => {
+        setUser(prev => ({
+          ...prev,
+          highlights: prev.highlights.filter(highlight => highlight.id !== currentHighlight.id)
+        }))
 
-    setCurrentHighlight(initialState.currentMedia)
-    showProfile()
+        setCurrentHighlight(initialState.currentMedia)
+        showProfile()
+
+        openBasicPopup({
+          title: "Success",
+          description: "Highlight removed."
+        })
+      }
+    })
   }
 
   const addPost = () => {
@@ -141,12 +168,21 @@ const UserProvider = ({ children }) => {
   }
 
   const deletePost = () => {
-    if (confirm("Are you sure you want to remove this post? This action cannot be undone.")) {
-      setUser(prev => ({
-        ...prev,
-        posts: prev.posts.filter(post => post.id !== selectedPostId)
-      }))
-    }
+    openBasicPopup({
+      title: "Delete post",
+      description: "Are you sure you want to remove this post? This action cannot be undone.",
+      ok: () => {
+        setUser(prev => ({
+          ...prev,
+          posts: prev.posts.filter(post => post.id !== selectedPostId)
+        }))
+
+        openBasicPopup({
+          title: "Success",
+          description: "Post deleted."
+        })
+      }
+    })
   }
 
   return (

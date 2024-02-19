@@ -2,6 +2,7 @@ import Header from "./Header"
 import Container from "./Container"
 import Screens from "../../screens"
 import Footer from "./Footer"
+import Popup from "./Popup"
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <Screens />
       </Container>
       <Footer />
+      <Popup />
     </>
   )
 }

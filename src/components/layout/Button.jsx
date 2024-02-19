@@ -2,10 +2,12 @@ import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import { LuCopy } from "react-icons/lu"
 import classNames from "classnames"
+import { usePopup } from "../../hooks"
 import { copyToClipboard } from "../../utils"
 
 const Button = ({ variant, full, copy, ...rest }) => {
   const { reset, formState: { isSubmitted, isSubmitSuccessful } } = useFormContext()
+  const { openBasicPopup } = usePopup()
 
   useEffect(() => {
     const clearSubmitButtonState = setTimeout(() =>
@@ -39,7 +41,7 @@ const Button = ({ variant, full, copy, ...rest }) => {
 
   if (copy) {
     rest["aria-label"] = `Copy ${copy} to clipboard`
-    rest.onClick = () => copyToClipboard(copy)
+    rest.onClick = () => copyToClipboard(copy, openBasicPopup)
     rest.children = <LuCopy />
     variant = "icon"
   }
