@@ -25,7 +25,7 @@ const NewPost = () => {
               {...register("image", {
                 required: "Image is required.",
                 onChange: e => {
-                  readImage(e.target.files[0]).then(file => {
+                  readImage(e).then(file => {
                     setNewPost(prev => ({ ...prev, image: file }))
                     clearErrors("image")
                     setValue("image", file)

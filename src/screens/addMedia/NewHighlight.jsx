@@ -25,7 +25,7 @@ const NewHighlight = () => {
               {...register("cover", {
                 required: "Highlight cover is required.",
                 onChange: e => {
-                  readImage(e.target.files[0]).then(file => {
+                  readImage(e).then(file => {
                     setNewHighlight(prev => ({ ...prev, cover: file }))
                     clearErrors("cover")
                     setValue("cover", file)

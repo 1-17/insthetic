@@ -19,7 +19,7 @@ const BasicInfo = () => {
         <Stack className="grow flex-col gap-2 max-w-xs mx-auto">
           <Field
             {...register("avatar", {
-              onChange: e => readImage(e.target.files[0]).then(file => setUser(prev => ({ ...prev, avatar: file })))
+              onChange: e => readImage(e).then(file => setUser(prev => ({ ...prev, avatar: file })))
             })}
             label="Add photo"
             type="file"

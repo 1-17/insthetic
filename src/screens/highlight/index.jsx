@@ -24,7 +24,7 @@ const _Highlight = () => {
             <Field
               {...register("cover", {
                 onChange: e => {
-                  readImage(e.target.files[0]).then(file => {
+                  readImage(e).then(file => {
                     setCurrentHighlight(prev => ({ ...prev, cover: file }))
                   })
                 }
