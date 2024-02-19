@@ -3,7 +3,7 @@ import { regex } from "../models"
 
 const _splitCamelCaseString = string => {
   if (!string) {
-    throw new Error("Split camelCase string: Missing string argument.")
+    throw new Error("Split camelCase String: Missing string argument.")
   }
 
   const uppercaseIndex = string.search(regex.uppercaseLetters)

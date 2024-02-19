@@ -2,6 +2,10 @@ import { useState } from "react"
 
 const _dragAndDrop = ({ items, itemId, update }) => {
   const [_itemId, setItemId] = useState(null)
+
+  if (!items || !itemId) {
+    throw new Error("Drag and Drop: Missing items and/or itemId arguments.")
+  }
   
   const dragStart = e => {
     e.dataTransfer.setData("dragItemId", itemId)
