@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react"
+import { useFormContext } from "react-hook-form"
 import { UserContext } from "."
 import { usePopup, useScreen } from "../hooks"
+import { readImage } from "../utils"
 import { InitialUser } from "../models"
 import DefaultImage from "../assets/images/default-image.svg"
+import { EditHighlight } from "../components/popup"
 
 const UserProvider = ({ children }) => {
-  const { openBasicPopup } = usePopup()
-  const { addMedia, highlight, showProfile, showHighlight } = useScreen()
+  const { reset } = useFormContext()
+  const { isOpen, openBasicPopup, openComponentPopup, closePopup } = usePopup()
+  const { addMedia, showProfile } = useScreen()
 
   const initialUser = new InitialUser()
   const dbKey = "user"
@@ -21,7 +25,7 @@ const UserProvider = ({ children }) => {
   
   const [user, setUser] = useState(initialState.user)
   const [newHighlight, setNewHighlight] = useState(initialState.newHighlight)
-  const [currentHighlight, setCurrentHighlight] = useState(initialState.currentMedia)
+  const [selectedHighlight, setSelectedHighlight] = useState(initialState.currentMedia)
   const [newPost, setNewPost] = useState(initialState.newPost)
   const [selectedPostId, setSelectedPostId] = useState(initialState.currentMedia)
 
@@ -39,18 +43,14 @@ const UserProvider = ({ children }) => {
   }, [user])
 
   useEffect(() => {
-    currentHighlight !== initialState.currentMedia && showHighlight()
-  }, [currentHighlight])
-
-  useEffect(() => {
     !addMedia && setNewHighlight(initialState.newHighlight), setNewPost(initialState.newPost)
-    !highlight && setCurrentHighlight(initialState.currentMedia)
-  }, [addMedia, highlight])
+    !isOpen && setSelectedHighlight(initialState.currentMedia), reset()
+  }, [addMedia, isOpen])
 
   useEffect(() => {
     const clearCurrentPost = e => {
-      const notPostElement = !postsRef.current.some(ref => ref && ref.contains(e.target))
-      notPostElement && setSelectedPostId(initialState.currentMedia)
+      const notPostElementClicked = !postsRef.current.some(ref => ref && ref.contains(e.target))
+      notPostElementClicked && setSelectedPostId(initialState.currentMedia)
     }
 
     window.addEventListener("click", clearCurrentPost)
@@ -61,7 +61,7 @@ const UserProvider = ({ children }) => {
     if (user.avatar) {
       return openBasicPopup({
         title: "Avatar",
-        description: "Are you sure you want to remove the current avatar photo? This action cannot be undone.",
+        description: "Are you sure you want to remove the current avatar? The photo cannot be recovered.",
         ok: () => {
           setUser(prev => ({ ...prev, avatar: initialUser.avatar }))
 
@@ -111,15 +111,29 @@ const UserProvider = ({ children }) => {
     }, 1500)
   }
 
+  const selectHighlight = highlight => {
+    setSelectedHighlight(highlight)
+    openComponentPopup(EditHighlight)
+  }
+
+  const updateHighlightCover = e => readImage(e).then(cover => setSelectedHighlight(prev => ({ ...prev, cover })))
+
+  const updateHighlightDescription = e => {
+    setSelectedHighlight(prev => ({
+      ...prev,
+      description: e.target.value.trim() !== "" ? e.target.value : initialState.newHighlight.description
+    }))
+  }
+
   const editHighlight = () => {
     setUser(prev => ({
       ...prev,
-      highlights: prev.highlights.map(highlight => highlight.id === currentHighlight.id ? currentHighlight : highlight)
+      highlights: prev.highlights.map(highlight => highlight.id === selectedHighlight.id ? selectedHighlight : highlight)
     }))
 
     setTimeout(() => {
-      setCurrentHighlight(initialState.currentMedia)
-      showProfile()
+      setSelectedHighlight(initialState.currentMedia)
+      closePopup()
     }, 1500)
   }
 
@@ -130,11 +144,10 @@ const UserProvider = ({ children }) => {
       ok: () => {
         setUser(prev => ({
           ...prev,
-          highlights: prev.highlights.filter(highlight => highlight.id !== currentHighlight.id)
+          highlights: prev.highlights.filter(highlight => highlight.id !== selectedHighlight.id)
         }))
 
-        setCurrentHighlight(initialState.currentMedia)
-        showProfile()
+        setSelectedHighlight(initialState.currentMedia)
 
         openBasicPopup({
           title: "Success",
@@ -193,8 +206,10 @@ const UserProvider = ({ children }) => {
       newHighlight,
       setNewHighlight,
       addHighlight,
-      currentHighlight,
-      setCurrentHighlight,
+      selectedHighlight,
+      selectHighlight,
+      updateHighlightCover,
+      updateHighlightDescription,
       editHighlight,
       deleteHighlight,
       postsRef,

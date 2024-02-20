@@ -1,21 +1,27 @@
 import { createPortal } from "react-dom"
-import { usePopup } from "../../hooks"
-import Container from "./Container"
-import Stack from "./Stack"
-import Button from "./Button"
+import { LuX } from "react-icons/lu"
 import classNames from "classnames"
+import { usePopup } from "../../hooks"
+import Container from "../layout/Container"
+import Stack from "../layout/Stack"
+import Button from "../layout/Button"
 
 const Popup = () => {
-  const { isOpen, popup, closePopup } = usePopup()
-
+  const { isOpen, isBasicPopup, isComponentPopup, popup, closePopup } = usePopup()
+  
   return (
     isOpen && (
       createPortal(
         <div className="bg-medium bg-opacity-50 fixed top-0 left-0 grid place-items-center w-full h-full z-50">
           <Container className="max-w-sm sm:max-w-lg">
-            <div className="bg-light dark:bg-dark rounded-shape p-4 shadow-lg">
+            <div className={classNames(
+              "bg-light dark:bg-dark rounded-shape p-4 shadow-lg",
               {
-                popup.description && (
+                "relative pt-12": isComponentPopup
+              }
+            )}>
+              {
+                isBasicPopup && (
                   <>
                     {
                       popup.title && (
@@ -58,6 +64,21 @@ const Popup = () => {
                   </>
                 )
               }
+              {
+                isComponentPopup && (
+                  <>
+                    <Button
+                      aria-label="Close popup"
+                      onClick={closePopup}
+                      variant="icon"
+                      className="rounded-full absolute top-1 right-1 text-2xl p-1"
+                    >
+                      <LuX />
+                    </Button>
+                    {popup}
+                  </>
+                )
+              }
             </div>
           </Container>
         </div>, document.body
@@ -67,3 +88,4 @@ const Popup = () => {
 }
 
 export default Popup
+export { default as EditHighlight } from "./_EditHighlight"

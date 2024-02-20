@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { ScreenContext } from "."
 import { capitalizeString, splitCamelCaseString } from "../utils"
-import { Profile, ProfileConfig, AddMedia, Highlight } from "../screens"
+import { Profile, ProfileConfig, AddMedia } from "../screens"
 
 const ScreenProvider = ({ children }) => {
   const { reset } = useFormContext()
@@ -19,10 +19,6 @@ const ScreenProvider = ({ children }) => {
     addMedia: {
       visible: false,
       component: AddMedia
-    },
-    highlight: {
-      visible: false,
-      component: Highlight
     }
   }
 
@@ -53,9 +49,7 @@ const ScreenProvider = ({ children }) => {
 
   const ScreenComponent = Object.values(screen).find(screen => screen.visible).component
 
-  const screenTitle = splitCamelCaseString(
-    Object.entries(screen).find(([_key, value]) => value.visible)[0]
-  )
+  const screenTitle = splitCamelCaseString(Object.entries(screen).find(([_key, value]) => value.visible)[0])
 
   return (
     <ScreenContext.Provider value={{ ...keysAndMethods, ScreenComponent, screenTitle }}>

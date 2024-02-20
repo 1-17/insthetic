@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, isValidElement } from "react"
 import { PopupContext } from "."
 
 const _PopupProvider = ({ children }) => {
@@ -6,18 +6,30 @@ const _PopupProvider = ({ children }) => {
   const [popup, setPopup] = useState(initialPopup)
 
   const isOpen = popup !== initialPopup
+  const isBasicPopup = isOpen && !isValidElement(popup)
+  const isComponentPopup = !isBasicPopup
 
   useEffect(() => {
     const root = document.getElementById("root")
-    isOpen ? root.classList.add("blur-sm") : root.classList.remove("blur-sm")
+
+    const classes = "blur-sm"
+    isOpen ? root.classList.add(classes) : root.classList.remove(classes)
   }, [popup])
   
   const openBasicPopup = ({ title, description, ok, cancel }) => setPopup({ title, description, ok, cancel })
-  const openScreenPopup = screen => setPopup(screen)
+  const openComponentPopup = Component => setPopup(<Component />)
   const closePopup = () => setPopup(initialPopup)
 
   return (
-    <PopupContext.Provider value={{ isOpen, popup, openBasicPopup, openScreenPopup, closePopup }}>
+    <PopupContext.Provider value={{
+      isOpen,
+      isBasicPopup,
+      isComponentPopup,
+      popup,
+      openBasicPopup,
+      openComponentPopup,
+      closePopup
+    }}>
       {children}
     </PopupContext.Provider>
   )

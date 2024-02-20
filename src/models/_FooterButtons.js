@@ -11,7 +11,7 @@ class _FooterButtons extends Buttons {
     super()
 
     const { lightMode, changeTheme } = useTheme()
-    const { profileConfig, addMedia, highlight, showProfile, showProfileConfig, showAddMedia } = useScreen()
+    const { profileConfig, addMedia, showProfile, showProfileConfig, showAddMedia } = useScreen()
 
     this.buttons = [
       {
@@ -30,14 +30,6 @@ class _FooterButtons extends Buttons {
         click: !profileConfig ? showProfileConfig : showProfile
       }
     ]
-
-    if (highlight) {
-      this.buttons.splice(1, 0, {
-        label: "Go to profile",
-        icon: Avatar,
-        click: showProfile
-      })
-    }
 
     return this.buttons
   }
