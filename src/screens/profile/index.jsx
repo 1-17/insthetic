@@ -3,7 +3,7 @@ import Metrics from "./Metrics"
 import Name from "./Name"
 import Pronouns from "./Pronouns"
 import Threads from "./Threads"
-import Label from "./Label"
+import Category from "./Category"
 import Bio from "./Bio"
 import Link from "./Link"
 import Buttons from "./Buttons"
@@ -21,7 +21,7 @@ const _Profile = () => {
         <Name />
         <Pronouns />
         <Threads />
-        <Label />
+        <Category />
         <Bio />
         <Link />
       </section>

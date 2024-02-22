@@ -3,7 +3,7 @@ class User {
   name
   pronouns
   threads
-  label
+  category
   bio
   verified
   posts = [

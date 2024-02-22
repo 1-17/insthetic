@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form"
 import { useUser } from "../../hooks"
-import { businessLabels, contactOptions } from "../../models"
+import { businessCategories, contactOptions } from "../../models"
 import Fieldset from "../../components/layout/Fieldset"
 import Field from "../../components/layout/Field"
 
@@ -11,13 +11,13 @@ const Business = () => {
   return (
     <Fieldset legend="Business">
       <Controller
-        name="label"
-        defaultValue={user.label}
+        name="category"
+        defaultValue={user.category}
         render={({ field }) => (
           <Field
             {...field}
             select={{
-              options: businessLabels
+              options: businessCategories
             }}
           />
         )}

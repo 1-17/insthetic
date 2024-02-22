@@ -8,7 +8,7 @@ class _InitialUser extends User {
     this.name = "117k",
     this.pronouns = ["he", "him"],
     this.threads = "117k",
-    this.label = "Developer",
+    this.category = "Website",
     this.bio = "love yourself so no one has to. also, @this_is_a_mention and #this_is_a_hashtag.",
     this.verified = true,
     this.posts = [

@@ -1,15 +1,15 @@
 import { useUser } from "../../hooks"
 
-const Label = () => {
+const Category = () => {
   const { user } = useUser()
   
   return (
-    user.label && (
+    user.category && (
       <span className="block text-medium">
-        {user.label}
+        {user.category}
       </span>
     )
   )
 }
 
-export default Label
+export default Category
