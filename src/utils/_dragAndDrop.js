@@ -1,20 +1,24 @@
 import { useState } from "react"
 
 const _dragAndDrop = ({ items, itemId, update }) => {
-  const [_itemId, setItemId] = useState(null)
-
-  if (!items || !itemId) {
-    throw new Error("Drag and Drop: Missing items and/or itemId arguments.")
+  if (!items) {
+    throw new Error("Drag and Drop: Missing items argument.")
   }
   
-  const dragStart = e => {
+  if (!itemId) {
+    throw new Error("Drag and Drop: Missing itemId argument.")
+  }
+
+  const [_itemId, setItemId] = useState(null)
+  
+  const onDragStart = e => {
     e.dataTransfer.setData("dragItemId", itemId)
     setItemId(itemId)
   }
 
-  const dragOver = e => e.preventDefault()
+  const onDragOver = e => e.preventDefault()
 
-  const drop = e => new Promise(resolve => {
+  const onDrop = e => new Promise(resolve => {
     const findItemIndex = i => items.findIndex(item => item.id === i)
     const dragItemId = Number(e.dataTransfer.getData("dragItemId"))
   
@@ -31,9 +35,9 @@ const _dragAndDrop = ({ items, itemId, update }) => {
 
   return {
     draggable: true,
-    onDragStart: dragStart,
-    onDragOver: dragOver,
-    onDrop: e => drop(e).then(update)
+    onDragStart,
+    onDragOver,
+    onDrop: e => onDrop(e).then(update)
   }
 }
 

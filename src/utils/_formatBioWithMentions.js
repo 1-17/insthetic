@@ -10,7 +10,9 @@ const _formatBioWithMentions = () => {
   return (
     sanitizedBio.replace(/(@\w+|#\w+)/g, (text, textPart) => {
       if (textPart.startsWith("@") || textPart.startsWith("#")) {
-        return (`<span class="text-accent-dark dark:text-accent-light">${text}</span>`)
+        return (
+          `<span class="text-accent-dark dark:text-accent-light">${text}</span>`
+        )
       }
 
       return text

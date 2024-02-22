@@ -1,21 +1,25 @@
 const _readImage = (e, imageSize) => {
-  const image = e.target.files[0]
-  
+  if (!e) {
+    throw new Error("Read Image: Missing event argument.")
+  }
+
   if (!imageSize) {
     switch (e.target.name) {
-      case "cover" /* highlight */:
+      case /* highlight */ "cover":
         imageSize = 200
         break
       
-      case "image" /* post */:
+      case /* post */ "image":
         imageSize = 400
         break
       
-      case "avatar" /* profile picture */:
+      case /* profile */ "avatar":
         imageSize = 200
         break
     }
   }
+
+  const image = e.target.files[0]
   
   return new Promise(resolve => {
     const reader = new FileReader()
@@ -25,13 +29,12 @@ const _readImage = (e, imageSize) => {
 
       img.onload = () => {
         const canvas = document.createElement("canvas")
-        const ctx = canvas.getContext("2d")
-
-        const size = imageSize
+        const canvasContext = canvas.getContext("2d")
+        
         let width = img.width
         let height = img.height
 
-        const scaleFactor = Math.min(size / width, size / height)
+        const scaleFactor = Math.min(imageSize / width, imageSize / height)
 
         width *= scaleFactor
         height *= scaleFactor
@@ -39,7 +42,7 @@ const _readImage = (e, imageSize) => {
         canvas.width = width
         canvas.height = height
 
-        ctx.drawImage(img, 0, 0, width, height)
+        canvasContext.drawImage(img, 0, 0, width, height)
 
         const compressedDataURL = canvas.toDataURL(image.type, 0.7)
 
