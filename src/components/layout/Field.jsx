@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form"
 import { LuX } from "react-icons/lu"
 import { FaChevronDown } from "react-icons/fa6"
 import classNames from "classnames"
-import { capitalizeString } from "../../utils"
+import { formatString } from "../../utils"
 import Button from "./Button"
 
 const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
@@ -78,7 +78,7 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
           : { className: "leading-loose" }
         }
       >
-        {label || capitalizeString(rest.name)}
+        {label || formatString.capitalize(rest.name)}
       </label>
       <div className={classNames(
         "relative",

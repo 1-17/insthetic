@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { ScreenContext } from "."
-import { capitalizeString, splitCamelCaseString } from "../utils"
+import { formatString } from "../utils"
 import { Profile, ProfileConfig, AddMedia } from "../screens"
 
 const ScreenProvider = ({ children }) => {
@@ -43,13 +43,13 @@ const ScreenProvider = ({ children }) => {
 
   const keysAndMethods = Object.keys(screen).reduce((acc, key) => {
     acc[key] = screen[key].visible
-    acc[`show${capitalizeString(key)}`] = () => showScreen(key)
+    acc[`show${formatString.capitalize(key)}`] = () => showScreen(key)
     return acc
   }, {})
 
   const ScreenComponent = Object.values(screen).find(screen => screen.visible).component
 
-  const screenTitle = splitCamelCaseString(Object.entries(screen).find(([_key, value]) => value.visible)[0])
+  const screenTitle = formatString.splitAndCapitalizeCamelCase(Object.entries(screen).find(([_key, value]) => value.visible)[0])
 
   return (
     <ScreenContext.Provider value={{ ...keysAndMethods, ScreenComponent, screenTitle }}>
