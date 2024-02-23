@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { UserContext } from "."
-import { usePopup, useScreen } from "../hooks"
+import { usePopup } from "../hooks"
 import { readImage } from "../utils"
 import { InitialUser } from "../models"
-import DefaultImage from "../assets/images/default-image.svg"
 import { EditHighlight } from "../components/popup"
+import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
-  const { reset } = useFormContext()
-  const { isOpen, openBasicPopup, openComponentPopup, closePopup } = usePopup()
-  const { addMedia, showProfile } = useScreen()
+  const { reset, setValue, clearErrors } = useFormContext()
+  const { isOpen, openBasicPopup, openComponentPopup } = usePopup()
 
   const initialUser = new InitialUser()
   const dbKey = "user"
@@ -36,16 +35,20 @@ const UserProvider = ({ children }) => {
       if (err instanceof DOMException && err.name === "QuotaExceededError") {
         openBasicPopup({
           title: "Error",
-          description: "App storage is full. Please, delete some highlights or posts and try again."
+          description: "App storage is full. Please, delete some posts or highlights and try again."
         })
       }
     }
   }, [user])
 
   useEffect(() => {
-    !addMedia && setNewHighlight(initialState.newHighlight), setNewPost(initialState.newPost)
-    !isOpen && setSelectedHighlight(initialState.currentMedia), reset()
-  }, [addMedia, isOpen])
+    if (!isOpen) {
+      setNewHighlight(initialState.newHighlight)
+      setNewPost(initialState.newPost)
+      setSelectedHighlight(initialState.currentMedia)
+      reset()
+    }
+  }, [isOpen])
 
   useEffect(() => {
     const clearCurrentPost = e => {
@@ -94,132 +97,168 @@ const UserProvider = ({ children }) => {
     setUser(prev => ({ ...prev, ...formData }))
   }
 
-  const addHighlight = () => {
+  const highlight = {}
+
+  highlight.new = {}
+  highlight.new.coverWasChanged = newHighlight.cover !== initialState.newHighlight.cover
+
+  highlight.add = () => {
+    const id = !user.highlights.length ? 1 : Math.max(...user.highlights.map(highlight => highlight.id)) + 1
+
     setUser(prev => ({
       ...prev,
-      highlights: [
-        {
-          id: !user.highlights.length ? 1 : Math.max(...user.highlights.map(highlight => highlight.id)) + 1,
-          ...newHighlight
-        },
-        ...prev.highlights
-      ]
+      highlights: [{ id, ...newHighlight }, ...prev.highlights]
     }))
 
-    setTimeout(() => {
-      setNewHighlight(initialState.newHighlight)
-    }, 1500)
+    setNewHighlight(initialState.newHighlight)
+
+    openBasicPopup({
+      title: "Success",
+      description: "New highlight added."
+    })
   }
 
-  const selectHighlight = highlight => {
+  const updateHighlight = (e, updateState) => {
+    const { name } = e.target
+
+    if (name === "cover") {
+      return readImage(e).then(cover => {
+        updateState(prev => ({ ...prev, cover }))
+        clearErrors(name)
+        setValue(name, cover)
+      })
+    }
+
+    if (name === "description") {
+      return updateState(prev => ({
+        ...prev,
+        description: e.target.value.trim() !== "" ? e.target.value : initialState.newHighlight.description
+      }))
+    }
+  }
+
+  highlight.new.update = e => updateHighlight(e, setNewHighlight)
+
+  highlight.select = highlight => {
     setSelectedHighlight(highlight)
     openComponentPopup(EditHighlight)
   }
-
-  const updateHighlightCover = e => readImage(e).then(cover => setSelectedHighlight(prev => ({ ...prev, cover })))
-
-  const updateHighlightDescription = e => {
-    setSelectedHighlight(prev => ({
-      ...prev,
-      description: e.target.value.trim() !== "" ? e.target.value : initialState.newHighlight.description
-    }))
-  }
-
-  const editHighlight = () => {
-    setUser(prev => ({
-      ...prev,
-      highlights: prev.highlights.map(highlight => highlight.id === selectedHighlight.id ? selectedHighlight : highlight)
-    }))
-
-    setTimeout(() => {
-      setSelectedHighlight(initialState.currentMedia)
-      closePopup()
-    }, 1500)
-  }
-
-  const deleteHighlight = () => {
-    openBasicPopup({
-      title: "Delete highlight",
-      description: "Are you sure you want to remove this highlight? This action cannot be undone.",
-      ok: () => {
-        setUser(prev => ({
-          ...prev,
-          highlights: prev.highlights.filter(highlight => highlight.id !== selectedHighlight.id)
-        }))
-
-        setSelectedHighlight(initialState.currentMedia)
-
-        openBasicPopup({
-          title: "Success",
-          description: "Highlight removed."
-        })
-      }
+  
+  highlight.edit = () => {
+    const allHighlightsAndUpdatedOne = user.highlights.map(highlight => {
+      return highlight.id === selectedHighlight.id ? selectedHighlight : highlight
     })
-  }
-
-  const addPost = () => {
-    setUser(prev => ({
-      ...prev,
-      posts: [
-        {
-          id: !user.posts.length ? 1 : Math.max(...user.posts.map(post => post.id)) + 1,
-          ...newPost
-        },
-        ...prev.posts
-      ]
-    }))
-
-    setTimeout(() => {
-      setNewPost(initialState.newPost)
-    }, 1500)
-  }
-
-  const handleSelectedPostId = e => {
-    const postId = Number(e.currentTarget.id)
     
-    setSelectedPostId(selectedPostId !== postId ? postId : initialState.currentMedia)
+    setUser(prev => ({
+      ...prev,
+      highlights: allHighlightsAndUpdatedOne
+    }))
+
+    setSelectedHighlight(initialState.currentMedia)
+    
+    openBasicPopup({
+      title: "Success",
+      description: "Highlight was updated."
+    })
+  }
+  
+  if (selectedHighlight) {
+    highlight.selected = selectedHighlight
+
+    highlight.selected.update = e => updateHighlight(e, setSelectedHighlight)
+
+    highlight.delete = () => {
+      openBasicPopup({
+        title: "Delete highlight",
+        description: "Are you sure you want to remove this highlight? This action cannot be undone.",
+        ok: () => {
+          setUser(prev => ({
+            ...prev,
+            highlights: prev.highlights.filter(highlight => highlight.id !== selectedHighlight.id)
+          }))
+  
+          setSelectedHighlight(initialState.currentMedia)
+  
+          openBasicPopup({
+            title: "Success",
+            description: "Highlight removed."
+          })
+        }
+      })
+    }
   }
 
-  const deletePost = () => {
-    openBasicPopup({
-      title: "Delete post",
-      description: "Are you sure you want to remove this post? This action cannot be undone.",
-      ok: () => {
-        setUser(prev => ({
-          ...prev,
-          posts: prev.posts.filter(post => post.id !== selectedPostId)
-        }))
+  const post = {}
 
-        openBasicPopup({
-          title: "Success",
-          description: "Post deleted."
-        })
-      }
+  post.refs = postsRef
+
+  post.new = {}
+  post.new.imageWasChanged = newPost.image !== initialState.newPost.image
+
+  post.add = () => {
+    const id = !user.posts.length ? 1 : Math.max(...user.posts.map(post => post.id)) + 1
+
+    setUser(prev => ({
+      ...prev,
+      posts: [{ id, ...newPost }, ...prev.posts]
+    }))
+
+    setNewPost(initialState.newPost)
+
+    openBasicPopup({
+      title: "Success",
+      description: "New post added."
     })
+  }
+
+  post.new.update = e => {
+    const { name } = e.target
+
+    if (name === "image") {
+      return readImage(e).then(image => {
+        setNewPost(prev => ({ ...prev, image }))
+        clearErrors(name)
+        setValue(name, image)
+      })
+    }
+  }
+
+  post.select = id => setSelectedPostId(selectedPostId !== id ? id : initialState.currentMedia)
+
+  post.reorder = posts => setUser(prev => ({ ...prev, posts }))
+
+  if (selectedPostId) {
+    post.selectedId = selectedPostId
+
+    post.delete = () => {
+      openBasicPopup({
+        title: "Delete post",
+        description: "Are you sure you want to remove this post? This action cannot be undone.",
+        ok: () => {
+          setUser(prev => ({
+            ...prev,
+            posts: prev.posts.filter(post => post.id !== selectedPostId)
+          }))
+    
+          openBasicPopup({
+            title: "Success",
+            description: "Post deleted."
+          })
+        }
+      })
+    }
   }
 
   return (
     <UserContext.Provider value={{
       user,
       setUser,
+      removeAvatar,
       updateUser,
+      highlight,
       newHighlight,
-      setNewHighlight,
-      addHighlight,
-      selectedHighlight,
-      selectHighlight,
-      updateHighlightCover,
-      updateHighlightDescription,
-      editHighlight,
-      deleteHighlight,
-      postsRef,
-      newPost,
-      setNewPost,
-      addPost,
-      selectedPostId,
-      handleSelectedPostId,
-      deletePost,
-      removeAvatar
+      post,
+      newPost
     }}>
       {children}
     </UserContext.Provider>

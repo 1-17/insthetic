@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { ScreenContext } from "."
 import { formatString } from "../utils"
-import { Profile, ProfileConfig, AddMedia } from "../screens"
+import { Profile, ProfileConfig } from "../screens"
 
 const ScreenProvider = ({ children }) => {
   const { reset } = useFormContext()
@@ -15,10 +15,6 @@ const ScreenProvider = ({ children }) => {
     profileConfig: {
       visible: false,
       component: ProfileConfig
-    },
-    addMedia: {
-      visible: false,
-      component: AddMedia
     }
   }
 

@@ -71,7 +71,7 @@ const Popup = () => {
                       aria-label="Close popup"
                       onClick={closePopup}
                       variant="icon"
-                      className="rounded-full absolute top-1 right-1 text-2xl p-1"
+                      className="rounded-full absolute top-1 right-1 text-2xl p-2"
                     >
                       <LuX />
                     </Button>
@@ -89,3 +89,4 @@ const Popup = () => {
 
 export default Popup
 export { default as EditHighlight } from "./_EditHighlight"
+export { default as AddMedia } from "./_AddMedia"

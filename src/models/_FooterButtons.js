@@ -2,16 +2,18 @@ import { TbMoon } from "react-icons/tb"
 import { MdOutlineLightMode } from "react-icons/md"
 import { LuPlusSquare } from "react-icons/lu"
 import { BsGear } from "react-icons/bs"
-import { useTheme, useScreen } from "../hooks"
+import { useTheme, useScreen, usePopup } from "../hooks"
 import Buttons from "./_Buttons"
 import Avatar from "../screens/profile/Avatar"
+import { AddMedia } from "../components/popup"
 
 class _FooterButtons extends Buttons {
   constructor() {
     super()
 
     const { lightMode, changeTheme } = useTheme()
-    const { profileConfig, addMedia, showProfile, showProfileConfig, showAddMedia } = useScreen()
+    const { profileConfig, showProfile, showProfileConfig } = useScreen()
+    const { openComponentPopup } = usePopup()
 
     this.buttons = [
       {
@@ -20,9 +22,9 @@ class _FooterButtons extends Buttons {
         click: changeTheme
       },
       {
-        label: !addMedia ? "Go to add new media" : "Go to profile",
-        icon: !addMedia ? LuPlusSquare : Avatar,
-        click: !addMedia ? showAddMedia : showProfile
+        label: "Add media",
+        icon: LuPlusSquare,
+        click: () => openComponentPopup(AddMedia)
       },
       {
         label: !profileConfig ? "Go to profile config" : "Go to profile",

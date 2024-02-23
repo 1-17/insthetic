@@ -5,8 +5,8 @@ import { useUser } from "../../hooks"
 import { dragAndDrop } from "../../utils"
 
 const Posts = () => {
-  const { user, setUser, postsRef, selectedPostId, handleSelectedPostId, deletePost } = useUser()
-
+  const { user, post: postMethods } = useUser()
+  
   return (
     user.posts.length > 0 && (
       <section>
@@ -19,32 +19,28 @@ const Posts = () => {
               user.posts.map(post =>
                 <li
                   key={post.id}
-                  id={post.id}
-                  ref={ref => postsRef.current[post.id] = ref}
-                  {
-                    ...dragAndDrop({
-                      items: user.posts,
-                      itemId: post.id,
-                      update: posts => setUser(prev => ({ ...prev, posts: posts }))
-                    })
-                  }
-                  onClick={handleSelectedPostId}
+                  {...dragAndDrop({
+                    items: user.posts,
+                    itemId: post.id,
+                    update: postMethods.reorder
+                  })}
+                  onClick={() => postMethods.select(post.id)}
                   className={classNames(
                     "cursor-pointer",
                     {
-                      "relative": selectedPostId === post.id
+                      "relative": postMethods.selectedId === post.id
                     }
                   )}
                 >
                   {
-                    (selectedPostId === post.id) && (
+                    (postMethods.selectedId === post.id) && (
                       <div className="bg-medium bg-opacity-25 absolute top-0 left-0 grid place-items-center w-full h-full z-10">
                         <button
                           aria-label="Delete post"
-                          onClick={deletePost}
+                          onClick={postMethods.delete}
                           className="bg-medium bg-opacity-50 border-2 rounded-full text-white text-[6vw] sm:text-4xl p-[3vw] sm:p-4"
                           >
-                          <LuTrash />
+                          <LuTrash aria-label="Delete" />
                         </button>
                       </div>
                     )

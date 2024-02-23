@@ -3,7 +3,7 @@ import Button from "../../components/layout/Button"
 import Avatar from "./Avatar"
 
 const Highlights = () => {
-  const { user, selectHighlight } = useUser()
+  const { user, highlight: { select } } = useUser()
 
   return (
     user.highlights && (
@@ -11,7 +11,7 @@ const Highlights = () => {
         {
           user.highlights.map(highlight => 
             <li key={highlight.id}>
-              <Button variant="icon" onClick={() => selectHighlight(highlight)}>
+              <Button variant="icon" onClick={() => select(highlight)}>
                 <Avatar highlights={{
                   cover: highlight.cover,
                   description: highlight.description

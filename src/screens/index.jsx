@@ -11,4 +11,3 @@ const Screens = () => {
 export default Screens
 export { default as Profile } from "./profile"
 export { default as ProfileConfig } from "./profileConfig"
-export { default as AddMedia } from "./addMedia"
