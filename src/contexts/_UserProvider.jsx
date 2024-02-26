@@ -3,9 +3,8 @@ import { useFormContext } from "react-hook-form"
 import { UserContext } from "."
 import { usePopup } from "../hooks"
 import { readImage } from "../utils"
-import { InitialUser } from "../models"
+import { InitialUser, DefaultImage } from "../models"
 import { EditHighlight } from "../components/popup"
-import DefaultImage from "../assets/images/default-image.svg"
 
 const UserProvider = ({ children }) => {
   const { reset, setValue, clearErrors } = useFormContext()

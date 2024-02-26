@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import { useUser } from "../../hooks"
-import DefaultAvatar from "../../assets/images/default-avatar.svg"
+import { DefaultAvatar } from "../../models"
 
 const Avatar = ({ profile, highlights }) => {
   const { user } = useUser()

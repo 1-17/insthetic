@@ -1,3 +1,4 @@
+import { DefaultImage } from "."
 import User from "./_User"
 
 class _InitialUser extends User {
@@ -14,7 +15,7 @@ class _InitialUser extends User {
     this.posts = [
       {
         id: 1,
-        image: "src/assets/images/default-image.svg"
+        image: DefaultImage
       }
     ],
     this.followers = 1234,
@@ -27,7 +28,7 @@ class _InitialUser extends User {
     this.highlights = [
       {
         id: 1,
-        cover: "src/assets/images/default-image.svg",
+        cover: DefaultImage,
         description: "Highlights"
       }
     ]
