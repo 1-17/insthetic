@@ -19,16 +19,19 @@ class _FooterButtons extends Buttons {
       {
         label: `Switch to ${lightMode ? "dark" : "light"} mode`,
         icon: lightMode ? TbMoon : MdOutlineLightMode,
+        iconLabel: lightMode ? "Dark mode" : "Light mode",
         click: changeTheme
       },
       {
         label: "Add media",
         icon: LuPlusSquare,
+        iconLabel: "Add media",
         click: () => openComponentPopup(AddMedia)
       },
       {
         label: !profileConfig ? "Go to profile config" : "Go to profile",
         icon: !profileConfig ? BsGear : Avatar,
+        iconLabel: !profileConfig && "Config",
         click: !profileConfig ? showProfileConfig : showProfile
       }
     ]

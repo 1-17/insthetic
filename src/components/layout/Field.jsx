@@ -165,7 +165,7 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
             <>
               {
                 !rest.multiple /*!select.multiple*/ && (
-                  <FaChevronDown className="absolute top-2.5 right-2" />
+                  <FaChevronDown aria-label="Open" className="absolute top-2.5 right-2" />
                 )
               }
               {
@@ -196,7 +196,7 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
                               /*() => deleteSelectFieldOption(option)*/}
                               className="relative pt-2 pl-3 pr-4"
                             >
-                              <LuX className="absolute top-0.5 right-0.5 text-sm" />
+                              <LuX aria-label="Delete" className="absolute top-0.5 right-0.5 text-sm" />
                               {option}
                             </Button>
                           </li>

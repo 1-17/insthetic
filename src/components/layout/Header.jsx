@@ -25,7 +25,7 @@ const Header = () => {
               variant="icon"
               className="-ml-3 mr-3 p-3"
             >
-              <PiArrowLeftBold className="inline align-sub" />
+              <PiArrowLeftBold aria-label="Back" className="inline align-sub" />
             </Button>
             <h1 className="inline">
               {screenTitle}

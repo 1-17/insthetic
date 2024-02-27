@@ -7,7 +7,7 @@ const Threads = () => {
   return (
     user.threads && (
       <span className="bg-medium-light dark:bg-medium-dark rounded-full block px-2 py-0.5 w-fit">
-        <TbBrandThreads className="inline align-text-bottom text-lg" />
+        <TbBrandThreads aria-label="Threads" className="inline align-text-bottom text-lg" />
         {user.threads}
       </span>
     )

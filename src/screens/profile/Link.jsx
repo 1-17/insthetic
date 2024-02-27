@@ -7,7 +7,7 @@ const Link = () => {
   return (
     user.link && (
       <span className="text-accent-dark dark:text-accent-light">
-        <RiLink className="inline-block align-text-bottom text-lg mr-1" />
+        <RiLink aria-label="Link" className="inline-block align-text-bottom text-lg mr-1" />
         {user.link}
       </span>
     )

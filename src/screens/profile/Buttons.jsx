@@ -24,7 +24,7 @@ const Buttons = () => {
       {
         user.suggestions && (
           <Button aria-label="Suggested accounts to follow" disabled full className="xs:w-max">
-            <BiUserPlus className="inline text-xl sm:text-2xl transform -scale-x-100" />
+            <BiUserPlus aria-label="Suggestions" className="inline text-xl sm:text-2xl transform -scale-x-100" />
           </Button>
         )
       }

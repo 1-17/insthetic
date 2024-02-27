@@ -17,7 +17,7 @@ const Footer = () => {
                 variant="icon"
                 className="text-2xl sm:text-3xl w-20 h-14 *:max-w-fit *:mx-auto"
               >
-                <button.icon />
+                <button.icon aria-label={button.iconLabel} />
               </Button>
             </li>
           )

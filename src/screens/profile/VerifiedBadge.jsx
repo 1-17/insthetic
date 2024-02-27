@@ -6,7 +6,7 @@ const VerifiedBadge = () => {
 
   return (
     user.verified && (
-      <MdVerified className="inline align-baseline text-accent text-xs sm:text-sm ml-1" />
+      <MdVerified aria-label="Verified Badge" className="inline align-baseline text-accent text-xs sm:text-sm ml-1" />
     )
   )
 }

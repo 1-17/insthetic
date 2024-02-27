@@ -42,7 +42,7 @@ const Button = ({ variant, full, copy, ...rest }) => {
   if (copy) {
     rest["aria-label"] = `Copy ${copy} to clipboard`
     rest.onClick = () => copyToClipboard(copy, openBasicPopup)
-    rest.children = <LuCopy />
+    rest.children = <LuCopy aria-label="Copy" />
     variant = "icon"
   }
 

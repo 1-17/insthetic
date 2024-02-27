@@ -73,7 +73,7 @@ const Popup = () => {
                       variant="icon"
                       className="rounded-full absolute top-1 right-1 text-2xl p-2"
                     >
-                      <LuX />
+                      <LuX aria-label="Close" />
                     </Button>
                     {popup}
                   </>
