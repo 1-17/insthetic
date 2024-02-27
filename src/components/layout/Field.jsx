@@ -5,6 +5,8 @@ import { FaChevronDown } from "react-icons/fa6"
 import classNames from "classnames"
 import { formatString } from "../../utils"
 import Button from "./Button"
+import VerifiedBadge from "../../screens/profile/VerifiedBadge"
+import SuggestionsButton from "../../screens/profile/SuggestionsButton"
 
 const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
   const { watch, getValues, setValue, formState: { errors } } = useFormContext()
@@ -75,10 +77,27 @@ const Field = forwardRef(({ label, textarea, select, copy, ...rest }, _ref) => {
             onKeyDown: enableFileButtonClick,
             className: "block bg-accent rounded-shape cursor-pointer text-light text-center px-2 py-1"
           }
-          : { className: "leading-loose" }
+          : {
+            className: classNames(
+              "inline-block leading-loose",
+              {
+                "last:*:ml-3": ["verified", "suggestions"].includes(rest.name)
+              }
+            )
+          }
         }
       >
         {label || formatString.capitalize(rest.name)}
+        {
+          rest.name === "verified" && (
+            <VerifiedBadge />
+          )
+        }
+        {
+          rest.name === "suggestions" && (
+            <SuggestionsButton />
+          )
+        }
       </label>
       <div className={classNames(
         "relative",

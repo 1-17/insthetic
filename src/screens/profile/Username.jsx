@@ -4,7 +4,7 @@ const Username = () => {
   const { user } = useUser()
   
   return (
-    <h1 {...user.verified && { className: "inline" }}>
+    <h1 {...user.verified && { className: "inline mr-1" }}>
       {user.username}
     </h1>
   )

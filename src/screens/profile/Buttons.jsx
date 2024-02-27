@@ -1,7 +1,7 @@
-import { BiUserPlus } from "react-icons/bi"
 import { useUser } from "../../hooks"
 import Stack from "../../components/layout/Stack"
 import Button from "../../components/layout/Button"
+import SuggestionsButton from "./SuggestionsButton"
 
 const Buttons = () => {
   const { user } = useUser()
@@ -23,9 +23,7 @@ const Buttons = () => {
       }
       {
         user.suggestions && (
-          <Button aria-label="Suggested accounts to follow" disabled full className="xs:w-max">
-            <BiUserPlus aria-label="Suggestions" className="inline text-xl sm:text-2xl transform -scale-x-100" />
-          </Button>
+          <SuggestionsButton />
         )
       }
     </Stack>

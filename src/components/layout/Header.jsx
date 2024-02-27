@@ -1,5 +1,5 @@
 import { PiArrowLeftBold } from "react-icons/pi"
-import { useScreen } from "../../hooks"
+import { useScreen, useUser } from "../../hooks"
 import AppBar from "./AppBar"
 import Username from "../../screens/profile/Username"
 import VerifiedBadge from "../../screens/profile/VerifiedBadge"
@@ -7,6 +7,7 @@ import Button from "./Button"
 
 const Header = () => {
   const { profile, showProfile, screenTitle } = useScreen()
+  const { user } = useUser()
 
   return (
     <AppBar element="header">
@@ -14,7 +15,11 @@ const Header = () => {
         profile ? (
           <>
             <Username />
-            <VerifiedBadge />
+            {
+              user.verified && (
+                <VerifiedBadge />
+              )
+            }
           </>
         )
         : (
