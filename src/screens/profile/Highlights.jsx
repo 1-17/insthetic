@@ -11,11 +11,8 @@ const Highlights = () => {
         {
           user.highlights.map(highlight => 
             <li key={highlight.id}>
-              <Button variant="icon" onClick={() => select(highlight)}>
-                <Avatar highlights={{
-                  cover: highlight.cover,
-                  description: highlight.description
-                }} />
+              <Button variant="icon" onClick={() => select(highlight)} className="m-1">
+                <Avatar highlights={highlight} />
               </Button>
             </li>
           )
